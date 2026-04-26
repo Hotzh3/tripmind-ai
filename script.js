@@ -667,22 +667,30 @@ tripForm.addEventListener("submit", async function (event) {
       <div class="loading-spinner"></div>
       <h3 id="loadingTitle">Generating your AI travel plan...</h3>
       <p id="loadingText">Fetching destination insights...</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
     </article>
   `;
 
-
   const loadingText = document.querySelector("#loadingText");
+  const progressBar = document.querySelector("#progressBar");
+
+  if (progressBar) progressBar.style.width = "12%";
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Finding top hotels...";
+    if (progressBar) progressBar.style.width = "35%";
   }, 1000);
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Searching attractions and local spots...";
+    if (progressBar) progressBar.style.width = "68%";
   }, 2000);
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Building your smart itinerary...";
+    if (progressBar) progressBar.style.width = "90%";
   }, 3000);
 
 
@@ -765,6 +773,7 @@ tripForm.addEventListener("submit", async function (event) {
   }
 
 
+  if (progressBar) progressBar.style.width = "100%";
   itineraryOutput.innerHTML = itineraryHTML;
 
   const generatedCards = document.querySelectorAll(".day-card");
