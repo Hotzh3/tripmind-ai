@@ -20,6 +20,25 @@ function wait(milliseconds) {
   });
 }
 
+function showFormMessage(message, type = "error") {
+  let messageBox = document.querySelector("#formMessage");
+
+  if (!messageBox) {
+    messageBox = document.createElement("div");
+    messageBox.id = "formMessage";
+    messageBox.className = "form-message";
+    tripForm.prepend(messageBox);
+  }
+
+  messageBox.textContent = message;
+  messageBox.className = `form-message ${type}`;
+  messageBox.classList.remove("hidden");
+
+  setTimeout(function () {
+    messageBox.classList.add("hidden");
+  }, 4500);
+}
+
 const countryDisplayNames = {
   mexico: "Mexico",
   usa: "United States",
@@ -632,7 +651,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
           return `<li><strong>${hotel.name}</strong> — ${hotel.type}</li>`;
         })
         .join("")
-    : `<li>${stay.type}</li>`;
+    : `<li>${stay.type} — estimated option based on your budget tier</li>`;
 
   const realPlaceOptions = realPlaces.length
     ? realPlaces
@@ -643,7 +662,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
         .join("")
     : nearbyPlaces
         .map(function (place) {
-          return `<li>${place}</li>`;
+          return `<li>${place} — suggested fallback when live place data is limited</li>`;
         })
         .join("");
 
@@ -720,8 +739,23 @@ tripForm.addEventListener("submit", async function (event) {
   const interests = selectedInterests.join(", ");
   const amenities = selectedAmenities.join(", ");
 
-  if (!destination || !startDate || !endDate || !style) {
-    alert("Please complete destination, dates, and travel style.");
+  if (!country || !destination || !startDate || !endDate || !style) {
+    showFormMessage("Please complete country, city, dates, and travel style before generating your itinerary.");
+    tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  const tripLength = calculateTripLength(startDate, endDate);
+
+  if (tripLength.nights < 1) {
+    showFormMessage("Return date must be after the departure date.");
+    tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if (budget && Number(budget) < 0) {
+    showFormMessage("Budget must be a positive amount.");
+    tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
 
@@ -761,7 +795,7 @@ tripForm.addEventListener("submit", async function (event) {
   }, 3000);
 
 
-  resultsSection.scrollIntoView({ behavior: "smooth" });
+  resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const placeType = placeTypeByStyle[style] || "tourism";
   const [realPlaces, realHotels] = await Promise.all([
@@ -778,12 +812,6 @@ tripForm.addEventListener("submit", async function (event) {
     await wait(1400 - loadingElapsedTime);
   }
 
-  const tripLength = calculateTripLength(startDate, endDate);
-
-  if (tripLength.nights < 1) {
-    alert("Return date must be after departure date.");
-    return;
-  }
 
   const budgetTier = getBudgetTier(budget);
   const seasonInfo = getSeasonAnalysis(startDate);
@@ -855,8 +883,8 @@ tripForm.addEventListener("submit", async function (event) {
   if (progressBar) progressBar.style.width = "100%";
   itineraryOutput.innerHTML = itineraryHTML;
 
-  const generatedCards = document.querySelectorAll(".day-card");
-  
+  const generatedCards = document.querySelectorAll(".day-card, .summary-card, .itinerary-actions-card");
+      
   generatedCards.forEach((card, index) => {
     card.classList.remove(
       "fade-in",
@@ -876,8 +904,14 @@ tripForm.addEventListener("submit", async function (event) {
 
 
   setupItineraryActions(destination);
+
   resultsSection.classList.remove("hidden");
-  resultsSection.scrollIntoView({ behavior: "smooth" });
+
+  setTimeout(function () {
+    resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 150);
+
+
 });
 function setupItineraryActions(destination) {
   const copyButton = document.querySelector("#copyItineraryBtn");
@@ -892,17 +926,35 @@ function setupItineraryActions(destination) {
         itineraryOutput.innerText
       ].join("\n\n");
 
-      try {
-        await navigator.clipboard.writeText(itineraryText);
+      function markCopied() {
         copyButton.textContent = "Copied!";
-
+        showFormMessage("Itinerary copied to clipboard.", "success");
         setTimeout(function () {
           copyButton.textContent = "Copy itinerary";
         }, 1800);
+      }
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(itineraryText);
+          markCopied();
+          return;
+        }
+
+        const temporaryTextArea = document.createElement("textarea");
+        temporaryTextArea.value = itineraryText;
+        temporaryTextArea.setAttribute("readonly", "");
+        temporaryTextArea.style.position = "fixed";
+        temporaryTextArea.style.opacity = "0";
+        document.body.appendChild(temporaryTextArea);
+        temporaryTextArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(temporaryTextArea);
+        markCopied();
       } catch (error) {
         console.error("Copy failed:", error);
         copyButton.textContent = "Copy failed";
-
+        showFormMessage("Copy failed. Please try again or use the PDF export.");
         setTimeout(function () {
           copyButton.textContent = "Copy itinerary";
         }, 1800);
@@ -915,9 +967,11 @@ function setupItineraryActions(destination) {
       const pdfWindow = window.open("", "_blank");
 
       if (!pdfWindow) {
-        alert("Please allow pop-ups to download the PDF.");
+        showFormMessage("Please allow pop-ups to open the PDF export view.");
         return;
       }
+
+      showFormMessage("Opening your printable PDF view. Choose Save as PDF in the print dialog.", "success");
 
       const safeDestination = destination || "Trip";
       const summaryClone = tripSummary.cloneNode(true);
@@ -1013,7 +1067,18 @@ function setupItineraryActions(destination) {
       tripSummary.innerHTML = "";
       previewSection.innerHTML = "";
       itineraryOutput.innerHTML = "";
-      tripForm.scrollIntoView({ behavior: "smooth" });
+
+      tripForm.reset();
+      selectedInterests.length = 0;
+      selectedAmenities.length = 0;
+
+      document.querySelectorAll(".choice-btn.active").forEach(function (button) {
+        setChoiceButtonState(button, false);
+      });
+
+      updateCityOptions();
+      showFormMessage("Ready for a new trip. Your previous selections were cleared.", "success");
+      tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
 }
