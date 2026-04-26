@@ -30,11 +30,6 @@ a {
   text-decoration: none;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 
 .navbar {
   width: 100%;
@@ -576,37 +571,72 @@ footer {
   transition: width 0.45s ease;
 }
 
-.loading-card::after {
-  content: "";
-  display: block;
-  width: min(520px, 85%);
-  height: 10px;
-  margin: 22px auto 0;
-  overflow: hidden;
-  background: linear-gradient(90deg, #38bdf8, #0ea5e9, #7dd3fc);
-  background-size: 220% 100%;
-  border-radius: 999px;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
-  animation: loadingBarFallback 2.4s ease-in-out infinite;
+
+/* Responsive polish */
+@media (max-width: 1100px) {
+  .trip-summary,
+  .itinerary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-@keyframes loadingBarFallback {
-  0% {
-    transform: scaleX(0.18);
-    transform-origin: left;
-    opacity: 0.75;
-    background-position: 0% 50%;
+@media (max-width: 760px) {
+  body {
+    font-size: 16px;
   }
-  50% {
-    transform: scaleX(0.72);
-    transform-origin: left;
-    opacity: 1;
-    background-position: 100% 50%;
+
+  .navbar {
+    position: static;
+    padding: 18px 6%;
   }
-  100% {
-    transform: scaleX(1);
-    transform-origin: left;
-    opacity: 0.9;
-    background-position: 0% 50%;
+
+  nav {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .hero,
+  .features,
+  .planner,
+  .results,
+  .about {
+    padding: 48px 5%;
+  }
+
+  .trip-form,
+  .trip-summary,
+  .itinerary-grid,
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card,
+  .day-card,
+  .loading-card {
+    padding: 20px;
+  }
+
+  .itinerary-actions,
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .itinerary-actions .btn,
+  .action-buttons .btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .choice-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .wiki-image {
+    height: 220px;
   }
 }

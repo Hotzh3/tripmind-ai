@@ -4,9 +4,103 @@ const tripForm = document.querySelector("#tripForm");
 const resultsSection = document.querySelector("#results");
 const tripSummary = document.querySelector("#tripSummary");
 const itineraryOutput = document.querySelector("#itineraryOutput");
+const previewSection = document.querySelector("#preview");
 
 const selectedInterests = [];
 const selectedAmenities = [];
+
+function setChoiceButtonState(button, isSelected) {
+  button.classList.toggle("active", isSelected);
+  button.setAttribute("aria-pressed", String(isSelected));
+}
+
+function wait(milliseconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+const countryDisplayNames = {
+  mexico: "Mexico",
+  usa: "United States",
+  france: "France",
+  uk: "United Kingdom",
+  italy: "Italy",
+  spain: "Spain",
+  japan: "Japan",
+  "south-korea": "South Korea",
+  uae: "United Arab Emirates",
+  argentina: "Argentina",
+  peru: "Peru",
+  colombia: "Colombia",
+  australia: "Australia"
+};
+
+const wikipediaSearchAliases = {
+  Nara: "Nara, Nara, Japan",
+  Nice: "Nice, France",
+  Mérida: "Mérida, Yucatán",
+  Córdoba: "Córdoba, Argentina",
+  Granada: "Granada, Spain",
+  Valencia: "Valencia, Spain",
+  Naples: "Naples, Italy",
+  Perth: "Perth, Australia",
+  Santiago: "Santiago, Chile"
+};
+
+function injectLoadingBarFix() {
+  if (document.querySelector("#loadingBarFixStyle")) return;
+
+  const style = document.createElement("style");
+  style.id = "loadingBarFixStyle";
+  style.textContent = `
+    .loading-card::after {
+      display: none !important;
+      content: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+injectLoadingBarFix();
+
+function getWikipediaQuery(city, countryValue) {
+  if (wikipediaSearchAliases[city]) {
+    return wikipediaSearchAliases[city];
+  }
+
+  const countryName = countryDisplayNames[countryValue];
+
+  if (countryName) {
+    return `${city}, ${countryName}`;
+  }
+
+  return city;
+}
+
+function isWeakWikipediaDescription(description, city) {
+  if (!description) return true;
+
+  const normalizedDescription = description.toLowerCase();
+  const normalizedCity = city.toLowerCase();
+
+  return (
+    normalizedDescription.includes("may refer to") ||
+    normalizedDescription.includes("can refer to") ||
+    normalizedDescription.length < 80 ||
+    !normalizedDescription.includes(normalizedCity)
+  );
+}
+
+function buildDestinationDescription(city, wikipediaDescription, style, interests, amenities) {
+  const interestText = formatPreferenceList(interests, "your selected interests");
+  const amenityText = formatPreferenceList(amenities, "your preferred amenities");
+  const baseDescription = wikipediaDescription && !isWeakWikipediaDescription(wikipediaDescription, city)
+    ? wikipediaDescription
+    : `${city} is the selected destination for this TripMind AI itinerary.`;
+
+  return `${baseDescription} For this trip, TripMind AI uses your ${style} travel style, ${interestText}, and ${amenityText} to shape a route that feels more personal than a generic travel list. The itinerary below combines destination context, nearby place data, stay options, budget level, and daily pacing so each day has a clear focus while still leaving room for flexibility, food, rest, and spontaneous discoveries.`;
+}
 
 const heroImages = [
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
@@ -181,15 +275,19 @@ function setupMultiSelectButtons(containerSelector, selectedArray) {
   const buttons = document.querySelectorAll(`${containerSelector} .choice-btn`);
 
   buttons.forEach(function (button) {
+    button.setAttribute("type", "button");
+    button.setAttribute("aria-pressed", "false");
+
     button.addEventListener("click", function () {
       const value = button.dataset.value;
+      const isAlreadySelected = selectedArray.includes(value);
 
-      if (selectedArray.includes(value)) {
+      if (isAlreadySelected) {
         selectedArray.splice(selectedArray.indexOf(value), 1);
-        button.classList.remove("active");
+        setChoiceButtonState(button, false);
       } else {
         selectedArray.push(value);
-        button.classList.add("active");
+        setChoiceButtonState(button, true);
       }
     });
   });
@@ -613,6 +711,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
 tripForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
+  const country = document.querySelector("#country").value;
   const destination = document.querySelector("#destination").value;
   const startDate = document.querySelector("#startDate").value;
   const endDate = document.querySelector("#endDate").value;
@@ -628,37 +727,56 @@ tripForm.addEventListener("submit", async function (event) {
 
   resultsSection.classList.remove("hidden");
   tripSummary.innerHTML = "";
-  document.querySelector("#preview").innerHTML = "";
+  previewSection.innerHTML = "";
   itineraryOutput.innerHTML = `
     <article class="loading-card">
       <div class="loading-spinner"></div>
       <h3 id="loadingTitle">Generating your AI travel plan...</h3>
       <p id="loadingText">Fetching destination insights...</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
     </article>
   `;
 
-
+  const loadingStartTime = Date.now();
   const loadingText = document.querySelector("#loadingText");
+  const progressBar = document.querySelector("#progressBar");
+
+  if (progressBar) progressBar.style.width = "12%";
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Finding top hotels...";
+    if (progressBar) progressBar.style.width = "35%";
   }, 1000);
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Searching attractions and local spots...";
+    if (progressBar) progressBar.style.width = "68%";
   }, 2000);
 
   setTimeout(() => {
     if (loadingText) loadingText.textContent = "Building your smart itinerary...";
+    if (progressBar) progressBar.style.width = "90%";
   }, 3000);
 
 
   resultsSection.scrollIntoView({ behavior: "smooth" });
 
   const placeType = placeTypeByStyle[style] || "tourism";
-  const realPlaces = await fetchPlacesData(destination, placeType);
-  const realHotels = await fetchPlacesData(destination, "hotel");
-  await fetchWikipediaData(destination);
+  const [realPlaces, realHotels] = await Promise.all([
+    fetchPlacesData(destination, placeType),
+    fetchPlacesData(destination, "hotel"),
+    fetchWikipediaData(destination, country, style, interests, amenities)
+  ]).then(function (results) {
+    return [results[0], results[1]];
+  });
+
+  const loadingElapsedTime = Date.now() - loadingStartTime;
+
+  if (loadingElapsedTime < 1400) {
+    await wait(1400 - loadingElapsedTime);
+  }
 
   const tripLength = calculateTripLength(startDate, endDate);
 
@@ -710,6 +828,12 @@ tripForm.addEventListener("submit", async function (event) {
       <span>Important amenities</span>
       <strong>${amenities || "No specific amenities selected"}</strong>
     </article>
+
+    <article class="summary-card itinerary-actions-card">
+      <button type="button" class="btn primary itinerary-action-btn" id="copyItineraryBtn">Copy itinerary</button>
+      <button type="button" class="btn primary itinerary-action-btn" id="downloadPdfBtn">Download PDF</button>
+      <button type="button" class="btn primary itinerary-action-btn" id="planAnotherTripBtn">Plan another trip</button>
+    </article>
   `;
 
   let itineraryHTML = "";
@@ -728,6 +852,7 @@ tripForm.addEventListener("submit", async function (event) {
   }
 
 
+  if (progressBar) progressBar.style.width = "100%";
   itineraryOutput.innerHTML = itineraryHTML;
 
   const generatedCards = document.querySelectorAll(".day-card");
@@ -750,31 +875,195 @@ tripForm.addEventListener("submit", async function (event) {
   });
 
 
+  setupItineraryActions(destination);
   resultsSection.classList.remove("hidden");
   resultsSection.scrollIntoView({ behavior: "smooth" });
 });
+function setupItineraryActions(destination) {
+  const copyButton = document.querySelector("#copyItineraryBtn");
+  const downloadButton = document.querySelector("#downloadPdfBtn");
+  const planAnotherButton = document.querySelector("#planAnotherTripBtn");
+
+  if (copyButton) {
+    copyButton.addEventListener("click", async function () {
+      const itineraryText = [
+        tripSummary.innerText,
+        previewSection.innerText,
+        itineraryOutput.innerText
+      ].join("\n\n");
+
+      try {
+        await navigator.clipboard.writeText(itineraryText);
+        copyButton.textContent = "Copied!";
+
+        setTimeout(function () {
+          copyButton.textContent = "Copy itinerary";
+        }, 1800);
+      } catch (error) {
+        console.error("Copy failed:", error);
+        copyButton.textContent = "Copy failed";
+
+        setTimeout(function () {
+          copyButton.textContent = "Copy itinerary";
+        }, 1800);
+      }
+    });
+  }
+
+  if (downloadButton) {
+    downloadButton.addEventListener("click", function () {
+      const pdfWindow = window.open("", "_blank");
+
+      if (!pdfWindow) {
+        alert("Please allow pop-ups to download the PDF.");
+        return;
+      }
+
+      const safeDestination = destination || "Trip";
+      const summaryClone = tripSummary.cloneNode(true);
+      const actionsClone = summaryClone.querySelector(".itinerary-actions-card");
+
+      if (actionsClone) {
+        actionsClone.remove();
+      }
+
+      const summaryHTML = summaryClone.innerHTML;
+      const previewHTML = previewSection.innerHTML;
+      const itineraryHTML = itineraryOutput.innerHTML;
+
+      pdfWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>TripMind AI Itinerary PDF</title>
+            <style>
+              * { box-sizing: border-box; }
+              body {
+                margin: 0;
+                padding: 32px;
+                font-family: Arial, Helvetica, sans-serif;
+                background: #ffffff;
+                color: #111827;
+                line-height: 1.5;
+              }
+              h1, h2, h3, h4 { color: #0f172a; }
+              h1 { font-size: 32px; margin-bottom: 8px; }
+              .pdf-subtitle { color: #475569; margin-bottom: 24px; }
+              .trip-summary, .itinerary-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 14px;
+              }
+              .summary-card, .day-card {
+                border: 1px solid #cbd5e1;
+                border-radius: 14px;
+                padding: 16px;
+                margin-bottom: 14px;
+                page-break-inside: avoid;
+              }
+              .summary-card span {
+                display: block;
+                color: #0284c7;
+                font-size: 12px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-bottom: 6px;
+              }
+              .summary-card strong { color: #111827; }
+              .wiki-image {
+                width: 100%;
+                max-height: 260px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin: 10px 0;
+              }
+              a { color: #0284c7; }
+              ul { padding-left: 20px; }
+              @media print {
+                body { padding: 24px; }
+                .day-card, .summary-card { break-inside: avoid; }
+              }
+            </style>
+          </head>
+          <body>
+            <h1>TripMind AI Itinerary</h1>
+            <p class="pdf-subtitle">Generated itinerary for ${safeDestination}.</p>
+            <h2>Trip summary</h2>
+            <section class="trip-summary">${summaryHTML}</section>
+            <h2>Destination overview</h2>
+            <section>${previewHTML}</section>
+            <h2>Daily itinerary</h2>
+            <section class="itinerary-grid">${itineraryHTML}</section>
+            <script>
+              window.onload = function () {
+                window.print();
+              };
+            <\/script>
+          </body>
+        </html>
+      `);
+
+      pdfWindow.document.close();
+    });
+  }
+
+  if (planAnotherButton) {
+    planAnotherButton.addEventListener("click", function () {
+      resultsSection.classList.add("hidden");
+      tripSummary.innerHTML = "";
+      previewSection.innerHTML = "";
+      itineraryOutput.innerHTML = "";
+      tripForm.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+}
 
 
-async function fetchWikipediaData(city) {
+async function fetchWikipediaData(city, countryValue, style = "balanced", interests = "", amenities = "") {
   try {
-    const response = await fetch(`http://localhost:3001/api/wikipedia?city=${encodeURIComponent(city)}`);
-    const data = await response.json();
+    const wikipediaQuery = getWikipediaQuery(city, countryValue);
+    const response = await fetch(`http://localhost:3001/api/wikipedia?city=${encodeURIComponent(wikipediaQuery)}`);
 
-    const previewSection = document.querySelector("#preview");
+    if (!response.ok) {
+      throw new Error(`Wikipedia request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const fallbackImage = cityBackgrounds[city] || heroImages[0];
+    const image = data.image || fallbackImage;
+    const description = buildDestinationDescription(
+      city,
+      data.description,
+      style,
+      interests,
+      amenities
+    );
 
     const wikiCard = `
     <article class="day-card destination-card">
-      <h3>🌎 Destination overview: ${data.title}</h3>
-      ${data.image ? `<img src="${data.image}" class="wiki-image" alt="${data.title}">` : ""}
-      <p>${data.description}</p>
-      <a href="${data.url}" target="_blank">Read more on Wikipedia</a>
+      <h3>🌎 Destination overview: ${city}</h3>
+      <img src="${image}" class="wiki-image" alt="${city}">
+      <p>${description}</p>
+      ${data.url ? `<a href="${data.url}" target="_blank">Read more on Wikipedia</a>` : ""}
     </article>
     `;
 
     previewSection.innerHTML = wikiCard;
-
+    return true;
   } catch (error) {
     console.error("Wikipedia fetch failed:", error);
+
+    const fallbackImage = cityBackgrounds[city] || heroImages[0];
+    
+    previewSection.innerHTML = `
+      <article class="day-card destination-card">
+        <h3>🌎 Destination overview: ${city}</h3>
+        <img src="${fallbackImage}" class="wiki-image" alt="${city}">
+        <p>${buildDestinationDescription(city, "", style, interests, amenities)}</p>
+      </article>
+    `;
+
+    return false;
   }
 }
 
