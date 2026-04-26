@@ -733,6 +733,15 @@ tripForm.addEventListener("submit", async function (event) {
   const generatedCards = document.querySelectorAll(".day-card");
   
   generatedCards.forEach((card, index) => {
+    card.classList.remove(
+      "fade-in",
+      "fade-in-delay-1",
+      "fade-in-delay-2",
+      "fade-in-delay-3"
+    );
+  
+    void card.offsetWidth;
+  
     card.classList.add("fade-in");
   
     if (index === 0) card.classList.add("fade-in-delay-1");
@@ -740,7 +749,7 @@ tripForm.addEventListener("submit", async function (event) {
     if (index >= 2) card.classList.add("fade-in-delay-3");
   });
 
-  
+
   resultsSection.classList.remove("hidden");
   resultsSection.scrollIntoView({ behavior: "smooth" });
 });
