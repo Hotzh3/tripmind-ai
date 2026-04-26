@@ -1070,7 +1070,7 @@ function setupItineraryActions(destination) {
 
       tripForm.reset();
       selectedInterests.length = 0;
-      selectedAmenities.length = 0;
+      selectedAmenities.length = 0; 
 
       document.querySelectorAll(".choice-btn.active").forEach(function (button) {
         setChoiceButtonState(button, false);
@@ -1087,7 +1087,9 @@ function setupItineraryActions(destination) {
 async function fetchWikipediaData(city, countryValue, style = "balanced", interests = "", amenities = "") {
   try {
     const wikipediaQuery = getWikipediaQuery(city, countryValue);
-    const response = await fetch(`http://localhost:3001/api/wikipedia?city=${encodeURIComponent(wikipediaQuery)}`);
+    const response = await fetch(
+      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikipediaQuery)}`
+    );
 
     if (!response.ok) {
       throw new Error(`Wikipedia request failed with status ${response.status}`);
@@ -1095,10 +1097,10 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
 
     const data = await response.json();
     const fallbackImage = cityBackgrounds[city] || heroImages[0];
-    const image = data.image || fallbackImage;
+    const image = data.originalimage?.source || data.thumbnail?.source || fallbackImage;
     const description = buildDestinationDescription(
       city,
-      data.description,
+      data.extract || "",
       style,
       interests,
       amenities
@@ -1109,8 +1111,11 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
       <h3>🌎 Destination overview: ${city}</h3>
       <img src="${image}" class="wiki-image" alt="${city}">
       <p>${description}</p>
-      ${data.url ? `<a href="${data.url}" target="_blank">Read more on Wikipedia</a>` : ""}
-    </article>
+      ${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page
+        ? `<a href="${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page}" target="_blank">Read more on Wikipedia</a>`
+        : ""} 
+
+      </article>
     `;
 
     previewSection.innerHTML = wikiCard;
@@ -1133,18 +1138,36 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
 }
 
 async function fetchPlacesData(city, type = "tourism") {
-  try {
-    const response = await fetch(
-      `http://localhost:3001/api/places?city=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`
-    );
+  const fallbackByType = {
+    hotel: [
+      { name: `${city} budget hotel area`, type: "hotel" },
+      { name: `${city} boutique hotel zone`, type: "hotel" },
+      { name: `${city} central accommodation district`, type: "hotel" }
+    ],
+    museum: [
+      { name: `${city} main museum area`, type: "museum" },
+      { name: `${city} art museum district`, type: "museum" },
+      { name: `${city} historic exhibition center`, type: "museum" }
+    ],
+    restaurant: [
+      { name: `${city} local restaurant district`, type: "restaurant" },
+      { name: `${city} food market area`, type: "restaurant" },
+      { name: `${city} traditional dining zone`, type: "restaurant" }
+    ],
+    cafe: [
+      { name: `${city} cafe zone`, type: "cafe" },
+      { name: `${city} coffee shop district`, type: "cafe" },
+      { name: `${city} quiet cafe area`, type: "cafe" }
+    ],
+    tourism: [
+      { name: `${city} historic center`, type: "attraction" },
+      { name: `${city} local restaurant district`, type: "restaurant" },
+      { name: `${city} main museum area`, type: "museum" },
+      { name: `${city} cafe zone`, type: "cafe" },
+      { name: `${city} public park`, type: "leisure" },
+      { name: `${city} shopping area`, type: "shopping" }
+    ]
+  };
 
-    const data = await response.json();
-
-    console.log("Places data:", data);
-
-    return data.places || [];
-  } catch (error) {
-    console.error("Places fetch failed:", error);
-    return [];
-  }
+  return fallbackByType[type] || fallbackByType.tourism;
 }
