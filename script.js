@@ -1,0 +1,689 @@
+const countrySelect = document.querySelector("#country");
+const destinationSelect = document.querySelector("#destination");
+const tripForm = document.querySelector("#tripForm");
+const resultsSection = document.querySelector("#results");
+const tripSummary = document.querySelector("#tripSummary");
+const itineraryOutput = document.querySelector("#itineraryOutput");
+
+const selectedInterests = [];
+const selectedAmenities = [];
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1493558103817-58b2924bce98?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1800&q=80",
+  "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=1800&q=80"
+];
+
+const cityBackgrounds = {
+  "Mexico City": "https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?auto=format&fit=crop&w=1800&q=80",
+  Cancún: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  Oaxaca: "https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396?auto=format&fit=crop&w=1800&q=80",
+  Guadalajara: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1800&q=80",
+  Monterrey: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?auto=format&fit=crop&w=1800&q=80",
+  Mérida: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+
+  "New York City": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?auto=format&fit=crop&w=1800&q=80",
+  "Los Angeles": "https://images.unsplash.com/photo-1534190760961-74e8c1c5c3da?auto=format&fit=crop&w=1800&q=80",
+  Chicago: "https://images.unsplash.com/photo-1494522855154-9297ac14b55f?auto=format&fit=crop&w=1800&q=80",
+  Miami: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  "San Francisco": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1800&q=80",
+  "Las Vegas": "https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1800&q=80",
+
+  Paris: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1800&q=80",
+  Lyon: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1800&q=80",
+  Nice: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  Marseille: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  Bordeaux: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
+
+  London: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1800&q=80",
+  Manchester: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1800&q=80",
+  Edinburgh: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
+  Liverpool: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=1800&q=80",
+
+  Rome: "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1800&q=80",
+  Florence: "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1800&q=80",
+  Venice: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1800&q=80",
+  Milan: "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1800&q=80",
+  Naples: "https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=1800&q=80",
+
+  Barcelona: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1800&q=80",
+  Madrid: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1800&q=80",
+  Seville: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1800&q=80",
+  Valencia: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1800&q=80",
+  Granada: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1800&q=80",
+
+  Tokyo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1800&q=80",
+  Kyoto: "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=1800&q=80",
+  Osaka: "https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=1800&q=80",
+  Nara: "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=1800&q=80",
+  Sapporo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1800&q=80",
+
+  Seoul: "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1800&q=80",
+  Busan: "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1800&q=80",
+  Jeju: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  Incheon: "https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&w=1800&q=80",
+
+  Dubai: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80",
+  "Abu Dhabi": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80",
+  Sharjah: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80",
+
+  "Buenos Aires": "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=1800&q=80",
+  Mendoza: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
+  Bariloche: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=80",
+  Córdoba: "https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&w=1800&q=80",
+
+  Lima: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1800&q=80",
+  Cusco: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1800&q=80",
+  Arequipa: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1800&q=80",
+
+  Bogotá: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1800&q=80",
+  Medellín: "https://images.unsplash.com/photo-1583997052301-0042b33fc598?auto=format&fit=crop&w=1800&q=80",
+  Cartagena: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
+  Cali: "https://images.unsplash.com/photo-1583997052301-0042b33fc598?auto=format&fit=crop&w=1800&q=80",
+
+  Sydney: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1800&q=80",
+  Melbourne: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1800&q=80",
+  Brisbane: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1800&q=80",
+  Perth: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1800&q=80"
+};
+
+const citiesByCountry = {
+  mexico: ["Mexico City", "Cancún", "Oaxaca", "Guadalajara", "Monterrey", "Mérida"],
+  usa: ["New York City", "Los Angeles", "Chicago", "Miami", "San Francisco", "Las Vegas"],
+  france: ["Paris", "Lyon", "Nice", "Marseille", "Bordeaux"],
+  uk: ["London", "Manchester", "Edinburgh", "Liverpool"],
+  italy: ["Rome", "Florence", "Venice", "Milan", "Naples"],
+  spain: ["Barcelona", "Madrid", "Seville", "Valencia", "Granada"],
+  japan: ["Tokyo", "Kyoto", "Osaka", "Nara", "Sapporo"],
+  "south-korea": ["Seoul", "Busan", "Jeju", "Incheon"],
+  uae: ["Dubai", "Abu Dhabi", "Sharjah"],
+  argentina: ["Buenos Aires", "Mendoza", "Bariloche", "Córdoba"],
+  peru: ["Lima", "Cusco", "Arequipa"],
+  colombia: ["Bogotá", "Medellín", "Cartagena", "Cali"],
+  australia: ["Sydney", "Melbourne", "Brisbane", "Perth"]
+};
+
+const itineraryTemplates = {
+  culture: ["Historic center", "Museum visit", "Local architecture walk"],
+  food: ["Local breakfast", "Food market tour", "Dinner at a recommended restaurant"],
+  adventure: ["Outdoor activity", "Scenic viewpoint", "Active afternoon experience"],
+  relax: ["Slow morning", "Spa or quiet cafe", "Sunset walk"],
+  romantic: ["Beautiful brunch spot", "Couple-friendly attraction", "Romantic dinner"],
+  luxury: ["Luxury hotel breakfast", "Private city experience", "Fine dining dinner"],
+  nightlife: ["Late brunch", "Trendy district walk", "Nightlife experience"],
+  family: ["Family attraction", "Relaxed lunch spot", "Easy evening walk"],
+  nature: ["Nature walk", "Scenic viewpoint", "Outdoor sunset plan"],
+  shopping: ["Shopping district", "Local boutiques", "Mall or market visit"],
+  business: ["Efficient breakfast", "Coworking-friendly area", "Short evening activity"],
+  solo: ["Walkable neighborhood", "Museum or cafe", "Safe evening plan"],
+  photography: ["Iconic photo spot", "Architecture walk", "Golden hour viewpoint"]
+};
+
+const placeTypeByStyle = {
+  culture: "museum",
+  food: "restaurant",
+  relax: "cafe",
+  romantic: "restaurant",
+  shopping: "tourism",
+  adventure: "tourism",
+  nature: "tourism",
+  nightlife: "restaurant",
+  family: "tourism",
+  luxury: "hotel",
+  business: "cafe",
+  solo: "tourism",
+  photography: "tourism"
+};
+
+function setHeroBackground(imageUrl) {
+  const heroSection = document.querySelector(".hero");
+
+  heroSection.classList.add("is-fading");
+
+  setTimeout(function () {
+    heroSection.style.background = `
+      linear-gradient(rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.55)),
+      url("${imageUrl}")
+    `;
+    heroSection.style.backgroundSize = "cover";
+    heroSection.style.backgroundPosition = "center";
+
+    heroSection.classList.remove("is-fading");
+  }, 450);
+}
+
+function updatePlannerBackground(city) {
+  const plannerSection = document.querySelector(".planner");
+  const imageUrl = cityBackgrounds[city];
+
+  if (!imageUrl) return;
+
+  plannerSection.style.setProperty("--planner-bg", `url("${imageUrl}")`);
+}
+
+let heroIndex = 0;
+
+setInterval(function () {
+  if (destinationSelect.value) return;
+
+  heroIndex = (heroIndex + 1) % heroImages.length;
+  setHeroBackground(heroImages[heroIndex]);
+}, 5000);
+
+function setupMultiSelectButtons(containerSelector, selectedArray) {
+  const buttons = document.querySelectorAll(`${containerSelector} .choice-btn`);
+
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const value = button.dataset.value;
+
+      if (selectedArray.includes(value)) {
+        selectedArray.splice(selectedArray.indexOf(value), 1);
+        button.classList.remove("active");
+      } else {
+        selectedArray.push(value);
+        button.classList.add("active");
+      }
+    });
+  });
+}
+
+setupMultiSelectButtons("#interests", selectedInterests);
+setupMultiSelectButtons("#amenities", selectedAmenities);
+
+function updateCityOptions() {
+  const selectedCountry = countrySelect.value;
+  const cities = citiesByCountry[selectedCountry] || [];
+  const currentDestination = destinationSelect.value;
+
+  destinationSelect.innerHTML = `<option value="">Choose a city</option>`;
+
+  cities.forEach(function (city) {
+    const option = document.createElement("option");
+    option.value = city;
+    option.textContent = city;
+    destinationSelect.appendChild(option);
+  });
+
+  if (cities.includes(currentDestination)) {
+    destinationSelect.value = currentDestination;
+  }
+
+  if (destinationSelect.value) {
+    updatePlannerBackground(destinationSelect.value);
+  }
+}
+
+countrySelect.addEventListener("change", function () {
+  updateCityOptions();
+});
+
+updateCityOptions();
+
+destinationSelect.addEventListener("change", function () {
+  updatePlannerBackground(destinationSelect.value);
+});
+
+function calculateTripLength(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const differenceInTime = end - start;
+  const nights = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+  const days = nights + 1;
+
+  return { days, nights };
+}
+
+function getSeasonAnalysis(startDate) {
+  const date = new Date(startDate);
+  const month = date.getMonth() + 1;
+
+  if (month === 12 || month === 7 || month === 8) {
+    return {
+      season: "High season",
+      recommendation:
+        "These dates may be more expensive and crowded. TripMind AI recommends booking lodging and activities early."
+    };
+  }
+
+  if (month === 4 || month === 5 || month === 9 || month === 10) {
+    return {
+      season: "Shoulder season",
+      recommendation:
+        "These dates are a strong choice. You may find better prices, pleasant weather, and fewer crowds."
+    };
+  }
+
+  return {
+    season: "Low season",
+    recommendation:
+      "These dates may offer lower prices and calmer attractions. TripMind AI recommends checking weather conditions before booking."
+  };
+}
+
+function getBudgetTier(budget) {
+  const normalizedBudget = budget.toLowerCase().trim();
+
+  if (!normalizedBudget || normalizedBudget.includes("flexible")) {
+    return "Flexible";
+  }
+
+  const numberMatch = normalizedBudget.match(/\d+/);
+
+  if (!numberMatch) return "Flexible";
+
+  const amount = Number(numberMatch[0]);
+
+  if (amount < 300) return "Low-cost";
+  if (amount <= 900) return "Balanced";
+  return "Premium";
+}
+
+function getDailyEstimate(budgetTier) {
+  if (budgetTier === "Low-cost") {
+    return "Prioritize free attractions, public transportation, and casual food spots.";
+  }
+
+  if (budgetTier === "Premium") {
+    return "Include curated experiences, premium restaurants, and private transportation options.";
+  }
+
+  return "Balance iconic attractions, comfortable food choices, and efficient transportation.";
+}
+
+function getStayRecommendation(budgetTier) {
+  if (budgetTier === "Low-cost") {
+    return {
+      type: "Budget hotel or hostel",
+      rooms: "1 private room or shared room",
+      bathrooms: "Shared or 1 bathroom",
+      note: "Best for saving money and staying close to public transportation."
+    };
+  }
+
+  if (budgetTier === "Premium") {
+    return {
+      type: "Boutique hotel or premium apartment",
+      rooms: "1-2 bedrooms",
+      bathrooms: "1-2 bathrooms",
+      note: "Best for comfort, location, and curated experiences."
+    };
+  }
+
+  return {
+    type: "Comfort hotel or central apartment",
+    rooms: "1 bedroom",
+    bathrooms: "1 bathroom",
+    note: "Best balance between comfort, price, and location."
+  };
+}
+
+function getDailyBudgetEstimate(budgetTier) {
+  if (budgetTier === "Low-cost") return "$40 - $80 USD";
+  if (budgetTier === "Premium") return "$180 - $350 USD";
+  return "$90 - $170 USD";
+
+
+}
+
+function getRecommendedArea(style) {
+  const areas = {
+    culture: "Historic center or museum district",
+    food: "Food market district or restaurant zone",
+    adventure: "Area close to outdoor activities",
+    relax: "Quiet neighborhood near parks or wellness spots",
+    romantic: "Scenic or boutique neighborhood",
+    luxury: "Premium hotel zone",
+    nightlife: "Nightlife district",
+    family: "Safe central family-friendly area",
+    nature: "Area close to parks or nature routes",
+    shopping: "Shopping district",
+    business: "Business district or coworking area",
+    solo: "Walkable and safe central area",
+    photography: "Scenic district with viewpoints"
+  };
+
+  return areas[style] || "Central and well-connected area";
+}
+
+function getNearbyPlaces(destination, style, amenities) {
+  return [
+    `${destination} local restaurants`,
+    `${destination} public transport access`,
+    `${destination} main attractions`,
+    amenities || "nearby cafés, pharmacies, and safe areas",
+    getRecommendedArea(style)
+  ];
+}
+
+function formatPreferenceList(value, fallbackText) {
+  if (!value || !value.trim()) return fallbackText;
+
+  return value
+    .split(",")
+    .map(function (item) {
+      return item.trim();
+    })
+    .filter(function (item) {
+      return item.length > 0;
+    })
+    .join(", ");
+}
+
+function getInterestBasedTip(interests, style) {
+  const selected = interests.toLowerCase();
+
+  if (selected.includes("local food") || selected.includes("street food")) {
+    return "Add a local food stop between main activities to make the route feel more authentic.";
+  }
+
+  if (selected.includes("museums") || selected.includes("history") || style === "culture") {
+    return "Prioritize historic areas, museums, and walkable cultural districts.";
+  }
+
+  if (selected.includes("beaches") || selected.includes("nature") || selected.includes("hiking")) {
+    return "Keep part of the day open for outdoor time, viewpoints, or nature-based activities.";
+  }
+
+  if (selected.includes("shopping") || style === "shopping") {
+    return "Include a shopping district, local boutiques, or a market during the afternoon.";
+  }
+
+  if (selected.includes("nightlife") || style === "nightlife") {
+    return "Save energy for the evening and choose a stay near nightlife or safe transportation.";
+  }
+
+  if (selected.includes("romance") || style === "romantic") {
+    return "Choose scenic places, slower pacing, and dinner spots with a special atmosphere.";
+  }
+
+  return "Use the selected interests to balance iconic spots with personal experiences.";
+}
+
+function getAmenityBasedTip(amenities) {
+  const selected = amenities.toLowerCase();
+  const tips = [];
+
+  if (selected.includes("public transport")) {
+    tips.push("stay close to metro, bus, or train access");
+  }
+
+  if (selected.includes("restaurants nearby")) {
+    tips.push("choose areas with food options within walking distance");
+  }
+
+  if (selected.includes("pharmacies nearby")) {
+    tips.push("check for pharmacies near the hotel zone");
+  }
+
+  if (selected.includes("safe areas")) {
+    tips.push("prioritize safe and well-lit neighborhoods");
+  }
+
+  if (selected.includes("parking")) {
+    tips.push("confirm parking before booking lodging");
+  }
+
+  if (selected.includes("pet friendly")) {
+    tips.push("verify pet policies before reserving");
+  }
+
+  if (tips.length === 0) {
+    return "No required amenity selected, so the plan keeps the location flexible.";
+  }
+
+  return `Based on your amenities, ${tips.join(", ")}.`;
+}
+
+
+function generateDayPlan(dayNumber, destination, style, interests, amenities, budgetTier, realPlaces = [], realHotels = []) {
+  const activities = itineraryTemplates[style] || itineraryTemplates.culture;
+  const mainActivity = activities[(dayNumber - 1) % activities.length];
+  const stay = getStayRecommendation(budgetTier);
+  const dailyBudget = getDailyBudgetEstimate(budgetTier);
+  const recommendedArea = getRecommendedArea(style);
+  const nearbyPlaces = getNearbyPlaces(destination, style, amenities);
+  const interestSummary = formatPreferenceList(interests, "No specific interests selected");
+  const amenitySummary = formatPreferenceList(amenities, "No specific amenities selected");
+  const interestTip = getInterestBasedTip(interests, style);
+  const amenityTip = getAmenityBasedTip(amenities);
+
+  const hotelOptions = realHotels.length
+    ? realHotels
+        .slice((dayNumber - 1) % realHotels.length, ((dayNumber - 1) % realHotels.length) + 3)
+        .map(function (hotel) {
+          return `<li><strong>${hotel.name}</strong> — ${hotel.type}</li>`;
+        })
+        .join("")
+    : `<li>${stay.type}</li>`;
+
+  const realPlaceOptions = realPlaces.length
+    ? realPlaces
+        .slice((dayNumber - 1) % realPlaces.length, ((dayNumber - 1) % realPlaces.length) + 3)
+        .map(function (place) {
+          return `<li><strong>${place.name}</strong> — ${place.type}</li>`;
+        })
+        .join("")
+    : nearbyPlaces
+        .map(function (place) {
+          return `<li>${place}</li>`;
+        })
+        .join("");
+
+  const morningPlace = realPlaces.length
+    ? realPlaces[(dayNumber - 1) % realPlaces.length].name
+    : activities[0];
+
+  const afternoonPlace = realPlaces.length
+    ? realPlaces[dayNumber % realPlaces.length].name
+    : mainActivity;
+
+  const eveningPlace = realPlaces.length
+    ? realPlaces[(dayNumber + 1) % realPlaces.length].name
+    : recommendedArea;
+
+  return `
+    <article class="day-card">
+      <h3>Day ${dayNumber} · ${destination}</h3>
+
+      <p><strong>Main focus:</strong> ${mainActivity} in ${destination}</p>
+
+      <div class="mini-section">
+        <h4>🏨 Real stay options</h4>
+        <ul>
+          ${hotelOptions}
+        </ul>
+      </div>
+
+      <div class="mini-section">
+        <h4>📍 Recommended area</h4>
+        <p>${recommendedArea}</p>
+      </div>
+
+      <div class="mini-section">
+        <h4>🧭 Real nearby places</h4>
+        <ul>
+          ${realPlaceOptions}
+        </ul>
+      </div>
+
+      <div class="mini-section">
+        <h4>🎯 Preference match</h4>
+        <p><strong>Selected interests:</strong> ${interestSummary}</p>
+        <p><strong>Important amenities:</strong> ${amenitySummary}</p>
+        <p>${interestTip}</p>
+        <p>${amenityTip}</p>
+      </div>
+
+      <div class="mini-section">
+        <h4>🗓 Daily plan</h4>
+        <ul>
+          <li><strong>Morning:</strong> Start at ${morningPlace}.</li>
+          <li><strong>Afternoon:</strong> Visit ${afternoonPlace}.</li>
+          <li><strong>Evening:</strong> Finish near ${eveningPlace}.</li>
+        </ul>
+      </div>
+
+      <div class="mini-section">
+        <h4>💸 Budget estimate</h4>
+        <p><strong>Estimated daily spend:</strong> ${dailyBudget}</p>
+        <p>${getDailyEstimate(budgetTier)}</p>
+      </div>
+    </article>
+  `;
+}
+
+
+tripForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const destination = document.querySelector("#destination").value;
+  const startDate = document.querySelector("#startDate").value;
+  const endDate = document.querySelector("#endDate").value;
+  const budget = document.querySelector("#budget").value.trim();
+  const style = document.querySelector("#style").value;
+  const interests = selectedInterests.join(", ");
+  const amenities = selectedAmenities.join(", ");
+
+  if (!destination || !startDate || !endDate || !style) {
+    alert("Please complete destination, dates, and travel style.");
+    return;
+  }
+
+  resultsSection.classList.remove("hidden");
+  tripSummary.innerHTML = "";
+  document.querySelector("#preview").innerHTML = "";
+  itineraryOutput.innerHTML = `
+    <article class="loading-card">
+      <div class="loading-spinner"></div>
+      <h3>Generating your AI travel plan...</h3>
+      <p>TripMind AI is checking destination data, nearby places, stay options, and travel context.</p>
+    </article>
+  `;
+  resultsSection.scrollIntoView({ behavior: "smooth" });
+
+  const placeType = placeTypeByStyle[style] || "tourism";
+  const realPlaces = await fetchPlacesData(destination, placeType);
+  const realHotels = await fetchPlacesData(destination, "hotel");
+  await fetchWikipediaData(destination);
+
+  const tripLength = calculateTripLength(startDate, endDate);
+
+  if (tripLength.nights < 1) {
+    alert("Return date must be after departure date.");
+    return;
+  }
+
+  const budgetTier = getBudgetTier(budget);
+  const seasonInfo = getSeasonAnalysis(startDate);
+
+  tripSummary.innerHTML = `
+    <article class="summary-card">
+      <span>Destination</span>
+      <strong>${destination}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Trip length</span>
+      <strong>${tripLength.days} days / ${tripLength.nights} nights</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Budget tier</span>
+      <strong>${budgetTier}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Travel style</span>
+      <strong>${style}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Season analysis</span>
+      <strong>${seasonInfo.season}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>AI recommendation</span>
+      <strong>${seasonInfo.recommendation}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Selected interests</span>
+      <strong>${interests || "No specific interests selected"}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Important amenities</span>
+      <strong>${amenities || "No specific amenities selected"}</strong>
+    </article>
+  `;
+
+  let itineraryHTML = "";
+
+  for (let day = 1; day <= tripLength.days; day++) {
+    itineraryHTML += generateDayPlan(
+      day,
+      destination,
+      style,
+      interests,
+      amenities,
+      budgetTier,
+      realPlaces,
+      realHotels
+    );
+  }
+
+  itineraryOutput.innerHTML = itineraryHTML;
+  resultsSection.classList.remove("hidden");
+  resultsSection.scrollIntoView({ behavior: "smooth" });
+});
+
+
+async function fetchWikipediaData(city) {
+  try {
+    const response = await fetch(`http://localhost:3001/api/wikipedia?city=${encodeURIComponent(city)}`);
+    const data = await response.json();
+
+    const previewSection = document.querySelector("#preview");
+
+    const wikiCard = `
+    <article class="day-card destination-card">
+      <h3>🌎 Destination overview: ${data.title}</h3>
+      ${data.image ? `<img src="${data.image}" class="wiki-image" alt="${data.title}">` : ""}
+      <p>${data.description}</p>
+      <a href="${data.url}" target="_blank">Read more on Wikipedia</a>
+    </article>
+    `;
+
+    previewSection.innerHTML = wikiCard;
+
+  } catch (error) {
+    console.error("Wikipedia fetch failed:", error);
+  }
+}
+
+async function fetchPlacesData(city, type = "tourism") {
+  try {
+    const response = await fetch(
+      `http://localhost:3001/api/places?city=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`
+    );
+
+    const data = await response.json();
+
+    console.log("Places data:", data);
+
+    return data.places || [];
+  } catch (error) {
+    console.error("Places fetch failed:", error);
+    return [];
+  }
+}
