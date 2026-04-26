@@ -4,9 +4,38 @@ const tripForm = document.querySelector("#tripForm");
 const resultsSection = document.querySelector("#results");
 const tripSummary = document.querySelector("#tripSummary");
 const itineraryOutput = document.querySelector("#itineraryOutput");
+const previewSection = document.querySelector("#preview");
 
 const selectedInterests = [];
 const selectedAmenities = [];
+
+function showToast(type, title, message) {
+  let toastContainer = document.querySelector(".toast-container");
+
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.className = "toast-container";
+    document.body.appendChild(toastContainer);
+  }
+
+  const toast = document.createElement("article");
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <strong>${title}</strong>
+    <p>${message}</p>
+  `;
+
+  toastContainer.appendChild(toast);
+
+  setTimeout(function () {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(24px)";
+
+    setTimeout(function () {
+      toast.remove();
+    }, 300);
+  }, 3200);
+}
 
 const heroImages = [
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=80",
@@ -622,13 +651,17 @@ tripForm.addEventListener("submit", async function (event) {
   const amenities = selectedAmenities.join(", ");
 
   if (!destination || !startDate || !endDate || !style) {
-    alert("Please complete destination, dates, and travel style.");
+    showToast(
+      "warning",
+      "Missing travel details",
+      "Please complete destination, dates, and travel style before generating the itinerary."
+    );
     return;
   }
 
   resultsSection.classList.remove("hidden");
   tripSummary.innerHTML = "";
-  document.querySelector("#preview").innerHTML = "";
+  previewSection.innerHTML = "";
   itineraryOutput.innerHTML = `
     <article class="loading-card">
       <div class="loading-spinner"></div>
@@ -663,7 +696,11 @@ tripForm.addEventListener("submit", async function (event) {
   const tripLength = calculateTripLength(startDate, endDate);
 
   if (tripLength.nights < 1) {
-    alert("Return date must be after departure date.");
+    showToast(
+      "error",
+      "Invalid travel dates",
+      "Return date must be after the departure date."
+    );
     return;
   }
 
@@ -752,6 +789,12 @@ tripForm.addEventListener("submit", async function (event) {
 
   resultsSection.classList.remove("hidden");
   resultsSection.scrollIntoView({ behavior: "smooth" });
+
+  showToast(
+    "success",
+    "Itinerary generated",
+    "Your personalized travel plan is ready."
+  );
 });
 
 
@@ -759,8 +802,6 @@ async function fetchWikipediaData(city) {
   try {
     const response = await fetch(`http://localhost:3001/api/wikipedia?city=${encodeURIComponent(city)}`);
     const data = await response.json();
-
-    const previewSection = document.querySelector("#preview");
 
     const wikiCard = `
     <article class="day-card destination-card">
@@ -791,6 +832,11 @@ async function fetchPlacesData(city, type = "tourism") {
     return data.places || [];
   } catch (error) {
     console.error("Places fetch failed:", error);
+    showToast(
+      "warning",
+      "Places API unavailable",
+      "TripMind AI will continue with fallback recommendations."
+    );
     return [];
   }
 }

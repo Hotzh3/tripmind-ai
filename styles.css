@@ -604,39 +604,10 @@ footer {
 }
 
 .loading-card::after {
-  content: "";
-  display: block;
-  width: min(520px, 85%);
-  height: 10px;
-  margin: 22px auto 0;
-  overflow: hidden;
-  background: linear-gradient(90deg, #38bdf8, #0ea5e9, #7dd3fc);
-  background-size: 220% 100%;
-  border-radius: 999px;
-  box-shadow: 0 0 18px rgba(56, 189, 248, 0.45);
-  animation: loadingBarFallback 2.4s ease-in-out infinite;
+  content: none;
 }
 
-@keyframes loadingBarFallback {
-  0% {
-    transform: scaleX(0.18);
-    transform-origin: left;
-    opacity: 0.75;
-    background-position: 0% 50%;
-  }
-  50% {
-    transform: scaleX(0.72);
-    transform-origin: left;
-    opacity: 1;
-    background-position: 100% 50%;
-  }
-  100% {
-    transform: scaleX(1);
-    transform-origin: left;
-    opacity: 0.9;
-    background-position: 0% 50%;
-  }
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   *,
