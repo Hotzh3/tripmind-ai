@@ -408,6 +408,7 @@ function getInterestBasedTip(interests, style) {
   return "Use the selected interests to balance iconic spots with personal experiences.";
 }
 
+
 function getAmenityBasedTip(amenities) {
   const selected = amenities.toLowerCase();
   const tips = [];
@@ -441,6 +442,76 @@ function getAmenityBasedTip(amenities) {
   }
 
   return `Based on your amenities, ${tips.join(", ")}.`;
+}
+
+function buildSmartDailyPlan(dayNumber, destination, style, interests, amenities, realPlaces = []) {
+  const selectedInterests = interests.toLowerCase();
+  const selectedAmenities = amenities.toLowerCase();
+  const hasRealPlaces = realPlaces.length > 0;
+
+  const firstPlace = hasRealPlaces
+    ? realPlaces[(dayNumber - 1) % realPlaces.length].name
+    : `${destination} central area`;
+
+  const secondPlace = hasRealPlaces
+    ? realPlaces[dayNumber % realPlaces.length].name
+    : `${destination} recommended attraction`;
+
+  const thirdPlace = hasRealPlaces
+    ? realPlaces[(dayNumber + 1) % realPlaces.length].name
+    : `${destination} evening area`;
+
+  let morning = `Start the morning at ${firstPlace} to get familiar with the area.`;
+  let afternoon = `Continue with ${secondPlace} as the main activity of the day.`;
+  let evening = `Finish near ${thirdPlace} with a slower evening plan.`;
+
+  if (style === "culture" || selectedInterests.includes("history") || selectedInterests.includes("museums")) {
+    morning = `Start with a cultural visit around ${firstPlace}.`;
+    afternoon = `Use the afternoon for ${secondPlace}, focusing on history, museums, or architecture.`;
+    evening = `End near ${thirdPlace} with a relaxed walk through a historic or central area.`;
+  }
+
+  if (style === "food" || selectedInterests.includes("local food") || selectedInterests.includes("street food")) {
+    morning = `Start with breakfast or coffee near ${firstPlace}.`;
+    afternoon = `Explore ${secondPlace} and add a local food stop nearby.`;
+    evening = `Finish near ${thirdPlace} with dinner in a lively restaurant area.`;
+  }
+
+  if (style === "relax" || selectedInterests.includes("spa")) {
+    morning = `Begin slowly near ${firstPlace}, avoiding an overloaded schedule.`;
+    afternoon = `Visit ${secondPlace} at a calm pace and leave room for rest.`;
+    evening = `End near ${thirdPlace} with a quiet dinner, cafe, or wellness activity.`;
+  }
+
+  if (style === "adventure" || selectedInterests.includes("adrenaline") || selectedInterests.includes("hiking")) {
+    morning = `Start early near ${firstPlace} to take advantage of daylight.`;
+    afternoon = `Use ${secondPlace} as the active or outdoor highlight of the day.`;
+    evening = `Finish near ${thirdPlace} and keep the evening flexible for recovery.`;
+  }
+
+  if (style === "shopping" || selectedInterests.includes("shopping") || selectedInterests.includes("markets")) {
+    morning = `Start near ${firstPlace} and check nearby boutiques or markets.`;
+    afternoon = `Dedicate the afternoon to ${secondPlace} as the main shopping or browsing stop.`;
+    evening = `Finish near ${thirdPlace}, ideally close to food options and transportation.`;
+  }
+
+  if (selectedInterests.includes("beaches")) {
+    evening = `End the day near ${thirdPlace}, leaving time for a beach walk or sunset view if available.`;
+  }
+
+  if (selectedAmenities.includes("parking")) {
+    afternoon += " Confirm parking availability before moving between stops.";
+  }
+
+  if (selectedAmenities.includes("public transport")) {
+    evening += " Prefer routes that stay close to public transportation.";
+  }
+
+  if (selectedAmenities.includes("pet friendly")) {
+    morning += " Check pet-friendly access before arriving.";
+  }
+
+  return { morning, afternoon, evening };
 }
 
 
@@ -478,17 +549,14 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
         })
         .join("");
 
-  const morningPlace = realPlaces.length
-    ? realPlaces[(dayNumber - 1) % realPlaces.length].name
-    : activities[0];
-
-  const afternoonPlace = realPlaces.length
-    ? realPlaces[dayNumber % realPlaces.length].name
-    : mainActivity;
-
-  const eveningPlace = realPlaces.length
-    ? realPlaces[(dayNumber + 1) % realPlaces.length].name
-    : recommendedArea;
+  const smartPlan = buildSmartDailyPlan(
+    dayNumber,
+    destination,
+    style,
+    interests,
+    amenities,
+    realPlaces
+  );
 
   return `
     <article class="day-card">
@@ -524,11 +592,11 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
       </div>
 
       <div class="mini-section">
-        <h4>🗓 Daily plan</h4>
+        <h4>🗓 Smart daily plan</h4>
         <ul>
-          <li><strong>Morning:</strong> Start at ${morningPlace}.</li>
-          <li><strong>Afternoon:</strong> Visit ${afternoonPlace}.</li>
-          <li><strong>Evening:</strong> Finish near ${eveningPlace}.</li>
+          <li><strong>Morning:</strong> ${smartPlan.morning}</li>
+          <li><strong>Afternoon:</strong> ${smartPlan.afternoon}</li>
+          <li><strong>Evening:</strong> ${smartPlan.evening}</li>
         </ul>
       </div>
 
@@ -564,10 +632,27 @@ tripForm.addEventListener("submit", async function (event) {
   itineraryOutput.innerHTML = `
     <article class="loading-card">
       <div class="loading-spinner"></div>
-      <h3>Generating your AI travel plan...</h3>
-      <p>TripMind AI is checking destination data, nearby places, stay options, and travel context.</p>
+      <h3 id="loadingTitle">Generating your AI travel plan...</h3>
+      <p id="loadingText">Fetching destination insights...</p>
     </article>
   `;
+
+
+  const loadingText = document.querySelector("#loadingText");
+
+  setTimeout(() => {
+    if (loadingText) loadingText.textContent = "Finding top hotels...";
+  }, 1000);
+
+  setTimeout(() => {
+    if (loadingText) loadingText.textContent = "Searching attractions and local spots...";
+  }, 2000);
+
+  setTimeout(() => {
+    if (loadingText) loadingText.textContent = "Building your smart itinerary...";
+  }, 3000);
+
+
   resultsSection.scrollIntoView({ behavior: "smooth" });
 
   const placeType = placeTypeByStyle[style] || "tourism";
@@ -642,7 +727,20 @@ tripForm.addEventListener("submit", async function (event) {
     );
   }
 
+
   itineraryOutput.innerHTML = itineraryHTML;
+
+  const generatedCards = document.querySelectorAll(".day-card");
+  
+  generatedCards.forEach((card, index) => {
+    card.classList.add("fade-in");
+  
+    if (index === 0) card.classList.add("fade-in-delay-1");
+    if (index === 1) card.classList.add("fade-in-delay-2");
+    if (index >= 2) card.classList.add("fade-in-delay-3");
+  });
+
+  
   resultsSection.classList.remove("hidden");
   resultsSection.scrollIntoView({ behavior: "smooth" });
 });
