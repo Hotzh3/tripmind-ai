@@ -5,6 +5,664 @@ const resultsSection = document.querySelector("#results");
 const tripSummary = document.querySelector("#tripSummary");
 const itineraryOutput = document.querySelector("#itineraryOutput");
 const previewSection = document.querySelector("#preview");
+const languageSelect = document.querySelector("#languageSelect");
+const currencySelect = document.querySelector("#currencySelect");
+const tripModeInputs = document.querySelectorAll('input[name="tripMode"]');
+const multiCityPanel = document.querySelector("#multiCityPanel");
+const multiCityList = document.querySelector("#multiCityList");
+const addCityButton = document.querySelector("#addCityButton");
+const multiCityPanelTitle = document.querySelector("#multiCityPanelTitle");
+const multiCityPanelText = document.querySelector("#multiCityPanelText");
+
+
+let additionalCityCount = 0;
+
+const currencyRates = {
+  USD: { symbol: "$", rate: 1, suffix: "USD" },
+  MXN: { symbol: "MX$", rate: 17, suffix: "MXN" },
+  EUR: { symbol: "€", rate: 0.92, suffix: "EUR" },
+  GBP: { symbol: "£", rate: 0.79, suffix: "GBP" },
+  JPY: { symbol: "¥", rate: 155, suffix: "JPY" }
+};
+
+const translations = {
+  en: {
+    oneCity: "One city",
+    sameCountry: "One country, multiple cities",
+    multiCountry: "Multiple countries / cities",
+    destinationOverview: "Destination overview",
+    day: "Day",
+    tripLength: "Trip length",
+    budgetTier: "Budget tier",
+    travelStyle: "Travel style",
+    seasonAnalysis: "Season analysis",
+    aiRecommendation: "AI recommendation",
+    selectedInterests: "Selected interests",
+    importantAmenities: "Important amenities",
+    destinations: "Destinations",
+    copyItinerary: "Copy itinerary",
+    copied: "Copied!",
+    downloadPdf: "Download PDF",
+    planAnotherTrip: "Plan another trip",
+    mainFocus: "Main focus",
+    realStayOptions: "Real stay options",
+    recommendedArea: "Recommended area",
+    realNearbyPlaces: "Real nearby places",
+    preferenceMatch: "Preference match",
+    smartDailyPlan: "Smart daily plan",
+    morning: "Morning",
+    afternoon: "Afternoon",
+    evening: "Evening",
+    budgetEstimate: "Budget estimate",
+    estimatedDailySpend: "Estimated daily spend",
+    generating: "Generating your AI travel plan...",
+    fetching: "Fetching destination insights...",
+    hotels: "Finding top hotels...",
+    attractions: "Searching attractions and local spots...",
+    building: "Building your smart itinerary...",
+    readMore: "Read more on Wikipedia",
+    completeForm: "Please complete country, city, dates, and travel style before generating your itinerary.",
+    returnDate: "Return date must be after the departure date.",
+    positiveBudget: "Budget must be a positive amount.",
+    copiedMessage: "Itinerary copied to clipboard.",
+    resetMessage: "Ready for a new trip. Your previous selections were cleared.",
+    chooseMainCountry: "Choose the main country before adding more cities.",
+    chooseMainDestination: "Choose the main destination before generating a multi-city itinerary.",
+    sameCountryPanelTitle: "More cities in the same country",
+    sameCountryPanelText: "Add extra cities from the country selected above.",
+    multiCountryPanelTitle: "More countries and cities",
+    multiCountryPanelText: "Add extra stops from different countries.",
+    additionalCities: "Additional cities",
+    additionalCitiesText: "Add more stops if your trip includes multiple destinations.",
+    firstPrototype: "FIRST PROTOTYPE",
+    createProfile: "Create your travel profile",
+    profileIntro: "Fill out your travel profile and TripMind AI will generate a first itinerary preview.",
+    tripMode: "Trip mode",
+    country: "Country",
+    city: "City",
+    departureDate: "Departure date",
+    returnDateLabel: "Return date",
+    budget: "Budget",
+    budgetPlaceholder: "Example: $500 USD or flexible",
+    chooseCountry: "Choose a country",
+    chooseCity: "Choose a city",
+    chooseCountryFirst: "Choose a country first",
+    travelStyleLabel: "Travel style",
+    chooseOne: "Choose one",
+    interestsLabel: "Interests",
+    amenitiesLabel: "Important amenities",
+    generateButton: "Generate itinerary preview",
+    generatedPreview: "GENERATED PREVIEW",
+    smartTitle: "Your smart travel itinerary",
+    smartIntro: "TripMind AI combines your destination, dates, budget, travel style, interests, and nearby place data to create a personalized itinerary preview.",
+    noInterests: "No specific interests selected",
+    noAmenities: "No specific amenities selected",
+    daysLabel: "days",
+    nightsLabel: "nights",
+    highSeason: "High season",
+    shoulderSeason: "Shoulder season",
+    lowSeason: "Low season",
+    highSeasonRecommendation: "These dates may be more expensive and crowded. TripMind AI recommends booking lodging and activities early.",
+    shoulderSeasonRecommendation: "These dates are a strong choice. You may find better prices, pleasant weather, and fewer crowds.",
+    lowSeasonRecommendation: "These dates may offer lower prices and calmer attractions. TripMind AI recommends checking weather conditions before booking.",
+    lowCost: "Low-cost",
+    balanced: "Balanced",
+    premium: "Premium",
+    flexible: "Flexible",
+    noSpecificInterests: "No specific interests selected",
+    noSpecificAmenities: "No specific amenities selected",
+    budgetHotel: "Budget hotel or hostel",
+    premiumHotel: "Boutique hotel or premium apartment",
+    balancedHotel: "Comfort hotel or central apartment",
+    estimatedOption: "estimated option based on your budget tier",
+    fallbackPlace: "suggested fallback when live place data is limited",
+    premiumBudgetTip: "Include curated experiences, premium restaurants, and private transportation options.",
+    lowBudgetTip: "Prioritize free attractions, public transportation, and casual food spots.",
+    balancedBudgetTip: "Balance iconic attractions, comfortable food choices, and efficient transportation.",
+    copiedFailed: "Copy failed",
+    copyFailedMessage: "Copy failed. Please try again or use the PDF export.",
+    popupMessage: "Please allow pop-ups to open the PDF export view.",
+    pdfMessage: "Opening your printable PDF view. Choose Save as PDF in the print dialog.",
+    currencyMessage: "Currency set to",
+    regenerateMessage: "Generate the itinerary again to update estimates.",
+    remove: "Remove",
+    addCity: "Add city"
+  },
+  es: {
+    oneCity: "Una ciudad",
+    sameCountry: "Un país, varias ciudades",
+    multiCountry: "Varios países / ciudades",
+    destinationOverview: "Resumen del destino",
+    day: "Día",
+    tripLength: "Duración del viaje",
+    budgetTier: "Nivel de presupuesto",
+    travelStyle: "Estilo de viaje",
+    seasonAnalysis: "Análisis de temporada",
+    aiRecommendation: "Recomendación de IA",
+    selectedInterests: "Intereses seleccionados",
+    importantAmenities: "Comodidades importantes",
+    destinations: "Destinos",
+    copyItinerary: "Copiar itinerario",
+    copied: "¡Copiado!",
+    downloadPdf: "Descargar PDF",
+    planAnotherTrip: "Planear otro viaje",
+    mainFocus: "Enfoque principal",
+    realStayOptions: "Opciones de hospedaje",
+    recommendedArea: "Zona recomendada",
+    realNearbyPlaces: "Lugares cercanos",
+    preferenceMatch: "Coincidencia con preferencias",
+    smartDailyPlan: "Plan inteligente del día",
+    morning: "Mañana",
+    afternoon: "Tarde",
+    evening: "Noche",
+    budgetEstimate: "Estimación de presupuesto",
+    estimatedDailySpend: "Gasto diario estimado",
+    generating: "Generando tu plan de viaje con IA...",
+    fetching: "Buscando información del destino...",
+    hotels: "Buscando opciones de hospedaje...",
+    attractions: "Buscando atracciones y lugares locales...",
+    building: "Construyendo tu itinerario inteligente...",
+    readMore: "Leer más en Wikipedia",
+    completeForm: "Completa país, ciudad, fechas y estilo de viaje antes de generar el itinerario.",
+    returnDate: "La fecha de regreso debe ser posterior a la fecha de salida.",
+    positiveBudget: "El presupuesto debe ser una cantidad positiva.",
+    copiedMessage: "Itinerario copiado al portapapeles.",
+    resetMessage: "Listo para un nuevo viaje. Tus selecciones anteriores fueron limpiadas.",
+    chooseMainCountry: "Elige el país principal antes de agregar más ciudades.",
+    chooseMainDestination: "Elige el destino principal antes de generar un itinerario multi-ciudad.",
+    sameCountryPanelTitle: "Más ciudades del mismo país",
+    sameCountryPanelText: "Agrega ciudades extra del país seleccionado arriba.",
+    multiCountryPanelTitle: "Más países y ciudades",
+    multiCountryPanelText: "Agrega paradas extra de diferentes países.",
+    additionalCities: "Ciudades adicionales",
+    additionalCitiesText: "Agrega más paradas si tu viaje incluye varios destinos.",
+    firstPrototype: "PRIMER PROTOTIPO",
+    createProfile: "Crea tu perfil de viaje",
+    profileIntro: "Completa tu perfil de viaje y TripMind AI generará una primera vista previa del itinerario.",
+    tripMode: "Modo de viaje",
+    country: "País",
+    city: "Ciudad",
+    departureDate: "Fecha de salida",
+    returnDateLabel: "Fecha de regreso",
+    budget: "Presupuesto",
+    budgetPlaceholder: "Ejemplo: $500 USD o flexible",
+    chooseCountry: "Elige un país",
+    chooseCity: "Elige una ciudad",
+    chooseCountryFirst: "Elige un país primero",
+    travelStyleLabel: "Estilo de viaje",
+    chooseOne: "Elige una opción",
+    interestsLabel: "Intereses",
+    amenitiesLabel: "Comodidades importantes",
+    generateButton: "Generar vista previa del itinerario",
+    generatedPreview: "VISTA PREVIA GENERADA",
+    smartTitle: "Tu itinerario inteligente de viaje",
+    smartIntro: "TripMind AI combina destino, fechas, presupuesto, estilo de viaje, intereses y lugares cercanos para crear una vista previa personalizada.",
+    noInterests: "Sin intereses específicos seleccionados",
+    noAmenities: "Sin comodidades específicas seleccionadas",
+    daysLabel: "días",
+    nightsLabel: "noches",
+    highSeason: "Temporada alta",
+    shoulderSeason: "Temporada media",
+    lowSeason: "Temporada baja",
+    highSeasonRecommendation: "Estas fechas pueden ser más caras y concurridas. TripMind AI recomienda reservar hospedaje y actividades con anticipación.",
+    shoulderSeasonRecommendation: "Estas fechas son una buena elección. Puedes encontrar mejores precios, clima agradable y menos gente.",
+    lowSeasonRecommendation: "Estas fechas pueden ofrecer precios más bajos y atracciones más tranquilas. TripMind AI recomienda revisar el clima antes de reservar.",
+    lowCost: "Bajo costo",
+    balanced: "Equilibrado",
+    premium: "Premium",
+    flexible: "Flexible",
+    noSpecificInterests: "Sin intereses específicos seleccionados",
+    noSpecificAmenities: "Sin comodidades específicas seleccionadas",
+    budgetHotel: "Hotel económico u hostal",
+    premiumHotel: "Hotel boutique o departamento premium",
+    balancedHotel: "Hotel cómodo o departamento céntrico",
+    estimatedOption: "opción estimada según tu nivel de presupuesto",
+    fallbackPlace: "sugerencia alternativa cuando los datos en vivo son limitados",
+    premiumBudgetTip: "Incluye experiencias curadas, restaurantes premium y opciones de transporte privado.",
+    lowBudgetTip: "Prioriza atracciones gratuitas, transporte público y lugares de comida casual.",
+    balancedBudgetTip: "Equilibra atracciones icónicas, comida cómoda y transporte eficiente.",
+    copiedFailed: "No se pudo copiar",
+    copyFailedMessage: "No se pudo copiar. Intenta de nuevo o usa la exportación PDF.",
+    popupMessage: "Permite las ventanas emergentes para abrir la vista de exportación PDF.",
+    pdfMessage: "Abriendo tu vista imprimible. Elige Guardar como PDF en el diálogo de impresión.",
+    currencyMessage: "Moneda cambiada a",
+    regenerateMessage: "Genera el itinerario otra vez para actualizar los estimados.",
+    remove: "Eliminar",
+    addCity: "Agregar ciudad"
+  },
+  fr: {},
+  it: {},
+  ja: {}
+};
+
+translations.fr = {
+  ...translations.en,
+  oneCity: "Une ville",
+  sameCountry: "Un pays, plusieurs villes",
+  multiCountry: "Plusieurs pays / villes",
+  destinationOverview: "Aperçu de la destination",
+  day: "Jour",
+  tripLength: "Durée du voyage",
+  budgetTier: "Niveau de budget",
+  travelStyle: "Style de voyage",
+  seasonAnalysis: "Analyse de saison",
+  aiRecommendation: "Recommandation IA",
+  selectedInterests: "Intérêts sélectionnés",
+  importantAmenities: "Commodités importantes",
+  destinations: "Destinations",
+  copyItinerary: "Copier l'itinéraire",
+  copied: "Copié !",
+  downloadPdf: "Télécharger PDF",
+  planAnotherTrip: "Planifier un autre voyage",
+  mainFocus: "Objectif principal",
+  realStayOptions: "Options d'hébergement",
+  recommendedArea: "Zone recommandée",
+  realNearbyPlaces: "Lieux proches",
+  preferenceMatch: "Correspondance avec les préférences",
+  smartDailyPlan: "Plan intelligent du jour",
+  morning: "Matin",
+  afternoon: "Après-midi",
+  evening: "Soir",
+  budgetEstimate: "Estimation du budget",
+  estimatedDailySpend: "Dépense quotidienne estimée",
+  generating: "Génération de votre plan de voyage IA...",
+  fetching: "Recherche d'informations sur la destination...",
+  hotels: "Recherche d'hébergements...",
+  attractions: "Recherche d'attractions et de lieux locaux...",
+  building: "Construction de votre itinéraire intelligent...",
+  readMore: "Lire plus sur Wikipedia",
+  completeForm: "Veuillez compléter le pays, la ville, les dates et le style de voyage avant de générer l'itinéraire.",
+  returnDate: "La date de retour doit être après la date de départ.",
+  positiveBudget: "Le budget doit être un montant positif.",
+  copiedMessage: "Itinéraire copié dans le presse-papiers.",
+  resetMessage: "Prêt pour un nouveau voyage. Vos sélections précédentes ont été effacées.",
+  chooseMainCountry: "Choisissez le pays principal avant d'ajouter d'autres villes.",
+  chooseMainDestination: "Choisissez la destination principale avant de générer un itinéraire multi-villes.",
+  sameCountryPanelTitle: "Plus de villes dans le même pays",
+  sameCountryPanelText: "Ajoutez des villes supplémentaires du pays sélectionné ci-dessus.",
+  multiCountryPanelTitle: "Plus de pays et de villes",
+  multiCountryPanelText: "Ajoutez des étapes supplémentaires dans différents pays.",
+  additionalCities: "Villes supplémentaires",
+  additionalCitiesText: "Ajoutez plus d'étapes si votre voyage comprend plusieurs destinations.",
+  firstPrototype: "PREMIER PROTOTYPE",
+  createProfile: "Créez votre profil de voyage",
+  profileIntro: "Remplissez votre profil de voyage et TripMind AI générera un premier aperçu d'itinéraire.",
+  tripMode: "Mode de voyage",
+  country: "Pays",
+  city: "Ville",
+  departureDate: "Date de départ",
+  returnDateLabel: "Date de retour",
+  budget: "Budget",
+  budgetPlaceholder: "Exemple : 500 USD ou flexible",
+  chooseCountry: "Choisissez un pays",
+  chooseCity: "Choisissez une ville",
+  chooseCountryFirst: "Choisissez d'abord un pays",
+  travelStyleLabel: "Style de voyage",
+  chooseOne: "Choisissez une option",
+  interestsLabel: "Intérêts",
+  amenitiesLabel: "Commodités importantes",
+  generateButton: "Générer l'aperçu de l'itinéraire",
+  generatedPreview: "APERÇU GÉNÉRÉ",
+  smartTitle: "Votre itinéraire de voyage intelligent",
+  smartIntro: "TripMind AI combine destination, dates, budget, style de voyage, intérêts et lieux proches pour créer un aperçu personnalisé.",
+  daysLabel: "jours",
+  nightsLabel: "nuits",
+  highSeason: "Haute saison",
+  shoulderSeason: "Saison intermédiaire",
+  lowSeason: "Basse saison",
+  highSeasonRecommendation: "Ces dates peuvent être plus chères et fréquentées. TripMind AI recommande de réserver tôt.",
+  shoulderSeasonRecommendation: "Ces dates sont un bon choix. Vous pouvez trouver de meilleurs prix, un climat agréable et moins de foule.",
+  lowSeasonRecommendation: "Ces dates peuvent offrir des prix plus bas et des attractions plus calmes. Vérifiez la météo avant de réserver.",
+  lowCost: "Économique",
+  balanced: "Équilibré",
+  premium: "Premium",
+  flexible: "Flexible",
+  noSpecificInterests: "Aucun intérêt spécifique sélectionné",
+  noSpecificAmenities: "Aucune commodité spécifique sélectionnée",
+  budgetHotel: "Hôtel économique ou auberge",
+  premiumHotel: "Hôtel boutique ou appartement premium",
+  balancedHotel: "Hôtel confortable ou appartement central",
+  estimatedOption: "option estimée selon votre niveau de budget",
+  fallbackPlace: "suggestion alternative lorsque les données en direct sont limitées",
+  premiumBudgetTip: "Incluez des expériences sélectionnées, des restaurants premium et des options de transport privé.",
+  lowBudgetTip: "Privilégiez les attractions gratuites, les transports publics et les lieux de restauration simples.",
+  balancedBudgetTip: "Équilibrez attractions emblématiques, repas confortables et transport efficace.",
+  copiedFailed: "La copie a échoué",
+  copyFailedMessage: "La copie a échoué. Réessayez ou utilisez l'export PDF.",
+  popupMessage: "Autorisez les fenêtres pop-up pour ouvrir la vue d'export PDF.",
+  pdfMessage: "Ouverture de la vue imprimable. Choisissez Enregistrer en PDF dans la boîte d'impression.",
+  currencyMessage: "Devise définie sur",
+  regenerateMessage: "Générez à nouveau l'itinéraire pour mettre à jour les estimations.",
+  remove: "Supprimer",
+  addCity: "Ajouter une ville"
+};
+
+translations.it = {
+  ...translations.en,
+  oneCity: "Una città",
+  sameCountry: "Un paese, più città",
+  multiCountry: "Più paesi / città",
+  destinationOverview: "Panoramica della destinazione",
+  day: "Giorno",
+  tripLength: "Durata del viaggio",
+  budgetTier: "Fascia di budget",
+  travelStyle: "Stile di viaggio",
+  seasonAnalysis: "Analisi della stagione",
+  aiRecommendation: "Raccomandazione AI",
+  selectedInterests: "Interessi selezionati",
+  importantAmenities: "Servizi importanti",
+  destinations: "Destinazioni",
+  copyItinerary: "Copia itinerario",
+  copied: "Copiato!",
+  downloadPdf: "Scarica PDF",
+  planAnotherTrip: "Pianifica un altro viaggio",
+  mainFocus: "Focus principale",
+  realStayOptions: "Opzioni di soggiorno",
+  recommendedArea: "Zona consigliata",
+  realNearbyPlaces: "Luoghi vicini",
+  preferenceMatch: "Corrispondenza con le preferenze",
+  smartDailyPlan: "Piano intelligente del giorno",
+  morning: "Mattina",
+  afternoon: "Pomeriggio",
+  evening: "Sera",
+  budgetEstimate: "Stima del budget",
+  estimatedDailySpend: "Spesa giornaliera stimata",
+  generating: "Generazione del tuo piano di viaggio AI...",
+  fetching: "Ricerca di informazioni sulla destinazione...",
+  hotels: "Ricerca di alloggi...",
+  attractions: "Ricerca di attrazioni e luoghi locali...",
+  building: "Creazione del tuo itinerario intelligente...",
+  readMore: "Leggi di più su Wikipedia",
+  completeForm: "Completa paese, città, date e stile di viaggio prima di generare l'itinerario.",
+  returnDate: "La data di ritorno deve essere successiva alla data di partenza.",
+  positiveBudget: "Il budget deve essere un importo positivo.",
+  copiedMessage: "Itinerario copiato negli appunti.",
+  resetMessage: "Pronto per un nuovo viaggio. Le selezioni precedenti sono state cancellate.",
+  chooseMainCountry: "Scegli il paese principale prima di aggiungere altre città.",
+  chooseMainDestination: "Scegli la destinazione principale prima di generare un itinerario multi-città.",
+  sameCountryPanelTitle: "Altre città nello stesso paese",
+  sameCountryPanelText: "Aggiungi città extra dal paese selezionato sopra.",
+  multiCountryPanelTitle: "Altri paesi e città",
+  multiCountryPanelText: "Aggiungi tappe extra in paesi diversi.",
+  additionalCities: "Città aggiuntive",
+  additionalCitiesText: "Aggiungi altre tappe se il viaggio include più destinazioni.",
+  firstPrototype: "PRIMO PROTOTIPO",
+  createProfile: "Crea il tuo profilo di viaggio",
+  profileIntro: "Compila il tuo profilo di viaggio e TripMind AI genererà una prima anteprima dell'itinerario.",
+  tripMode: "Modalità di viaggio",
+  country: "Paese",
+  city: "Città",
+  departureDate: "Data di partenza",
+  returnDateLabel: "Data di ritorno",
+  budget: "Budget",
+  budgetPlaceholder: "Esempio: 500 USD o flessibile",
+  chooseCountry: "Scegli un paese",
+  chooseCity: "Scegli una città",
+  chooseCountryFirst: "Scegli prima un paese",
+  travelStyleLabel: "Stile di viaggio",
+  chooseOne: "Scegli un'opzione",
+  interestsLabel: "Interessi",
+  amenitiesLabel: "Servizi importanti",
+  generateButton: "Genera anteprima itinerario",
+  generatedPreview: "ANTEPRIMA GENERATA",
+  smartTitle: "Il tuo itinerario di viaggio intelligente",
+  smartIntro: "TripMind AI combina destinazione, date, budget, stile di viaggio, interessi e luoghi vicini per creare un'anteprima personalizzata.",
+  daysLabel: "giorni",
+  nightsLabel: "notti",
+  highSeason: "Alta stagione",
+  shoulderSeason: "Mezza stagione",
+  lowSeason: "Bassa stagione",
+  highSeasonRecommendation: "Queste date possono essere più costose e affollate. TripMind AI consiglia di prenotare in anticipo.",
+  shoulderSeasonRecommendation: "Queste date sono una buona scelta. Potresti trovare prezzi migliori, clima piacevole e meno folla.",
+  lowSeasonRecommendation: "Queste date possono offrire prezzi più bassi e attrazioni più tranquille. Controlla il meteo prima di prenotare.",
+  lowCost: "Economico",
+  balanced: "Bilanciato",
+  premium: "Premium",
+  flexible: "Flessibile",
+  noSpecificInterests: "Nessun interesse specifico selezionato",
+  noSpecificAmenities: "Nessun servizio specifico selezionato",
+  budgetHotel: "Hotel economico o ostello",
+  premiumHotel: "Hotel boutique o appartamento premium",
+  balancedHotel: "Hotel confortevole o appartamento centrale",
+  estimatedOption: "opzione stimata in base alla fascia di budget",
+  fallbackPlace: "suggerimento alternativo quando i dati live sono limitati",
+  premiumBudgetTip: "Includi esperienze curate, ristoranti premium e trasporti privati.",
+  lowBudgetTip: "Dai priorità ad attrazioni gratuite, trasporto pubblico e cibo informale.",
+  balancedBudgetTip: "Bilancia attrazioni iconiche, pasti comodi e trasporti efficienti.",
+  copiedFailed: "Copia non riuscita",
+  copyFailedMessage: "Copia non riuscita. Riprova o usa l'esportazione PDF.",
+  popupMessage: "Consenti i pop-up per aprire la vista di esportazione PDF.",
+  pdfMessage: "Apertura della vista stampabile. Scegli Salva come PDF nella finestra di stampa.",
+  currencyMessage: "Valuta impostata su",
+  regenerateMessage: "Genera di nuovo l'itinerario per aggiornare le stime.",
+  remove: "Rimuovi",
+  addCity: "Aggiungi città"
+};
+
+translations.ja = {
+  ...translations.en,
+  oneCity: "1都市",
+  sameCountry: "1か国・複数都市",
+  multiCountry: "複数の国 / 都市",
+  destinationOverview: "目的地の概要",
+  day: "日目",
+  tripLength: "旅行期間",
+  budgetTier: "予算レベル",
+  travelStyle: "旅行スタイル",
+  seasonAnalysis: "季節分析",
+  aiRecommendation: "AIのおすすめ",
+  selectedInterests: "選択した興味",
+  importantAmenities: "重要な設備",
+  destinations: "目的地",
+  copyItinerary: "旅程をコピー",
+  copied: "コピーしました！",
+  downloadPdf: "PDFをダウンロード",
+  planAnotherTrip: "別の旅行を計画",
+  mainFocus: "主なテーマ",
+  realStayOptions: "宿泊オプション",
+  recommendedArea: "おすすめエリア",
+  realNearbyPlaces: "近くのスポット",
+  preferenceMatch: "好みに合わせた提案",
+  smartDailyPlan: "スマート日程",
+  morning: "朝",
+  afternoon: "午後",
+  evening: "夜",
+  budgetEstimate: "予算見積もり",
+  estimatedDailySpend: "1日の推定費用",
+  generating: "AI旅行プランを作成中...",
+  fetching: "目的地情報を取得中...",
+  hotels: "宿泊先を検索中...",
+  attractions: "観光地とローカルスポットを検索中...",
+  building: "スマート旅程を作成中...",
+  readMore: "Wikipediaで続きを読む",
+  completeForm: "旅程を作成する前に、国、都市、日付、旅行スタイルを入力してください。",
+  returnDate: "帰着日は出発日より後である必要があります。",
+  positiveBudget: "予算は正の金額で入力してください。",
+  copiedMessage: "旅程をクリップボードにコピーしました。",
+  resetMessage: "新しい旅行の準備ができました。以前の選択はクリアされました。",
+  chooseMainCountry: "都市を追加する前にメインの国を選んでください。",
+  chooseMainDestination: "複数都市の旅程を作成する前にメインの目的地を選んでください。",
+  sameCountryPanelTitle: "同じ国の追加都市",
+  sameCountryPanelText: "上で選択した国から追加都市を選んでください。",
+  multiCountryPanelTitle: "追加の国と都市",
+  multiCountryPanelText: "異なる国の追加ストップを選んでください。",
+  additionalCities: "追加都市",
+  additionalCitiesText: "複数の目的地がある場合は追加ストップを加えてください。",
+  firstPrototype: "初期プロトタイプ",
+  createProfile: "旅行プロフィールを作成",
+  profileIntro: "旅行プロフィールを入力すると、TripMind AIが旅程プレビューを作成します。",
+  tripMode: "旅行モード",
+  country: "国",
+  city: "都市",
+  departureDate: "出発日",
+  returnDateLabel: "帰着日",
+  budget: "予算",
+  budgetPlaceholder: "例: 500 USD または flexible",
+  chooseCountry: "国を選択",
+  chooseCity: "都市を選択",
+  chooseCountryFirst: "最初に国を選択",
+  travelStyleLabel: "旅行スタイル",
+  chooseOne: "選択してください",
+  interestsLabel: "興味",
+  amenitiesLabel: "重要な設備",
+  generateButton: "旅程プレビューを作成",
+  generatedPreview: "生成されたプレビュー",
+  smartTitle: "スマート旅行旅程",
+  smartIntro: "TripMind AIは目的地、日付、予算、旅行スタイル、興味、近くの場所を組み合わせてパーソナライズされた旅程を作成します。",
+  daysLabel: "日",
+  nightsLabel: "泊",
+  highSeason: "ハイシーズン",
+  shoulderSeason: "ショルダーシーズン",
+  lowSeason: "ローシーズン",
+  highSeasonRecommendation: "この時期は高く混雑する可能性があります。宿泊とアクティビティは早めの予約がおすすめです。",
+  shoulderSeasonRecommendation: "この時期は良い選択です。より良い価格、快適な天候、少ない混雑が期待できます。",
+  lowSeasonRecommendation: "この時期は低価格で落ち着いた観光が期待できます。予約前に天候を確認してください。",
+  lowCost: "低予算",
+  balanced: "バランス型",
+  premium: "プレミアム",
+  flexible: "柔軟",
+  noSpecificInterests: "特定の興味は選択されていません",
+  noSpecificAmenities: "特定の設備は選択されていません",
+  budgetHotel: "低価格ホテルまたはホステル",
+  premiumHotel: "ブティックホテルまたは高級アパート",
+  balancedHotel: "快適なホテルまたは中心部のアパート",
+  estimatedOption: "予算レベルに基づく推定オプション",
+  fallbackPlace: "ライブデータが限られる場合の代替提案",
+  premiumBudgetTip: "厳選体験、プレミアムレストラン、専用交通手段を含めましょう。",
+  lowBudgetTip: "無料の観光地、公共交通機関、カジュアルな食事を優先しましょう。",
+  balancedBudgetTip: "有名スポット、快適な食事、効率的な移動をバランスよく組み合わせましょう。",
+  copiedFailed: "コピーに失敗しました",
+  copyFailedMessage: "コピーに失敗しました。もう一度試すかPDF出力を使用してください。",
+  popupMessage: "PDF出力画面を開くためにポップアップを許可してください。",
+  pdfMessage: "印刷用ビューを開いています。印刷画面でPDFとして保存を選択してください。",
+  currencyMessage: "通貨を設定しました:",
+  regenerateMessage: "見積もりを更新するには旅程を再生成してください。",
+  remove: "削除",
+  addCity: "都市を追加"
+};
+
+function getCurrentLanguage() {
+  return languageSelect?.value || "en";
+}
+
+function getCurrentCurrency() {
+  return currencySelect?.value || "USD";
+}
+
+function t(key) {
+  const language = getCurrentLanguage();
+  return translations[language]?.[key] || translations.en[key] || key;
+}
+
+function formatMoneyRange(minUsd, maxUsd) {
+  const currency = currencyRates[getCurrentCurrency()] || currencyRates.USD;
+  const min = Math.round(minUsd * currency.rate);
+  const max = Math.round(maxUsd * currency.rate);
+  return `${currency.symbol}${min.toLocaleString()} - ${currency.symbol}${max.toLocaleString()} ${currency.suffix}`;
+}
+
+function applyBasicLanguageLabels() {
+  const modeCards = document.querySelectorAll(".trip-mode-card");
+  if (modeCards[0]) modeCards[0].querySelector("span").textContent = t("oneCity");
+  if (modeCards[1]) modeCards[1].querySelector("span").textContent = t("sameCountry");
+  if (modeCards[2]) modeCards[2].querySelector("span").textContent = t("multiCountry");
+
+  // Add mode descriptions block
+  const modeDescriptions = [
+    "Plan one destination in detail.",
+    "Add more cities from the same country.",
+    "Combine stops from different countries."
+  ];
+
+  const translatedModeDescriptions = {
+    en: modeDescriptions,
+    es: [
+      "Planea un destino con detalle.",
+      "Agrega más ciudades del mismo país.",
+      "Combina paradas de diferentes países."
+    ],
+    fr: [
+      "Planifiez une destination en détail.",
+      "Ajoutez plus de villes du même pays.",
+      "Combinez des étapes dans différents pays."
+    ],
+    it: [
+      "Pianifica una destinazione in dettaglio.",
+      "Aggiungi più città dello stesso paese.",
+      "Combina tappe in paesi diversi."
+    ],
+    ja: [
+      "1つの目的地を詳しく計画します。",
+      "同じ国の都市を追加します。",
+      "異なる国のストップを組み合わせます。"
+    ]
+  };
+
+  const descriptionSet = translatedModeDescriptions[getCurrentLanguage()] || translatedModeDescriptions.en;
+  modeCards.forEach(function (card, index) {
+    const small = card.querySelector("small");
+    if (small && descriptionSet[index]) small.textContent = descriptionSet[index];
+  });
+
+  const heroKicker = document.querySelector(".hero .kicker");
+  const heroTitle = document.querySelector(".hero h1");
+  const heroIntro = document.querySelector(".hero > p");
+  const formButton = tripForm?.querySelector('button[type="submit"]');
+
+  if (heroKicker) heroKicker.textContent = t("firstPrototype");
+  if (heroTitle) heroTitle.textContent = t("createProfile");
+  if (heroIntro) heroIntro.textContent = t("profileIntro");
+  if (formButton) formButton.textContent = t("generateButton");
+
+  const labels = {
+    country: t("country"),
+    destination: t("city"),
+    startDate: t("departureDate"),
+    endDate: t("returnDateLabel"),
+    budget: t("budget"),
+    style: t("travelStyleLabel")
+  };
+
+  Object.entries(labels).forEach(function ([id, text]) {
+    const label = document.querySelector(`label[for="${id}"]`);
+    if (label) label.textContent = text;
+  });
+
+  const tripModeLabel = document.querySelector(".trip-mode-group > label");
+  const interestsTitle = document.querySelector("#interests")?.previousElementSibling;
+  const amenitiesTitle = document.querySelector("#amenities")?.previousElementSibling;
+  const budgetInput = document.querySelector("#budget");
+
+  if (tripModeLabel) tripModeLabel.textContent = t("tripMode");
+  if (interestsTitle) interestsTitle.textContent = t("interestsLabel");
+  if (amenitiesTitle) amenitiesTitle.textContent = t("amenitiesLabel");
+  if (budgetInput) budgetInput.placeholder = t("budgetPlaceholder");
+
+  updateSelectPlaceholders();
+  updateMultiCityVisibility();
+}
+
+function updateSelectPlaceholders() {
+  const countryPlaceholder = countrySelect.querySelector('option[value=""]');
+  const destinationPlaceholder = destinationSelect.querySelector('option[value=""]');
+  const stylePlaceholder = document.querySelector('#style option[value=""]');
+
+  if (countryPlaceholder) countryPlaceholder.textContent = t("chooseCountry");
+  if (destinationPlaceholder) {
+    destinationPlaceholder.textContent = countrySelect.value ? t("chooseCity") : t("chooseCountryFirst");
+  }
+  if (stylePlaceholder) stylePlaceholder.textContent = t("chooseOne");
+
+  document.querySelectorAll(".extra-country").forEach(function (select) {
+    const placeholder = select.querySelector('option[value=""]');
+    if (placeholder) placeholder.textContent = t("chooseCountry");
+  });
+
+  document.querySelectorAll(".extra-city").forEach(function (select) {
+    const placeholder = select.querySelector('option[value=""]');
+    if (placeholder) placeholder.textContent = select.dataset.country ? t("chooseCity") : t("chooseCountryFirst");
+  });
+}
 
 const selectedInterests = [];
 const selectedAmenities = [];
@@ -223,6 +881,140 @@ const citiesByCountry = {
   australia: ["Sydney", "Melbourne", "Brisbane", "Perth"]
 };
 
+function getTripMode() {
+  const selectedMode = document.querySelector('input[name="tripMode"]:checked');
+  return selectedMode ? selectedMode.value : "single";
+}
+
+function createCityOptionsMarkup(selectedCountry = "") {
+  if (!selectedCountry || !citiesByCountry[selectedCountry]) {
+    return `<option value="">${t("chooseCountryFirst")}</option>`;
+  }
+
+  return [`<option value="">${t("chooseCity")}</option>`]
+    .concat(
+      citiesByCountry[selectedCountry].map(function (city) {
+        return `<option value="${city}">${city}</option>`;
+      })
+    )
+    .join("");
+}
+
+function updateMultiCityVisibility() {
+  if (!multiCityPanel) return;
+
+  const tripMode = getTripMode();
+  const usesExtraCities = tripMode === "same-country" || tripMode === "multi-country";
+
+  multiCityPanel.classList.toggle("hidden", !usesExtraCities);
+
+  if (multiCityPanelTitle && multiCityPanelText) {
+    if (tripMode === "same-country") {
+      multiCityPanelTitle.textContent = t("sameCountryPanelTitle");
+      multiCityPanelText.textContent = t("sameCountryPanelText");
+    } else if (tripMode === "multi-country") {
+      multiCityPanelTitle.textContent = t("multiCountryPanelTitle");
+      multiCityPanelText.textContent = t("multiCountryPanelText");
+    } else {
+      multiCityPanelTitle.textContent = t("additionalCities");
+      multiCityPanelText.textContent = t("additionalCitiesText");
+    }
+  }
+}
+
+function addAdditionalCityRow() {
+  if (!multiCityList) return;
+
+  const tripMode = getTripMode();
+
+  if (tripMode === "same-country" && !countrySelect.value) {
+    showFormMessage(t("chooseMainCountry"));
+    return;
+  }
+
+  additionalCityCount += 1;
+
+  const row = document.createElement("div");
+  row.className = "multi-city-row";
+  row.dataset.cityRow = String(additionalCityCount);
+
+  if (tripMode === "same-country") {
+    row.innerHTML = `
+      <div class="form-group">
+        <label for="extraCity${additionalCityCount}">${t("city")} ${additionalCityCount + 1}</label>
+        <select id="extraCity${additionalCityCount}" class="extra-city" data-country="${countrySelect.value}">
+          ${createCityOptionsMarkup(countrySelect.value)}
+        </select>
+      </div>
+
+      <button type="button" class="btn secondary small-btn remove-city-btn">${t("remove")}</button>
+    `;
+  } else {
+    row.innerHTML = `
+      <div class="form-group">
+        <label for="extraCountry${additionalCityCount}">${t("country")} ${additionalCityCount + 1}</label>
+        <select id="extraCountry${additionalCityCount}" class="extra-country">
+          <option value="">${t("chooseCountry")}</option>
+          ${Object.entries(countryDisplayNames)
+            .map(function ([value, label]) {
+              return `<option value="${value}">${label}</option>`;
+            })
+            .join("")}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="extraCity${additionalCityCount}">${t("city")} ${additionalCityCount + 1}</label>
+        <select id="extraCity${additionalCityCount}" class="extra-city">
+          <option value="">${t("chooseCountryFirst")}</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn secondary small-btn remove-city-btn">${t("remove")}</button>
+    `;
+
+    const extraCountry = row.querySelector(".extra-country");
+    const extraCity = row.querySelector(".extra-city");
+
+    extraCountry.addEventListener("change", function () {
+      extraCity.innerHTML = createCityOptionsMarkup(extraCountry.value);
+      extraCity.dataset.country = extraCountry.value;
+    });
+  }
+
+  const removeButton = row.querySelector(".remove-city-btn");
+
+  removeButton.addEventListener("click", function () {
+    row.remove();
+  });
+
+  multiCityList.appendChild(row);
+}
+
+function getSelectedTripCities() {
+  const cities = [];
+  const tripMode = getTripMode();
+
+  if (destinationSelect.value) {
+    cities.push({ country: countrySelect.value, city: destinationSelect.value });
+  }
+
+  if (tripMode === "same-country" || tripMode === "multi-country") {
+    document.querySelectorAll(".multi-city-row").forEach(function (row) {
+      const extraCountry = row.querySelector(".extra-country")?.value || countrySelect.value;
+      const extraCitySelect = row.querySelector(".extra-city");
+      const city = extraCitySelect?.value;
+      const country = extraCitySelect?.dataset.country || extraCountry;
+
+      if (country && city) {
+        cities.push({ country, city });
+      }
+    });
+  }
+
+  return cities;
+}
+
 const itineraryTemplates = {
   culture: ["Historic center", "Museum visit", "Local architecture walk"],
   food: ["Local breakfast", "Food market tour", "Dinner at a recommended restaurant"],
@@ -320,7 +1112,7 @@ function updateCityOptions() {
   const cities = citiesByCountry[selectedCountry] || [];
   const currentDestination = destinationSelect.value;
 
-  destinationSelect.innerHTML = `<option value="">Choose a city</option>`;
+  destinationSelect.innerHTML = `<option value="">${selectedCountry ? t("chooseCity") : t("chooseCountryFirst")}</option>`;
 
   cities.forEach(function (city) {
     const option = document.createElement("option");
@@ -340,13 +1132,27 @@ function updateCityOptions() {
 
 countrySelect.addEventListener("change", function () {
   updateCityOptions();
-});
+  if (getTripMode() === "same-country") {
+    additionalCityCount = 0;
+    if (multiCityList) multiCityList.innerHTML = "";
+  }
+}); 
 
 updateCityOptions();
 
 destinationSelect.addEventListener("change", function () {
   updatePlannerBackground(destinationSelect.value);
 });
+
+tripModeInputs.forEach(function (input) {
+  input.addEventListener("change", updateMultiCityVisibility);
+});
+
+if (addCityButton) {
+  addCityButton.addEventListener("click", addAdditionalCityRow);
+}
+
+updateMultiCityVisibility();
 
 function calculateTripLength(startDate, endDate) {
   const start = new Date(startDate);
@@ -365,24 +1171,21 @@ function getSeasonAnalysis(startDate) {
 
   if (month === 12 || month === 7 || month === 8) {
     return {
-      season: "High season",
-      recommendation:
-        "These dates may be more expensive and crowded. TripMind AI recommends booking lodging and activities early."
+      season: t("highSeason"),
+      recommendation: t("highSeasonRecommendation")
     };
   }
 
   if (month === 4 || month === 5 || month === 9 || month === 10) {
     return {
-      season: "Shoulder season",
-      recommendation:
-        "These dates are a strong choice. You may find better prices, pleasant weather, and fewer crowds."
+      season: t("shoulderSeason"),
+      recommendation: t("shoulderSeasonRecommendation")
     };
   }
 
   return {
-    season: "Low season",
-    recommendation:
-      "These dates may offer lower prices and calmer attractions. TripMind AI recommends checking weather conditions before booking."
+    season: t("lowSeason"),
+    recommendation: t("lowSeasonRecommendation")
   };
 }
 
@@ -390,65 +1193,42 @@ function getBudgetTier(budget) {
   const normalizedBudget = budget.toLowerCase().trim();
 
   if (!normalizedBudget || normalizedBudget.includes("flexible")) {
-    return "Flexible";
+    return t("flexible");
   }
 
   const numberMatch = normalizedBudget.match(/\d+/);
 
-  if (!numberMatch) return "Flexible";
+  if (!numberMatch) return t("flexible");
 
   const amount = Number(numberMatch[0]);
 
-  if (amount < 300) return "Low-cost";
-  if (amount <= 900) return "Balanced";
-  return "Premium";
+  if (amount < 300) return t("lowCost");
+  if (amount <= 900) return t("balanced");
+  return t("premium");
 }
 
 function getDailyEstimate(budgetTier) {
-  if (budgetTier === "Low-cost") {
-    return "Prioritize free attractions, public transportation, and casual food spots.";
-  }
-
-  if (budgetTier === "Premium") {
-    return "Include curated experiences, premium restaurants, and private transportation options.";
-  }
-
-  return "Balance iconic attractions, comfortable food choices, and efficient transportation.";
+  if (budgetTier === t("lowCost")) return t("lowBudgetTip");
+  if (budgetTier === t("premium")) return t("premiumBudgetTip");
+  return t("balancedBudgetTip");
 }
 
 function getStayRecommendation(budgetTier) {
-  if (budgetTier === "Low-cost") {
-    return {
-      type: "Budget hotel or hostel",
-      rooms: "1 private room or shared room",
-      bathrooms: "Shared or 1 bathroom",
-      note: "Best for saving money and staying close to public transportation."
-    };
+  if (budgetTier === t("lowCost")) {
+    return { type: t("budgetHotel") };
   }
 
-  if (budgetTier === "Premium") {
-    return {
-      type: "Boutique hotel or premium apartment",
-      rooms: "1-2 bedrooms",
-      bathrooms: "1-2 bathrooms",
-      note: "Best for comfort, location, and curated experiences."
-    };
+  if (budgetTier === t("premium")) {
+    return { type: t("premiumHotel") };
   }
 
-  return {
-    type: "Comfort hotel or central apartment",
-    rooms: "1 bedroom",
-    bathrooms: "1 bathroom",
-    note: "Best balance between comfort, price, and location."
-  };
+  return { type: t("balancedHotel") };
 }
 
 function getDailyBudgetEstimate(budgetTier) {
-  if (budgetTier === "Low-cost") return "$40 - $80 USD";
-  if (budgetTier === "Premium") return "$180 - $350 USD";
-  return "$90 - $170 USD";
-
-
+  if (budgetTier === t("lowCost")) return formatMoneyRange(40, 80);
+  if (budgetTier === t("premium")) return formatMoneyRange(180, 350);
+  return formatMoneyRange(90, 170);
 }
 
 function getRecommendedArea(style) {
@@ -639,8 +1419,8 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
   const dailyBudget = getDailyBudgetEstimate(budgetTier);
   const recommendedArea = getRecommendedArea(style);
   const nearbyPlaces = getNearbyPlaces(destination, style, amenities);
-  const interestSummary = formatPreferenceList(interests, "No specific interests selected");
-  const amenitySummary = formatPreferenceList(amenities, "No specific amenities selected");
+  const interestSummary = formatPreferenceList(interests, t("noSpecificInterests"));
+  const amenitySummary = formatPreferenceList(amenities, t("noSpecificAmenities"));
   const interestTip = getInterestBasedTip(interests, style);
   const amenityTip = getAmenityBasedTip(amenities);
 
@@ -651,7 +1431,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
           return `<li><strong>${hotel.name}</strong> — ${hotel.type}</li>`;
         })
         .join("")
-    : `<li>${stay.type} — estimated option based on your budget tier</li>`;
+    : `<li>${stay.type} — ${t("estimatedOption")}</li>`;
 
   const realPlaceOptions = realPlaces.length
     ? realPlaces
@@ -662,7 +1442,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
         .join("")
     : nearbyPlaces
         .map(function (place) {
-          return `<li>${place} — suggested fallback when live place data is limited</li>`;
+          return `<li>${place} — ${t("fallbackPlace")}</li>`;
         })
         .join("");
 
@@ -677,49 +1457,49 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
 
   return `
     <article class="day-card">
-      <h3>Day ${dayNumber} · ${destination}</h3>
+      <h3>${t("day")} ${dayNumber} · ${destination}</h3>
 
-      <p><strong>Main focus:</strong> ${mainActivity} in ${destination}</p>
+      <p><strong>${t("mainFocus")}:</strong> ${mainActivity} in ${destination}</p>
 
       <div class="mini-section">
-        <h4>🏨 Real stay options</h4>
+        <h4>🏨 ${t("realStayOptions")}</h4>
         <ul>
           ${hotelOptions}
         </ul>
       </div>
 
       <div class="mini-section">
-        <h4>📍 Recommended area</h4>
+        <h4>📍 ${t("recommendedArea")}</h4>
         <p>${recommendedArea}</p>
       </div>
 
       <div class="mini-section">
-        <h4>🧭 Real nearby places</h4>
+        <h4>🧭 ${t("realNearbyPlaces")}</h4>
         <ul>
           ${realPlaceOptions}
         </ul>
       </div>
 
       <div class="mini-section">
-        <h4>🎯 Preference match</h4>
-        <p><strong>Selected interests:</strong> ${interestSummary}</p>
-        <p><strong>Important amenities:</strong> ${amenitySummary}</p>
+        <h4>🎯 ${t("preferenceMatch")}</h4>
+        <p><strong>${t("selectedInterests")}:</strong> ${interestSummary}</p>
+        <p><strong>${t("importantAmenities")}:</strong> ${amenitySummary}</p>
         <p>${interestTip}</p>
         <p>${amenityTip}</p>
       </div>
 
       <div class="mini-section">
-        <h4>🗓 Smart daily plan</h4>
+        <h4>🗓 ${t("smartDailyPlan")}</h4>
         <ul>
-          <li><strong>Morning:</strong> ${smartPlan.morning}</li>
-          <li><strong>Afternoon:</strong> ${smartPlan.afternoon}</li>
-          <li><strong>Evening:</strong> ${smartPlan.evening}</li>
+          <li><strong>${t("morning")}:</strong> ${smartPlan.morning}</li>
+          <li><strong>${t("afternoon")}:</strong> ${smartPlan.afternoon}</li>
+          <li><strong>${t("evening")}:</strong> ${smartPlan.evening}</li>
         </ul>
       </div>
 
       <div class="mini-section">
-        <h4>💸 Budget estimate</h4>
-        <p><strong>Estimated daily spend:</strong> ${dailyBudget}</p>
+        <h4>💸 ${t("budgetEstimate")}</h4>
+        <p><strong>${t("estimatedDailySpend")}:</strong> ${dailyBudget}</p>
         <p>${getDailyEstimate(budgetTier)}</p>
       </div>
     </article>
@@ -738,9 +1518,16 @@ tripForm.addEventListener("submit", async function (event) {
   const style = document.querySelector("#style").value;
   const interests = selectedInterests.join(", ");
   const amenities = selectedAmenities.join(", ");
+  const tripCities = getSelectedTripCities();
 
   if (!country || !destination || !startDate || !endDate || !style) {
-    showFormMessage("Please complete country, city, dates, and travel style before generating your itinerary.");
+    showFormMessage(t("completeForm"));
+    tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  if ((getTripMode() === "same-country" || getTripMode() === "multi-country") && tripCities.length === 0) {
+    showFormMessage(t("chooseMainDestination"));
     tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
@@ -748,13 +1535,13 @@ tripForm.addEventListener("submit", async function (event) {
   const tripLength = calculateTripLength(startDate, endDate);
 
   if (tripLength.nights < 1) {
-    showFormMessage("Return date must be after the departure date.");
+    showFormMessage(t("returnDate"));
     tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
 
   if (budget && Number(budget) < 0) {
-    showFormMessage("Budget must be a positive amount.");
+    showFormMessage(t("positiveBudget"));
     tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     return;
   }
@@ -765,8 +1552,8 @@ tripForm.addEventListener("submit", async function (event) {
   itineraryOutput.innerHTML = `
     <article class="loading-card">
       <div class="loading-spinner"></div>
-      <h3 id="loadingTitle">Generating your AI travel plan...</h3>
-      <p id="loadingText">Fetching destination insights...</p>
+      <h3 id="loadingTitle">${t("generating")}</h3>
+      <p id="loadingText">${t("fetching")}</p>
       <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
       </div>
@@ -780,111 +1567,123 @@ tripForm.addEventListener("submit", async function (event) {
   if (progressBar) progressBar.style.width = "12%";
 
   setTimeout(() => {
-    if (loadingText) loadingText.textContent = "Finding top hotels...";
+    if (loadingText) loadingText.textContent = t("hotels");
     if (progressBar) progressBar.style.width = "35%";
   }, 1000);
 
   setTimeout(() => {
-    if (loadingText) loadingText.textContent = "Searching attractions and local spots...";
+    if (loadingText) loadingText.textContent = t("attractions");
     if (progressBar) progressBar.style.width = "68%";
   }, 2000);
 
   setTimeout(() => {
-    if (loadingText) loadingText.textContent = "Building your smart itinerary...";
+    if (loadingText) loadingText.textContent = t("building");
     if (progressBar) progressBar.style.width = "90%";
   }, 3000);
-
 
   resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
   const placeType = placeTypeByStyle[style] || "tourism";
-  const [realPlaces, realHotels] = await Promise.all([
-    fetchPlacesData(destination, placeType),
-    fetchPlacesData(destination, "hotel"),
-    fetchWikipediaData(destination, country, style, interests, amenities)
-  ]).then(function (results) {
-    return [results[0], results[1]];
-  });
+  const cityDataList = await Promise.all(
+    tripCities.map(async function (tripCity) {
+      const [realPlaces, realHotels, wikipediaCard] = await Promise.all([
+        fetchPlacesData(tripCity.city, placeType),
+        fetchPlacesData(tripCity.city, "hotel"),
+        fetchWikipediaData(tripCity.city, tripCity.country, style, interests, amenities)
+      ]);
+
+      return {
+        ...tripCity,
+        realPlaces,
+        realHotels,
+        wikipediaCard
+      };
+    })
+  );
+
+  previewSection.innerHTML = cityDataList
+    .map(function (cityData) {
+      return cityData.wikipediaCard;
+    })
+    .join("");
 
   const loadingElapsedTime = Date.now() - loadingStartTime;
-
   if (loadingElapsedTime < 1400) {
     await wait(1400 - loadingElapsedTime);
   }
-
 
   const budgetTier = getBudgetTier(budget);
   const seasonInfo = getSeasonAnalysis(startDate);
 
   tripSummary.innerHTML = `
     <article class="summary-card">
-      <span>Destination</span>
-      <strong>${destination}</strong>
+      <span>${t("destinations")}</span>
+      <strong>${tripCities.map(function (item) { return item.city; }).join(" → ")}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Trip length</span>
-      <strong>${tripLength.days} days / ${tripLength.nights} nights</strong>
+      <span>${t("tripLength")}</span>
+      <strong>${tripLength.days} ${t("daysLabel")} / ${tripLength.nights} ${t("nightsLabel")}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Budget tier</span>
+      <span>${t("budgetTier")}</span>
       <strong>${budgetTier}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Travel style</span>
+      <span>${t("travelStyle")}</span>
       <strong>${style}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Season analysis</span>
+      <span>${t("seasonAnalysis")}</span>
       <strong>${seasonInfo.season}</strong>
     </article>
 
     <article class="summary-card">
-      <span>AI recommendation</span>
+      <span>${t("aiRecommendation")}</span>
       <strong>${seasonInfo.recommendation}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Selected interests</span>
-      <strong>${interests || "No specific interests selected"}</strong>
+      <span>${t("selectedInterests")}</span>
+      <strong>${interests || t("noSpecificInterests")}</strong>
     </article>
 
     <article class="summary-card">
-      <span>Important amenities</span>
-      <strong>${amenities || "No specific amenities selected"}</strong>
+      <span>${t("importantAmenities")}</span>
+      <strong>${amenities || t("noSpecificAmenities")}</strong>
     </article>
 
     <article class="summary-card itinerary-actions-card">
-      <button type="button" class="btn primary itinerary-action-btn" id="copyItineraryBtn">Copy itinerary</button>
-      <button type="button" class="btn primary itinerary-action-btn" id="downloadPdfBtn">Download PDF</button>
-      <button type="button" class="btn primary itinerary-action-btn" id="planAnotherTripBtn">Plan another trip</button>
+      <button type="button" class="btn primary itinerary-action-btn" id="copyItineraryBtn">${t("copyItinerary")}</button>
+      <button type="button" class="btn primary itinerary-action-btn" id="downloadPdfBtn">${t("downloadPdf")}</button>
+      <button type="button" class="btn primary itinerary-action-btn" id="planAnotherTripBtn">${t("planAnotherTrip")}</button>
     </article>
   `;
 
   let itineraryHTML = "";
-
   for (let day = 1; day <= tripLength.days; day++) {
+    const cityData = cityDataList[(day - 1) % cityDataList.length];
+
     itineraryHTML += generateDayPlan(
       day,
-      destination,
+      cityData.city,
       style,
       interests,
       amenities,
       budgetTier,
-      realPlaces,
-      realHotels
+      cityData.realPlaces,
+      cityData.realHotels
     );
   }
-
 
   if (progressBar) progressBar.style.width = "100%";
   itineraryOutput.innerHTML = itineraryHTML;
 
   const generatedCards = document.querySelectorAll(".day-card, .summary-card, .itinerary-actions-card");
-      
+
   generatedCards.forEach((card, index) => {
     card.classList.remove(
       "fade-in",
@@ -892,16 +1691,15 @@ tripForm.addEventListener("submit", async function (event) {
       "fade-in-delay-2",
       "fade-in-delay-3"
     );
-  
+
     void card.offsetWidth;
-  
+
     card.classList.add("fade-in");
-  
+
     if (index === 0) card.classList.add("fade-in-delay-1");
     if (index === 1) card.classList.add("fade-in-delay-2");
     if (index >= 2) card.classList.add("fade-in-delay-3");
   });
-
 
   setupItineraryActions(destination);
 
@@ -910,8 +1708,6 @@ tripForm.addEventListener("submit", async function (event) {
   setTimeout(function () {
     resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
   }, 150);
-
-
 });
 function setupItineraryActions(destination) {
   const copyButton = document.querySelector("#copyItineraryBtn");
@@ -927,10 +1723,10 @@ function setupItineraryActions(destination) {
       ].join("\n\n");
 
       function markCopied() {
-        copyButton.textContent = "Copied!";
-        showFormMessage("Itinerary copied to clipboard.", "success");
+        copyButton.textContent = t("copied");
+        showFormMessage(t("copiedMessage"), "success");
         setTimeout(function () {
-          copyButton.textContent = "Copy itinerary";
+          copyButton.textContent = t("copyItinerary");
         }, 1800);
       }
 
@@ -953,10 +1749,10 @@ function setupItineraryActions(destination) {
         markCopied();
       } catch (error) {
         console.error("Copy failed:", error);
-        copyButton.textContent = "Copy failed";
-        showFormMessage("Copy failed. Please try again or use the PDF export.");
+        copyButton.textContent = t("copiedFailed");
+        showFormMessage(t("copyFailedMessage"));
         setTimeout(function () {
-          copyButton.textContent = "Copy itinerary";
+          copyButton.textContent = t("copyItinerary");
         }, 1800);
       }
     });
@@ -967,11 +1763,11 @@ function setupItineraryActions(destination) {
       const pdfWindow = window.open("", "_blank");
 
       if (!pdfWindow) {
-        showFormMessage("Please allow pop-ups to open the PDF export view.");
+        showFormMessage(t("popupMessage"));
         return;
       }
 
-      showFormMessage("Opening your printable PDF view. Choose Save as PDF in the print dialog.", "success");
+      showFormMessage(t("pdfMessage"), "success");
 
       const safeDestination = destination || "Trip";
       const summaryClone = tripSummary.cloneNode(true);
@@ -1077,7 +1873,10 @@ function setupItineraryActions(destination) {
       });
 
       updateCityOptions();
-      showFormMessage("Ready for a new trip. Your previous selections were cleared.", "success");
+      additionalCityCount = 0;
+      if (multiCityList) multiCityList.innerHTML = "";
+      updateMultiCityVisibility();
+      showFormMessage(t("resetMessage"), "success");
       tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
@@ -1108,32 +1907,29 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
 
     const wikiCard = `
     <article class="day-card destination-card">
-      <h3>🌎 Destination overview: ${city}</h3>
+      <h3>🌎 ${t("destinationOverview")}: ${city}</h3>
       <img src="${image}" class="wiki-image" alt="${city}">
       <p>${description}</p>
       ${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page
-        ? `<a href="${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page}" target="_blank">Read more on Wikipedia</a>`
+        ? `<a href="${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page}" target="_blank">${t("readMore")}</a>`
         : ""} 
 
       </article>
     `;
 
-    previewSection.innerHTML = wikiCard;
-    return true;
+    return wikiCard;
   } catch (error) {
     console.error("Wikipedia fetch failed:", error);
 
     const fallbackImage = cityBackgrounds[city] || heroImages[0];
     
-    previewSection.innerHTML = `
+    return `
       <article class="day-card destination-card">
-        <h3>🌎 Destination overview: ${city}</h3>
+        <h3>🌎 ${t("destinationOverview")}: ${city}</h3>
         <img src="${fallbackImage}" class="wiki-image" alt="${city}">
         <p>${buildDestinationDescription(city, "", style, interests, amenities)}</p>
       </article>
     `;
-
-    return false;
   }
 }
 
@@ -1171,3 +1967,16 @@ async function fetchPlacesData(city, type = "tourism") {
 
   return fallbackByType[type] || fallbackByType.tourism;
 }
+if (languageSelect) {
+  languageSelect.addEventListener("change", function () {
+    applyBasicLanguageLabels();
+  });
+}
+
+if (currencySelect) {
+  currencySelect.addEventListener("change", function () {
+    showFormMessage(`${t("currencyMessage")} ${getCurrentCurrency()}. ${t("regenerateMessage")}`, "success");
+  });
+}
+
+applyBasicLanguageLabels();

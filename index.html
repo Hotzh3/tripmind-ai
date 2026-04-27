@@ -11,12 +11,32 @@
 <body>
   <header class="navbar">
     <div class="logo">TripMind AI</div>
-    <nav>
+    <nav class="nav-links">
       <a href="#features">Features</a>
       <a href="#planner">Planner</a>
       <a href="#results">Results</a>
       <a href="#about">About</a>
     </nav>
+
+    <div class="global-controls" aria-label="Global settings">
+      <label for="languageSelect" class="sr-only">Language</label>
+      <select id="languageSelect" class="settings-select" aria-label="Choose language">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="it">Italiano</option>
+        <option value="ja">日本語</option>
+      </select>
+
+      <label for="currencySelect" class="sr-only">Currency</label>
+      <select id="currencySelect" class="settings-select" aria-label="Choose currency">
+        <option value="USD">USD</option>
+        <option value="MXN">MXN</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="JPY">JPY</option>
+      </select>
+    </div>
   </header>
 
   <main>
@@ -86,6 +106,29 @@
       </div>
 
       <form class="trip-form" id="tripForm">
+        <div class="form-group full-width trip-mode-group">
+          <label>Trip mode</label>
+          <div class="trip-mode-options" role="radiogroup" aria-label="Trip mode">
+            <label class="trip-mode-card">
+              <input type="radio" name="tripMode" value="single" checked />
+              <span>One city</span>
+              <small>Plan one destination in detail.</small>
+            </label>
+
+            <label class="trip-mode-card">
+              <input type="radio" name="tripMode" value="same-country" />
+              <span>One country, multiple cities</span>
+              <small>Add more cities from the same country.</small>
+            </label>
+
+            <label class="trip-mode-card">
+              <input type="radio" name="tripMode" value="multi-country" />
+              <span>Multiple countries / cities</span>
+              <small>Combine stops from different countries.</small>
+            </label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="country">Country</label>
           <select id="country" required>
@@ -111,6 +154,18 @@
           <select id="destination" required>
             <option value="">Choose a country first</option>
           </select>
+        </div>
+
+        <div class="form-group full-width multi-city-panel hidden" id="multiCityPanel">
+          <div class="multi-city-header">
+            <div>
+              <label id="multiCityPanelTitle">Additional cities</label>
+              <p id="multiCityPanelText">Add more stops if your trip includes multiple destinations.</p>
+            </div>
+            <button type="button" class="btn secondary small-btn" id="addCityButton">Add city</button>
+          </div>
+
+          <div class="multi-city-list" id="multiCityList"></div>
         </div>
 
         <div class="form-group">
@@ -237,6 +292,16 @@
         user-centered design, budget optimization, and travel recommendation systems.
         It is designed as both a class project and a portfolio-ready product.
       </p>
+      <div class="about-grid">
+        <article>
+          <h3>Built for real users</h3>
+          <p>The interface focuses on clarity, fast decisions, and realistic travel planning flows.</p>
+        </article>
+        <article>
+          <h3>Designed for growth</h3>
+          <p>The project can grow into saved trips, richer APIs, multi-city travel, and live flight data.</p>
+        </article>
+      </div>
     </section>
   </main>
 
