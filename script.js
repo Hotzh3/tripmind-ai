@@ -11,6 +11,8 @@ const tripModeInputs = document.querySelectorAll('input[name="tripMode"]');
 const multiCityPanel = document.querySelector("#multiCityPanel");
 const multiCityList = document.querySelector("#multiCityList");
 const addCityButton = document.querySelector("#addCityButton");
+const startDateInput = document.querySelector("#startDate");
+const endDateInput = document.querySelector("#endDate");
 const multiCityPanelTitle = document.querySelector("#multiCityPanelTitle");
 const multiCityPanelText = document.querySelector("#multiCityPanelText");
 
@@ -696,6 +698,25 @@ function showFormMessage(message, type = "error") {
     messageBox.classList.add("hidden");
   }, 4500);
 }
+
+function setupDatePicker(input) {
+  if (!input) return;
+
+  input.addEventListener("click", function () {
+    if (typeof input.showPicker === "function") {
+      input.showPicker();
+    }
+  });
+
+  input.addEventListener("focus", function () {
+    if (typeof input.showPicker === "function") {
+      input.showPicker();
+    }
+  });
+}
+
+setupDatePicker(startDateInput);
+setupDatePicker(endDateInput);
 
 const countryDisplayNames = {
   mexico: "Mexico",

@@ -821,3 +821,24 @@ footer {
     width: 100%;
   }
 }
+
+input[type="date"] {
+  appearance: auto;
+  -webkit-appearance: auto;
+  color-scheme: dark;
+  cursor: pointer;
+  padding-right: 44px;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: block;
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+  cursor: pointer;
+  filter: invert(1) brightness(1.8);
+}
