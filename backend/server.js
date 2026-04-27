@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -42,7 +42,15 @@ function getFallbackPlaces(city, type) {
 }
 
 app.get("/", function (req, res) {
-  res.send("TripMind AI backend is running");
+  res.json({
+    status: "ok",
+    message: "TripMind AI backend is running",
+    endpoints: ["/api/wikipedia?city=Paris", "/api/places?city=Paris&type=tourism"]
+  });
+});
+
+app.get("/api/health", function (req, res) {
+  res.json({ status: "ok", service: "TripMind AI backend" });
 });
 
 app.get("/api/wikipedia", async function (req, res) {
@@ -55,13 +63,18 @@ app.get("/api/wikipedia", async function (req, res) {
 
     const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(city)}`;
     const response = await fetch(url);
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Wikipedia city summary not found" });
+    }
+
     const data = await response.json();
 
     res.json({
-      title: data.title,
-      description: data.extract,
+      title: data.title || city,
+      description: data.extract || "No Wikipedia description available for this destination.",
       image: data.originalimage?.source || data.thumbnail?.source || null,
-      url: data.content_urls?.desktop?.page || null
+      url: data.content_urls?.desktop?.page || data.content_urls?.mobile?.page || null
     });
   } catch (error) {
     res.status(500).json({ error: "Wikipedia request failed" });
@@ -186,5 +199,5 @@ app.get("/api/places", async function (req, res) {
 });
 
 app.listen(PORT, function () {
-  console.log(`TripMind AI backend running on http://localhost:${PORT}`);
+  console.log(`TripMind AI backend running on port ${PORT}`);
 });
