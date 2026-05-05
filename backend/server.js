@@ -1,11 +1,83 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
+app.set("trust proxy", 1);
+
+const GITHUB_PAGES_ORIGIN = /^https:\/\/[a-z0-9-]+\.github\.io$/i;
+const VERCEL_PREVIEW_ORIGIN = /^https:\/\/[a-z0-9.-]+\.vercel\.app$/i;
+const LOCALHOST_ORIGIN = /^http:\/\/localhost(?::\d+)?$/i;
+const LOOPBACK_ORIGIN = /^http:\/\/127\.0\.0\.1(?::\d+)?$/i;
+
+function extraAllowedOrigins() {
+  const raw = process.env.ALLOWED_ORIGINS || "";
+  return raw
+    .split(",")
+    .map(function (s) {
+      return s.trim();
+    })
+    .filter(Boolean);
+}
+
+function isOriginAllowed(origin) {
+  if (!origin) {
+    return true;
+  }
+  if (GITHUB_PAGES_ORIGIN.test(origin)) {
+    return true;
+  }
+  if (VERCEL_PREVIEW_ORIGIN.test(origin)) {
+    return true;
+  }
+  if (LOCALHOST_ORIGIN.test(origin)) {
+    return true;
+  }
+  if (LOOPBACK_ORIGIN.test(origin)) {
+    return true;
+  }
+  return extraAllowedOrigins().indexOf(origin) !== -1;
+}
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (isOriginAllowed(origin)) {
+        callback(null, origin || true);
+      } else {
+        console.warn("[cors] blocked origin:", origin);
+        callback(null, false);
+      }
+    }
+  })
+);
+
 app.use(express.json());
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests. Please try again in a few minutes." },
+  validate: { trustProxy: true }
+});
+
+function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const id = setTimeout(function () {
+    controller.abort();
+  }, timeoutMs);
+
+  const opts = Object.assign({}, options || {}, { signal: controller.signal });
+  return fetch(url, opts).finally(function () {
+    clearTimeout(id);
+  });
+}
 
 function getFallbackPlaces(city, type) {
   const fallbackByType = {
@@ -53,7 +125,7 @@ app.get("/api/health", function (req, res) {
   res.json({ status: "ok", service: "TripMind AI backend" });
 });
 
-app.get("/api/wikipedia", async function (req, res) {
+app.get("/api/wikipedia", apiLimiter, async function (req, res) {
   try {
     const city = req.query.city;
 
@@ -62,7 +134,11 @@ app.get("/api/wikipedia", async function (req, res) {
     }
 
     const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(city)}`;
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(
+      url,
+      {},
+      Number(process.env.WIKIPEDIA_FETCH_TIMEOUT_MS) || 15000
+    );
 
     if (!response.ok) {
       return res.status(response.status).json({ error: "Wikipedia city summary not found" });
@@ -77,11 +153,17 @@ app.get("/api/wikipedia", async function (req, res) {
       url: data.content_urls?.desktop?.page || data.content_urls?.mobile?.page || null
     });
   } catch (error) {
-    res.status(500).json({ error: "Wikipedia request failed" });
+    const isAbort = error && error.name === "AbortError";
+    console.error("[api/wikipedia]", isAbort ? "timeout" : error.name, error.message || error, {
+      city: req.query.city
+    });
+    res.status(isAbort ? 504 : 500).json({
+      error: isAbort ? "Wikipedia request timed out" : "Wikipedia request failed"
+    });
   }
 });
 
-app.get("/api/places", async function (req, res) {
+app.get("/api/places", apiLimiter, async function (req, res) {
   const city = req.query.city;
   const type = req.query.type || "tourism";
   const radius = type === "hotel" ? 8000 : 5000;
@@ -93,11 +175,15 @@ app.get("/api/places", async function (req, res) {
   try {
     const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}&limit=1`;
 
-    const locationResponse = await fetch(nominatimUrl, {
-      headers: {
-        "User-Agent": "TripMindAI/1.0"
-      }
-    });
+    const locationResponse = await fetchWithTimeout(
+      nominatimUrl,
+      {
+        headers: {
+          "User-Agent": process.env.NOMINATIM_USER_AGENT || "TripMindAI/1.0 (+https://github.com/Hotzh3/tripmind-ai)"
+        }
+      },
+      Number(process.env.NOMINATIM_FETCH_TIMEOUT_MS) || 18000
+    );
 
     const locationData = await locationResponse.json();
 
@@ -127,17 +213,23 @@ app.get("/api/places", async function (req, res) {
       "https://maps.mail.ru/osm/tools/overpass/api/interpreter"
     ];
 
+    const overpassTimeoutMs = Number(process.env.OVERPASS_FETCH_TIMEOUT_MS) || 32000;
+
     let placesData = null;
 
     for (const serverUrl of overpassServers) {
       try {
-        const response = await fetch(serverUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+        const response = await fetchWithTimeout(
+          serverUrl,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "data=" + encodeURIComponent(query)
           },
-          body: "data=" + encodeURIComponent(query)
-        });
+          overpassTimeoutMs
+        );
 
         const text = await response.text();
 
@@ -148,6 +240,8 @@ app.get("/api/places", async function (req, res) {
         placesData = JSON.parse(text);
         break;
       } catch (error) {
+        const isAbort = error && error.name === "AbortError";
+        console.warn("[api/places][overpass]", isAbort ? "timeout" : error.name, serverUrl);
         continue;
       }
     }
@@ -191,9 +285,13 @@ app.get("/api/places", async function (req, res) {
       places: places.length ? places : getFallbackPlaces(city, type)
     });
   } catch (error) {
-    res.status(500).json({
-      error: "OpenStreetMap request failed",
-      details: error.message
+    const isAbort = error && error.name === "AbortError";
+    console.error("[api/places]", isAbort ? "timeout" : error.name, error.message || error, {
+      city: req.query.city,
+      type: req.query.type
+    });
+    res.status(isAbort ? 504 : 500).json({
+      error: isAbort ? "Places lookup timed out" : "OpenStreetMap request failed"
     });
   }
 });

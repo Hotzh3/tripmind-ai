@@ -16,7 +16,9 @@ const endDateInput = document.querySelector("#endDate");
 const multiCityPanelTitle = document.querySelector("#multiCityPanelTitle");
 const multiCityPanelText = document.querySelector("#multiCityPanelText");
 
-const API_BASE_URL = "https://tripmind-ai-backend.onrender.com";
+const API_BASE_URL =
+  (typeof window !== "undefined" && window.TRIPMIND_API_BASE_URL) ||
+  "https://tripmind-ai-backend.onrender.com";
 
 
 let additionalCityCount = 0;
