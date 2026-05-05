@@ -12,14 +12,14 @@
   <header class="navbar">
     <div class="logo">TripMind AI</div>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#planner">Planner</a>
-      <a href="#results">Results</a>
-      <a href="#about">About</a>
+      <a href="#features" data-i18n="navFeatures">Features</a>
+      <a href="#planner" data-i18n="navPlanner">Planner</a>
+      <a href="#results" data-i18n="navResults">Results</a>
+      <a href="#about" data-i18n="navAbout">About</a>
     </nav>
 
     <div class="global-controls" aria-label="Global settings">
-      <label for="languageSelect" class="sr-only">Language</label>
+      <label for="languageSelect" class="sr-only" data-i18n="navLanguage">Language</label>
       <select id="languageSelect" class="settings-select" aria-label="Choose language">
         <option value="en">English</option>
         <option value="es">Español</option>
@@ -28,7 +28,7 @@
         <option value="ja">日本語</option>
       </select>
 
-      <label for="currencySelect" class="sr-only">Currency</label>
+      <label for="currencySelect" class="sr-only" data-i18n="navCurrency">Currency</label>
       <select id="currencySelect" class="settings-select" aria-label="Choose currency">
         <option value="USD">USD</option>
         <option value="MXN">MXN</option>
@@ -42,53 +42,53 @@
   <main>
     <section class="hero">
       <div class="hero-content">
-        <p class="tagline">AI-powered travel planning</p>
+        <p class="tagline" data-i18n="heroTagline">AI-powered travel planning</p>
 
-        <h1>Plan smarter trips based on your budget, location, and preferences.</h1>
+        <h1 data-i18n="heroTitle">Plan smarter trips based on your budget, location, and preferences.</h1>
 
-        <p class="hero-description">
+        <p class="hero-description" data-i18n="heroDescription">
           TripMind AI helps travelers create personalized itineraries using budget analysis,
           nearby amenities, travel style, and intelligent recommendations.
         </p>
 
         <div class="hero-buttons">
-          <a href="#planner" class="btn primary">Start planning</a>
-          <a href="#features" class="btn secondary">Explore features</a>
+          <a href="#planner" class="btn primary" data-i18n="heroCtaPrimary">Start planning</a>
+          <a href="#features" class="btn secondary" data-i18n="heroCtaSecondary">Explore features</a>
         </div>
       </div>
 
       <div class="hero-card">
-        <h3>Example AI Plan</h3>
-        <p><strong>Destination:</strong> Mexico City</p>
-        <p><strong>Budget:</strong> Balanced</p>
-        <p><strong>Style:</strong> Culture + Food</p>
-        <p><strong>Result:</strong> 3-day optimized itinerary</p>
+        <h3 data-i18n="heroCardTitle">Example AI Plan</h3>
+        <p><strong data-i18n="heroCardDestinationLabel">Destination:</strong> <span data-i18n="heroCardDestinationExample">Mexico City</span></p>
+        <p><strong data-i18n="heroCardBudgetLabel">Budget:</strong> <span data-i18n="balanced">Balanced</span></p>
+        <p><strong data-i18n="heroCardStyleLabel">Style:</strong> <span data-i18n="heroCardStyleExample">Culture + Food</span></p>
+        <p><strong data-i18n="heroCardResultLabel">Result:</strong> <span data-i18n="heroCardResultExample">3-day optimized itinerary</span></p>
       </div>
     </section>
 
     <section id="features" class="features">
-      <h2>What the app will do</h2>
+      <h2 data-i18n="featuresHeading">What the app will do</h2>
 
       <div class="feature-grid">
         <article class="feature-card">
-          <h3>Budget Intelligence</h3>
-          <p>
+          <h3 data-i18n="featureBudgetTitle">Budget Intelligence</h3>
+          <p data-i18n="featureBudgetBody">
             The app will adapt recommendations to a user’s budget or generate
             low-cost, balanced, and premium options.
           </p>
         </article>
 
         <article class="feature-card">
-          <h3>Personalized Itineraries</h3>
-          <p>
+          <h3 data-i18n="featureItineraryTitle">Personalized Itineraries</h3>
+          <p data-i18n="featureItineraryBody">
             Users will receive day-by-day travel plans based on preferences,
             trip duration, travel style, and interests.
           </p>
         </article>
 
         <article class="feature-card">
-          <h3>Location Awareness</h3>
-          <p>
+          <h3 data-i18n="featureLocationTitle">Location Awareness</h3>
+          <p data-i18n="featureLocationBody">
             The project will consider nearby amenities such as restaurants,
             transportation, pharmacies, attractions, and safe zones.
           </p>
@@ -98,59 +98,59 @@
 
     <section id="planner" class="planner">
       <div class="section-header">
-        <p class="tagline">First prototype</p>
-        <h2>Create your travel profile</h2>
-        <p>
+        <p class="tagline" data-i18n="firstPrototype">First prototype</p>
+        <h2 data-i18n="createProfile">Create your travel profile</h2>
+        <p data-i18n="profileIntro">
           Fill out your travel profile and TripMind AI will generate a first itinerary preview.
         </p>
       </div>
 
       <form class="trip-form" id="tripForm">
         <div class="form-group full-width trip-mode-group">
-          <label>Trip mode</label>
+          <label data-i18n="tripMode">Trip mode</label>
           <div class="trip-mode-options" role="radiogroup" aria-label="Trip mode">
             <label class="trip-mode-card">
               <input type="radio" name="tripMode" value="single" checked />
-              <span>One city</span>
-              <small>Plan one destination in detail.</small>
+              <span data-i18n="oneCity">One city</span>
+              <small data-i18n="tripModeDescSingle">Plan one destination in detail.</small>
             </label>
 
             <label class="trip-mode-card">
               <input type="radio" name="tripMode" value="same-country" />
-              <span>One country, multiple cities</span>
-              <small>Add more cities from the same country.</small>
+              <span data-i18n="sameCountry">One country, multiple cities</span>
+              <small data-i18n="tripModeDescSameCountry">Add more cities from the same country.</small>
             </label>
 
             <label class="trip-mode-card">
               <input type="radio" name="tripMode" value="multi-country" />
-              <span>Multiple countries / cities</span>
-              <small>Combine stops from different countries.</small>
+              <span data-i18n="multiCountry">Multiple countries / cities</span>
+              <small data-i18n="tripModeDescMultiCountry">Combine stops from different countries.</small>
             </label>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="country">Country</label>
+          <label for="country" data-i18n="country">Country</label>
           <select id="country" required>
-            <option value="">Choose a country</option>
-            <option value="mexico">Mexico</option>
-            <option value="usa">United States</option>
-            <option value="france">France</option>
-            <option value="uk">United Kingdom</option>
-            <option value="italy">Italy</option>
-            <option value="spain">Spain</option>
-            <option value="japan">Japan</option>
-            <option value="south-korea">South Korea</option>
-            <option value="uae">United Arab Emirates</option>
-            <option value="argentina">Argentina</option>
-            <option value="peru">Peru</option>
-            <option value="colombia">Colombia</option>
-            <option value="australia">Australia</option>
+            <option value="" data-i18n="chooseCountry">Choose a country</option>
+            <option value="mexico" data-i18n="countryMexico">Mexico</option>
+            <option value="usa" data-i18n="countryUsa">United States</option>
+            <option value="france" data-i18n="countryFrance">France</option>
+            <option value="uk" data-i18n="countryUk">United Kingdom</option>
+            <option value="italy" data-i18n="countryItaly">Italy</option>
+            <option value="spain" data-i18n="countrySpain">Spain</option>
+            <option value="japan" data-i18n="countryJapan">Japan</option>
+            <option value="south-korea" data-i18n="countrySouthKorea">South Korea</option>
+            <option value="uae" data-i18n="countryUae">United Arab Emirates</option>
+            <option value="argentina" data-i18n="countryArgentina">Argentina</option>
+            <option value="peru" data-i18n="countryPeru">Peru</option>
+            <option value="colombia" data-i18n="countryColombia">Colombia</option>
+            <option value="australia" data-i18n="countryAustralia">Australia</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="destination">City</label>
+          <label for="destination" data-i18n="city">City</label>
           <select id="destination" required>
             <option value="">Choose a country first</option>
           </select>
@@ -162,107 +162,107 @@
               <label id="multiCityPanelTitle">Additional cities</label>
               <p id="multiCityPanelText">Add more stops if your trip includes multiple destinations.</p>
             </div>
-            <button type="button" class="btn secondary small-btn" id="addCityButton">Add city</button>
+            <button type="button" class="btn secondary small-btn" id="addCityButton" data-i18n="addCity">Add city</button>
           </div>
 
           <div class="multi-city-list" id="multiCityList"></div>
         </div>
 
         <div class="form-group">
-          <label for="startDate">Departure date</label>
+          <label for="startDate" data-i18n="departureDate">Departure date</label>
           <input type="date" id="startDate" required />
         </div>
 
         <div class="form-group">
-          <label for="endDate">Return date</label>
+          <label for="endDate" data-i18n="returnDateLabel">Return date</label>
           <input type="date" id="endDate" required />
         </div>
 
         <div class="form-group">
-          <label for="budget">Budget</label>
-          <input type="text" id="budget" placeholder="Example: $500 USD or flexible" />
+          <label for="budget" data-i18n="budget">Budget</label>
+          <input type="text" id="budget" data-i18n-placeholder="budgetPlaceholder" placeholder="Example: $500 USD or flexible" />
         </div>
 
         <div class="form-group">
-          <label for="style">Travel style</label>
+          <label for="style" data-i18n="travelStyleLabel">Travel style</label>
           <select id="style" required>
-            <option value="">Choose one</option>
-            <option value="culture">Culture & History</option>
-            <option value="food">Foodie Experience</option>
-            <option value="adventure">Adventure</option>
-            <option value="relax">Relax & Wellness</option>
-            <option value="romantic">Romantic Getaway</option>
-            <option value="luxury">Luxury Travel</option>
-            <option value="nightlife">Nightlife</option>
-            <option value="family">Family Friendly</option>
-            <option value="nature">Nature & Outdoors</option>
-            <option value="shopping">Shopping</option>
-            <option value="business">Business</option>
-            <option value="solo">Solo Travel</option>
-            <option value="photography">Photography Spots</option>
+            <option value="" data-i18n="chooseOne">Choose one</option>
+            <option value="culture" data-i18n="styleCulture">Culture & History</option>
+            <option value="food" data-i18n="styleFood">Foodie Experience</option>
+            <option value="adventure" data-i18n="styleAdventure">Adventure</option>
+            <option value="relax" data-i18n="styleRelax">Relax & Wellness</option>
+            <option value="romantic" data-i18n="styleRomantic">Romantic Getaway</option>
+            <option value="luxury" data-i18n="styleLuxury">Luxury Travel</option>
+            <option value="nightlife" data-i18n="styleNightlife">Nightlife</option>
+            <option value="family" data-i18n="styleFamily">Family Friendly</option>
+            <option value="nature" data-i18n="styleNature">Nature & Outdoors</option>
+            <option value="shopping" data-i18n="styleShopping">Shopping</option>
+            <option value="business" data-i18n="styleBusiness">Business</option>
+            <option value="solo" data-i18n="styleSolo">Solo Travel</option>
+            <option value="photography" data-i18n="stylePhotography">Photography Spots</option>
           </select>
         </div>
 
         <div class="form-group full-width">
-          <label>Interests</label>
+          <label data-i18n="interestsLabel">Interests</label>
 
           <div class="choice-grid" id="interests">
-            <button type="button" class="choice-btn" data-value="museums">🏛 Museums</button>
-            <button type="button" class="choice-btn" data-value="local food">🍜 Local food</button>
-            <button type="button" class="choice-btn" data-value="coffee">☕ Coffee shops</button>
-            <button type="button" class="choice-btn" data-value="nightlife">🌃 Nightlife</button>
-            <button type="button" class="choice-btn" data-value="nature">🌿 Nature</button>
-            <button type="button" class="choice-btn" data-value="beaches">🏖 Beaches</button>
-            <button type="button" class="choice-btn" data-value="shopping">🛍 Shopping</button>
-            <button type="button" class="choice-btn" data-value="history">📜 History</button>
-            <button type="button" class="choice-btn" data-value="photography">📸 Photography</button>
-            <button type="button" class="choice-btn" data-value="hidden gems">✨ Hidden gems</button>
-            <button type="button" class="choice-btn" data-value="hiking">🥾 Hiking</button>
-            <button type="button" class="choice-btn" data-value="architecture">🏰 Architecture</button>
-            <button type="button" class="choice-btn" data-value="art">🎨 Art</button>
-            <button type="button" class="choice-btn" data-value="music">🎵 Live music</button>
-            <button type="button" class="choice-btn" data-value="festivals">🎉 Festivals</button>
-            <button type="button" class="choice-btn" data-value="wine">🍷 Wine tasting</button>
-            <button type="button" class="choice-btn" data-value="sports">⚽ Sports</button>
-            <button type="button" class="choice-btn" data-value="theme parks">🎢 Theme parks</button>
-            <button type="button" class="choice-btn" data-value="luxury">💎 Luxury experiences</button>
-            <button type="button" class="choice-btn" data-value="spa">🧖 Spa</button>
-            <button type="button" class="choice-btn" data-value="road trips">🚗 Road trips</button>
-            <button type="button" class="choice-btn" data-value="camping">🏕 Camping</button>
-            <button type="button" class="choice-btn" data-value="wildlife">🦁 Wildlife</button>
-            <button type="button" class="choice-btn" data-value="diving">🤿 Diving</button>
-            <button type="button" class="choice-btn" data-value="ski">⛷ Ski</button>
-            <button type="button" class="choice-btn" data-value="markets">🛒 Markets</button>
-            <button type="button" class="choice-btn" data-value="street food">🌮 Street food</button>
-            <button type="button" class="choice-btn" data-value="romance">❤️ Romance</button>
-            <button type="button" class="choice-btn" data-value="family">👨‍👩‍👧 Family fun</button>
-            <button type="button" class="choice-btn" data-value="adrenaline">🔥 Adrenaline</button>
+            <button type="button" class="choice-btn" data-value="museums" data-i18n="interestMuseums">🏛 Museums</button>
+            <button type="button" class="choice-btn" data-value="local food" data-i18n="interestLocalFood">🍜 Local food</button>
+            <button type="button" class="choice-btn" data-value="coffee" data-i18n="interestCoffee">☕ Coffee shops</button>
+            <button type="button" class="choice-btn" data-value="nightlife" data-i18n="interestNightlifeBtn">🌃 Nightlife</button>
+            <button type="button" class="choice-btn" data-value="nature" data-i18n="interestNatureBtn">🌿 Nature</button>
+            <button type="button" class="choice-btn" data-value="beaches" data-i18n="interestBeaches">🏖 Beaches</button>
+            <button type="button" class="choice-btn" data-value="shopping" data-i18n="interestShoppingBtn">🛍 Shopping</button>
+            <button type="button" class="choice-btn" data-value="history" data-i18n="interestHistory">📜 History</button>
+            <button type="button" class="choice-btn" data-value="photography" data-i18n="interestPhotographyBtn">📸 Photography</button>
+            <button type="button" class="choice-btn" data-value="hidden gems" data-i18n="interestHiddenGems">✨ Hidden gems</button>
+            <button type="button" class="choice-btn" data-value="hiking" data-i18n="interestHiking">🥾 Hiking</button>
+            <button type="button" class="choice-btn" data-value="architecture" data-i18n="interestArchitecture">🏰 Architecture</button>
+            <button type="button" class="choice-btn" data-value="art" data-i18n="interestArt">🎨 Art</button>
+            <button type="button" class="choice-btn" data-value="music" data-i18n="interestMusic">🎵 Live music</button>
+            <button type="button" class="choice-btn" data-value="festivals" data-i18n="interestFestivals">🎉 Festivals</button>
+            <button type="button" class="choice-btn" data-value="wine" data-i18n="interestWine">🍷 Wine tasting</button>
+            <button type="button" class="choice-btn" data-value="sports" data-i18n="interestSports">⚽ Sports</button>
+            <button type="button" class="choice-btn" data-value="theme parks" data-i18n="interestThemeParks">🎢 Theme parks</button>
+            <button type="button" class="choice-btn" data-value="luxury" data-i18n="interestLuxuryBtn">💎 Luxury experiences</button>
+            <button type="button" class="choice-btn" data-value="spa" data-i18n="interestSpa">🧖 Spa</button>
+            <button type="button" class="choice-btn" data-value="road trips" data-i18n="interestRoadTrips">🚗 Road trips</button>
+            <button type="button" class="choice-btn" data-value="camping" data-i18n="interestCamping">🏕 Camping</button>
+            <button type="button" class="choice-btn" data-value="wildlife" data-i18n="interestWildlife">🦁 Wildlife</button>
+            <button type="button" class="choice-btn" data-value="diving" data-i18n="interestDiving">🤿 Diving</button>
+            <button type="button" class="choice-btn" data-value="ski" data-i18n="interestSki">⛷ Ski</button>
+            <button type="button" class="choice-btn" data-value="markets" data-i18n="interestMarkets">🛒 Markets</button>
+            <button type="button" class="choice-btn" data-value="street food" data-i18n="interestStreetFood">🌮 Street food</button>
+            <button type="button" class="choice-btn" data-value="romance" data-i18n="interestRomance">❤️ Romance</button>
+            <button type="button" class="choice-btn" data-value="family" data-i18n="interestFamilyFun">👨‍👩‍👧 Family fun</button>
+            <button type="button" class="choice-btn" data-value="adrenaline" data-i18n="interestAdrenaline">🔥 Adrenaline</button>
           </div>
         </div>
 
         <div class="form-group full-width">
-          <label>Important amenities</label>
+          <label data-i18n="amenitiesLabel">Important amenities</label>
 
           <div class="choice-grid" id="amenities">
-            <button type="button" class="choice-btn" data-value="public transport">🚇 Public transport</button>
-            <button type="button" class="choice-btn" data-value="restaurants nearby">🍽 Restaurants nearby</button>
-            <button type="button" class="choice-btn" data-value="pharmacies nearby">💊 Pharmacies nearby</button>
-            <button type="button" class="choice-btn" data-value="safe areas">🛡 Safe areas</button>
-            <button type="button" class="choice-btn" data-value="wifi">📶 WiFi</button>
-            <button type="button" class="choice-btn" data-value="parking">🅿 Parking</button>
-            <button type="button" class="choice-btn" data-value="gym">🏋️ Gym</button>
-            <button type="button" class="choice-btn" data-value="pool">🏊 Pool</button>
-            <button type="button" class="choice-btn" data-value="pet friendly">🐶 Pet friendly</button>
-            <button type="button" class="choice-btn" data-value="airport access">✈️ Airport access</button>
-            <button type="button" class="choice-btn" data-value="walkable area">🚶 Walkable area</button>
-            <button type="button" class="choice-btn" data-value="family friendly">👨‍👩‍👧 Family friendly</button>
-            <button type="button" class="choice-btn" data-value="coworking nearby">💻 Coworking nearby</button>
-            <button type="button" class="choice-btn" data-value="ocean view">🌊 Ocean view</button>
-            <button type="button" class="choice-btn" data-value="city center">🏙 City center</button>
+            <button type="button" class="choice-btn" data-value="public transport" data-i18n="amenityPublicTransport">🚇 Public transport</button>
+            <button type="button" class="choice-btn" data-value="restaurants nearby" data-i18n="amenityRestaurantsNearby">🍽 Restaurants nearby</button>
+            <button type="button" class="choice-btn" data-value="pharmacies nearby" data-i18n="amenityPharmaciesNearby">💊 Pharmacies nearby</button>
+            <button type="button" class="choice-btn" data-value="safe areas" data-i18n="amenitySafeAreas">🛡 Safe areas</button>
+            <button type="button" class="choice-btn" data-value="wifi" data-i18n="amenityWifi">📶 WiFi</button>
+            <button type="button" class="choice-btn" data-value="parking" data-i18n="amenityParking">🅿 Parking</button>
+            <button type="button" class="choice-btn" data-value="gym" data-i18n="amenityGym">🏋️ Gym</button>
+            <button type="button" class="choice-btn" data-value="pool" data-i18n="amenityPool">🏊 Pool</button>
+            <button type="button" class="choice-btn" data-value="pet friendly" data-i18n="amenityPetFriendly">🐶 Pet friendly</button>
+            <button type="button" class="choice-btn" data-value="airport access" data-i18n="amenityAirportAccess">✈️ Airport access</button>
+            <button type="button" class="choice-btn" data-value="walkable area" data-i18n="amenityWalkableArea">🚶 Walkable area</button>
+            <button type="button" class="choice-btn" data-value="family friendly" data-i18n="amenityFamilyFriendly">👨‍👩‍👧 Family friendly</button>
+            <button type="button" class="choice-btn" data-value="coworking nearby" data-i18n="amenityCoworkingNearby">💻 Coworking nearby</button>
+            <button type="button" class="choice-btn" data-value="ocean view" data-i18n="amenityOceanView">🌊 Ocean view</button>
+            <button type="button" class="choice-btn" data-value="city center" data-i18n="amenityCityCenter">🏙 City center</button>
           </div>
         </div>
 
-        <button type="submit" class="btn primary full-width">
+        <button type="submit" class="btn primary full-width" data-i18n="generateButton">
           Generate itinerary preview
         </button>
       </form>
@@ -270,9 +270,9 @@
 
     <section id="results" class="results hidden">
       <div class="section-header">
-        <p class="tagline">Generated preview</p>
-        <h2>Your smart travel itinerary</h2>
-        <p>
+        <p class="tagline" data-i18n="generatedPreview">Generated preview</p>
+        <h2 data-i18n="smartTitle">Your smart travel itinerary</h2>
+        <p data-i18n="smartIntro">
           TripMind AI combines your destination, dates, budget, travel style, interests,
           and nearby place data to create a personalized itinerary preview.
         </p>
@@ -286,27 +286,27 @@
     </section>
 
     <section id="about" class="about">
-      <h2>Why this project matters</h2>
-      <p>
+      <h2 data-i18n="aboutHeading">Why this project matters</h2>
+      <p data-i18n="aboutIntro">
         This project combines front-end development, artificial intelligence,
         user-centered design, budget optimization, and travel recommendation systems.
         It is designed as both a class project and a portfolio-ready product.
       </p>
       <div class="about-grid">
         <article>
-          <h3>Built for real users</h3>
-          <p>The interface focuses on clarity, fast decisions, and realistic travel planning flows.</p>
+          <h3 data-i18n="aboutBuiltTitle">Built for real users</h3>
+          <p data-i18n="aboutBuiltBody">The interface focuses on clarity, fast decisions, and realistic travel planning flows.</p>
         </article>
         <article>
-          <h3>Designed for growth</h3>
-          <p>The project can grow into saved trips, richer APIs, multi-city travel, and live flight data.</p>
+          <h3 data-i18n="aboutGrowthTitle">Designed for growth</h3>
+          <p data-i18n="aboutGrowthBody">The project can grow into saved trips, richer APIs, multi-city travel, and live flight data.</p>
         </article>
       </div>
     </section>
   </main>
 
   <footer>
-    <p>Built by José · TripMind AI Project</p>
+    <p data-i18n="footerCredit">Built by José · TripMind AI Project</p>
   </footer>
 
   <script src="config.js"></script>

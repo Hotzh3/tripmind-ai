@@ -132,7 +132,222 @@ const translations = {
     currencyMessage: "Currency set to",
     regenerateMessage: "Generate the itinerary again to update estimates.",
     remove: "Remove",
-    addCity: "Add city"
+    addCity: "Add city",
+    navFeatures: "Features",
+    navPlanner: "Planner",
+    navResults: "Results",
+    navAbout: "About",
+    navLanguage: "Language",
+    navCurrency: "Currency",
+    heroTagline: "AI-powered travel planning",
+    heroTitle: "Plan smarter trips based on your budget, location, and preferences.",
+    heroDescription:
+      "TripMind AI helps travelers create personalized itineraries using budget analysis, nearby amenities, travel style, and intelligent recommendations.",
+    heroCtaPrimary: "Start planning",
+    heroCtaSecondary: "Explore features",
+    heroCardTitle: "Example travel plan",
+    heroCardDestinationLabel: "Destination:",
+    heroCardDestinationExample: "Mexico City",
+    heroCardBudgetLabel: "Budget:",
+    heroCardStyleLabel: "Style:",
+    heroCardStyleExample: "Culture + Food",
+    heroCardResultLabel: "Result:",
+    heroCardResultExample: "3-day optimized itinerary",
+    featuresHeading: "What the app does",
+    featureBudgetTitle: "Budget intelligence",
+    featureBudgetBody:
+      "The app adapts suggestions to a budget range and surfaces low-cost, balanced, and premium-style options.",
+    featureItineraryTitle: "Personalized itineraries",
+    featureItineraryBody:
+      "Day-by-day plans combine your preferences, trip length, travel style, and interests.",
+    featureLocationTitle: "Location awareness",
+    featureLocationBody:
+      "Nearby restaurants, transport, pharmacies, attractions, and safer areas inform each preview.",
+    tripModeDescSingle: "Plan one destination in detail.",
+    tripModeDescSameCountry: "Add more cities from the same country.",
+    tripModeDescMultiCountry: "Combine stops from different countries.",
+    countryMexico: "Mexico",
+    countryUsa: "United States",
+    countryFrance: "France",
+    countryUk: "United Kingdom",
+    countryItaly: "Italy",
+    countrySpain: "Spain",
+    countryJapan: "Japan",
+    countrySouthKorea: "South Korea",
+    countryUae: "United Arab Emirates",
+    countryArgentina: "Argentina",
+    countryPeru: "Peru",
+    countryColombia: "Colombia",
+    countryAustralia: "Australia",
+    styleCulture: "Culture & History",
+    styleFood: "Foodie Experience",
+    styleAdventure: "Adventure",
+    styleRelax: "Relax & Wellness",
+    styleRomantic: "Romantic Getaway",
+    styleLuxury: "Luxury Travel",
+    styleNightlife: "Nightlife",
+    styleFamily: "Family Friendly",
+    styleNature: "Nature & Outdoors",
+    styleShopping: "Shopping",
+    styleBusiness: "Business",
+    styleSolo: "Solo Travel",
+    stylePhotography: "Photography Spots",
+    interestMuseums: "🏛 Museums",
+    interestLocalFood: "🍜 Local food",
+    interestCoffee: "☕ Coffee shops",
+    interestNightlifeBtn: "🌃 Nightlife",
+    interestNatureBtn: "🌿 Nature",
+    interestBeaches: "🏖 Beaches",
+    interestShoppingBtn: "🛍 Shopping",
+    interestHistory: "📜 History",
+    interestPhotographyBtn: "📸 Photography",
+    interestHiddenGems: "✨ Hidden gems",
+    interestHiking: "🥾 Hiking",
+    interestArchitecture: "🏰 Architecture",
+    interestArt: "🎨 Art",
+    interestMusic: "🎵 Live music",
+    interestFestivals: "🎉 Festivals",
+    interestWine: "🍷 Wine tasting",
+    interestSports: "⚽ Sports",
+    interestThemeParks: "🎢 Theme parks",
+    interestLuxuryBtn: "💎 Luxury experiences",
+    interestSpa: "🧖 Spa",
+    interestRoadTrips: "🚗 Road trips",
+    interestCamping: "🏕 Camping",
+    interestWildlife: "🦁 Wildlife",
+    interestDiving: "🤿 Diving",
+    interestSki: "⛷ Ski",
+    interestMarkets: "🛒 Markets",
+    interestStreetFood: "🌮 Street food",
+    interestRomance: "❤️ Romance",
+    interestFamilyFun: "👨‍👩‍👧 Family fun",
+    interestAdrenaline: "🔥 Adrenaline",
+    amenityPublicTransport: "🚇 Public transport",
+    amenityRestaurantsNearby: "🍽 Restaurants nearby",
+    amenityPharmaciesNearby: "💊 Pharmacies nearby",
+    amenitySafeAreas: "🛡 Safe areas",
+    amenityWifi: "📶 WiFi",
+    amenityParking: "🅿 Parking",
+    amenityGym: "🏋️ Gym",
+    amenityPool: "🏊 Pool",
+    amenityPetFriendly: "🐶 Pet friendly",
+    amenityAirportAccess: "✈️ Airport access",
+    amenityWalkableArea: "🚶 Walkable area",
+    amenityFamilyFriendly: "👨‍👩‍👧 Family friendly",
+    amenityCoworkingNearby: "💻 Coworking nearby",
+    amenityOceanView: "🌊 Ocean view",
+    amenityCityCenter: "🏙 City center",
+    aboutHeading: "Why this project matters",
+    aboutIntro:
+      "This project combines front-end engineering, user-centered layout, budget-aware heuristics, and destination data. It works as a class deliverable and a portfolio-ready demo.",
+    aboutBuiltTitle: "Built for real users",
+    aboutBuiltBody: "The interface favors clarity, quick decisions, and realistic travel planning flows.",
+    aboutGrowthTitle: "Designed for growth",
+    aboutGrowthBody: "The codebase can extend toward saved trips, richer data sources, multi-city routing, and live transport APIs.",
+    footerCredit: "Built by José · TripMind AI Project",
+    areaCulture: "Historic center or museum district",
+    areaFood: "Food market district or restaurant zone",
+    areaAdventure: "Area close to outdoor activities",
+    areaRelax: "Quiet neighborhood near parks or wellness spots",
+    areaRomantic: "Scenic or boutique neighborhood",
+    areaLuxury: "Premium hotel zone",
+    areaNightlife: "Nightlife district",
+    areaFamily: "Safe central family-friendly area",
+    areaNature: "Area close to parks or nature routes",
+    areaShopping: "Shopping district",
+    areaBusiness: "Business district or coworking area",
+    areaSolo: "Walkable and safe central area",
+    areaPhotography: "Scenic district with viewpoints",
+    areaDefault: "Central and well-connected area",
+    nearbyLineRestaurants: "{destination} local restaurants",
+    nearbyLineTransport: "{destination} public transport access",
+    nearbyLineAttractions: "{destination} main attractions",
+    nearbyFallbackAmenities: "nearby cafés, pharmacies, and safe areas",
+    interestTipFood: "Add a local food stop between main activities to make the route feel more authentic.",
+    interestTipCulture: "Prioritize historic areas, museums, and walkable cultural districts.",
+    interestTipNature: "Keep part of the day open for outdoor time, viewpoints, or nature-based activities.",
+    interestTipShopping: "Include a shopping district, local boutiques, or a market during the afternoon.",
+    interestTipNightlife: "Save energy for the evening and choose a stay near nightlife or safe transportation.",
+    interestTipRomance: "Choose scenic places, slower pacing, and dinner spots with a special atmosphere.",
+    interestTipDefault: "Use the selected interests to balance iconic spots with personal experiences.",
+    amenityFragTransit: "stay close to metro, bus, or train access",
+    amenityFragRestaurants: "choose areas with food options within walking distance",
+    amenityFragPharmacy: "check for pharmacies near the hotel zone",
+    amenityFragSafe: "prioritize safe and well-lit neighborhoods",
+    amenityFragParking: "confirm parking before booking lodging",
+    amenityFragPet: "verify pet policies before reserving",
+    amenityTipNone: "No required amenity selected, so the plan keeps the location flexible.",
+    amenityTipFull: "Based on your amenities, {details}.",
+    fallbackPlaceNameCentral: "{destination} central area",
+    fallbackPlaceNameAttraction: "{destination} recommended attraction",
+    fallbackPlaceNameEvening: "{destination} evening area",
+    mainFocusLine: "{activity} in {destination}",
+    plan_default_morning: "Start the morning at {p1} to get familiar with the area.",
+    plan_default_afternoon: "Continue with {p2} as the main activity of the day.",
+    plan_default_evening: "Finish near {p3} with a slower evening plan.",
+    plan_culture_morning: "Start with a cultural visit around {p1}.",
+    plan_culture_afternoon: "Use the afternoon for {p2}, focusing on history, museums, or architecture.",
+    plan_culture_evening: "End near {p3} with a relaxed walk through a historic or central area.",
+    plan_food_morning: "Start with breakfast or coffee near {p1}.",
+    plan_food_afternoon: "Explore {p2} and add a local food stop nearby.",
+    plan_food_evening: "Finish near {p3} with dinner in a lively restaurant area.",
+    plan_relax_morning: "Begin slowly near {p1}, avoiding an overloaded schedule.",
+    plan_relax_afternoon: "Visit {p2} at a calm pace and leave room for rest.",
+    plan_relax_evening: "End near {p3} with a quiet dinner, cafe, or wellness activity.",
+    plan_adventure_morning: "Start early near {p1} to take advantage of daylight.",
+    plan_adventure_afternoon: "Use {p2} as the active or outdoor highlight of the day.",
+    plan_adventure_evening: "Finish near {p3} and keep the evening flexible for recovery.",
+    plan_shopping_morning: "Start near {p1} and check nearby boutiques or markets.",
+    plan_shopping_afternoon: "Dedicate the afternoon to {p2} as the main shopping or browsing stop.",
+    plan_shopping_evening: "Finish near {p3}, ideally close to food options and transportation.",
+    plan_evening_beach: "End the day near {p3}, leaving time for a beach walk or sunset view if available.",
+    plan_suffix_parking: " Confirm parking availability before moving between stops.",
+    plan_suffix_transit: " Prefer routes that stay close to public transportation.",
+    plan_suffix_pet: " Check pet-friendly access before arriving.",
+    itineraryCulture0: "Historic center",
+    itineraryCulture1: "Museum visit",
+    itineraryCulture2: "Local architecture walk",
+    itineraryFood0: "Local breakfast",
+    itineraryFood1: "Food market tour",
+    itineraryFood2: "Dinner at a recommended restaurant",
+    itineraryAdventure0: "Outdoor activity",
+    itineraryAdventure1: "Scenic viewpoint",
+    itineraryAdventure2: "Active afternoon experience",
+    itineraryRelax0: "Slow morning",
+    itineraryRelax1: "Spa or quiet cafe",
+    itineraryRelax2: "Sunset walk",
+    itineraryRomantic0: "Beautiful brunch spot",
+    itineraryRomantic1: "Couple-friendly attraction",
+    itineraryRomantic2: "Romantic dinner",
+    itineraryLuxury0: "Luxury hotel breakfast",
+    itineraryLuxury1: "Private city experience",
+    itineraryLuxury2: "Fine dining dinner",
+    itineraryNightlife0: "Late brunch",
+    itineraryNightlife1: "Trendy district walk",
+    itineraryNightlife2: "Nightlife experience",
+    itineraryFamily0: "Family attraction",
+    itineraryFamily1: "Relaxed lunch spot",
+    itineraryFamily2: "Easy evening walk",
+    itineraryNature0: "Nature walk",
+    itineraryNature1: "Scenic viewpoint",
+    itineraryNature2: "Outdoor sunset plan",
+    itineraryShopping0: "Shopping district",
+    itineraryShopping1: "Local boutiques",
+    itineraryShopping2: "Mall or market visit",
+    itineraryBusiness0: "Efficient breakfast",
+    itineraryBusiness1: "Coworking-friendly area",
+    itineraryBusiness2: "Short evening activity",
+    itinerarySolo0: "Walkable neighborhood",
+    itinerarySolo1: "Museum or cafe",
+    itinerarySolo2: "Safe evening plan",
+    itineraryPhotography0: "Iconic photo spot",
+    itineraryPhotography1: "Architecture walk",
+    itineraryPhotography2: "Golden hour viewpoint",
+    destInterestFallback: "your selected interests",
+    destAmenityFallback: "your preferred amenities",
+    destWikiFallback: "{city} is the selected destination for this TripMind AI itinerary.",
+    destNarrativeTail:
+      "For this trip, TripMind AI uses your {style} travel style, {interestText}, and {amenityText} to shape a route that feels more personal than a generic travel list. The itinerary below combines destination context, nearby place data, stay options, budget level, and daily pacing so each day has a clear focus while still leaving room for flexibility, food, rest, and spontaneous discoveries."
   },
   es: {
     oneCity: "Una ciudad",
@@ -234,7 +449,222 @@ const translations = {
     currencyMessage: "Moneda cambiada a",
     regenerateMessage: "Genera el itinerario otra vez para actualizar los estimados.",
     remove: "Eliminar",
-    addCity: "Agregar ciudad"
+    addCity: "Agregar ciudad",
+    navFeatures: "Funciones",
+    navPlanner: "Planificador",
+    navResults: "Resultados",
+    navAbout: "Acerca de",
+    navLanguage: "Idioma",
+    navCurrency: "Moneda",
+    heroTagline: "Planificación de viajes asistida",
+    heroTitle: "Planifica viajes más inteligentes según tu presupuesto, destino y preferencias.",
+    heroDescription:
+      "TripMind AI ayuda a crear itinerarios personalizados con análisis de presupuesto, comodidades cercanas, estilo de viaje y recomendaciones contextuales.",
+    heroCtaPrimary: "Empezar a planear",
+    heroCtaSecondary: "Ver funciones",
+    heroCardTitle: "Ejemplo de plan",
+    heroCardDestinationLabel: "Destino:",
+    heroCardDestinationExample: "Ciudad de México",
+    heroCardBudgetLabel: "Presupuesto:",
+    heroCardStyleLabel: "Estilo:",
+    heroCardStyleExample: "Cultura + gastronomía",
+    heroCardResultLabel: "Resultado:",
+    heroCardResultExample: "Itinerario optimizado de 3 días",
+    featuresHeading: "Qué hace la app",
+    featureBudgetTitle: "Inteligencia de presupuesto",
+    featureBudgetBody:
+      "La app adapta sugerencias a un rango de presupuesto y muestra opciones económicas, equilibradas y tipo premium.",
+    featureItineraryTitle: "Itinerarios personalizados",
+    featureItineraryBody:
+      "Planes día a día que combinan preferencias, duración, estilo de viaje e intereses.",
+    featureLocationTitle: "Contexto de ubicación",
+    featureLocationBody:
+      "Restaurantes, transporte, farmacias, atracciones y zonas consideradas seguras informan cada vista previa.",
+    tripModeDescSingle: "Planea un destino con detalle.",
+    tripModeDescSameCountry: "Agrega más ciudades del mismo país.",
+    tripModeDescMultiCountry: "Combina paradas de diferentes países.",
+    countryMexico: "México",
+    countryUsa: "Estados Unidos",
+    countryFrance: "Francia",
+    countryUk: "Reino Unido",
+    countryItaly: "Italia",
+    countrySpain: "España",
+    countryJapan: "Japón",
+    countrySouthKorea: "Corea del Sur",
+    countryUae: "Emiratos Árabes Unidos",
+    countryArgentina: "Argentina",
+    countryPeru: "Perú",
+    countryColombia: "Colombia",
+    countryAustralia: "Australia",
+    styleCulture: "Cultura e historia",
+    styleFood: "Experiencia gastronómica",
+    styleAdventure: "Aventura",
+    styleRelax: "Relax y bienestar",
+    styleRomantic: "Escape romántico",
+    styleLuxury: "Viaje de lujo",
+    styleNightlife: "Vida nocturna",
+    styleFamily: "Familiar",
+    styleNature: "Naturaleza y aire libre",
+    styleShopping: "Compras",
+    styleBusiness: "Negocios",
+    styleSolo: "Viaje en solitario",
+    stylePhotography: "Lugares fotográficos",
+    interestMuseums: "🏛 Museos",
+    interestLocalFood: "🍜 Comida local",
+    interestCoffee: "☕ Cafeterías",
+    interestNightlifeBtn: "🌃 Vida nocturna",
+    interestNatureBtn: "🌿 Naturaleza",
+    interestBeaches: "🏖 Playas",
+    interestShoppingBtn: "🛍 Compras",
+    interestHistory: "📜 Historia",
+    interestPhotographyBtn: "📸 Fotografía",
+    interestHiddenGems: "✨ Joyas ocultas",
+    interestHiking: "🥾 Senderismo",
+    interestArchitecture: "🏰 Arquitectura",
+    interestArt: "🎨 Arte",
+    interestMusic: "🎵 Música en vivo",
+    interestFestivals: "🎉 Festivales",
+    interestWine: "🍷 Cata de vinos",
+    interestSports: "⚽ Deportes",
+    interestThemeParks: "🎢 Parques temáticos",
+    interestLuxuryBtn: "💎 Experiencias de lujo",
+    interestSpa: "🧖 Spa",
+    interestRoadTrips: "🚗 Road trips",
+    interestCamping: "🏕 Camping",
+    interestWildlife: "🦁 Vida salvaje",
+    interestDiving: "🤿 Buceo",
+    interestSki: "⛷ Esquí",
+    interestMarkets: "🛒 Mercados",
+    interestStreetFood: "🌮 Comida callejera",
+    interestRomance: "❤️ Romance",
+    interestFamilyFun: "👨‍👩‍👧 Diversión familiar",
+    interestAdrenaline: "🔥 Adrenalina",
+    amenityPublicTransport: "🚇 Transporte público",
+    amenityRestaurantsNearby: "🍽 Restaurantes cercanos",
+    amenityPharmaciesNearby: "💊 Farmacias cercanas",
+    amenitySafeAreas: "🛡 Zonas seguras",
+    amenityWifi: "📶 WiFi",
+    amenityParking: "🅿 Estacionamiento",
+    amenityGym: "🏋️ Gimnasio",
+    amenityPool: "🏊 Piscina",
+    amenityPetFriendly: "🐶 Admite mascotas",
+    amenityAirportAccess: "✈️ Acceso al aeropuerto",
+    amenityWalkableArea: "🚶 Zona caminable",
+    amenityFamilyFriendly: "👨‍👩‍👧 Familiar",
+    amenityCoworkingNearby: "💻 Coworking cercano",
+    amenityOceanView: "🌊 Vista al mar",
+    amenityCityCenter: "🏙 Centro de la ciudad",
+    aboutHeading: "Por qué importa este proyecto",
+    aboutIntro:
+      "Combina ingeniería front-end, diseño centrado en el usuario, heurísticas de presupuesto y datos de destino. Sirve como entrega académica y demo de portafolio.",
+    aboutBuiltTitle: "Pensado para usuarios reales",
+    aboutBuiltBody: "La interfaz prioriza claridad, decisiones rápidas y flujos de planificación realistas.",
+    aboutGrowthTitle: "Preparado para crecer",
+    aboutGrowthBody: "La base puede extenderse a viajes guardados, más fuentes de datos, rutas multi-ciudad y APIs de transporte en vivo.",
+    footerCredit: "Por José · Proyecto TripMind AI",
+    areaCulture: "Centro histórico o distrito de museos",
+    areaFood: "Distrito de mercados o zona de restaurantes",
+    areaAdventure: "Zona cerca de actividades al aire libre",
+    areaRelax: "Barrio tranquilo cerca de parques o bienestar",
+    areaRomantic: "Barrio pintoresco o boutique",
+    areaLuxury: "Zona de hoteles premium",
+    areaNightlife: "Distrito nocturno",
+    areaFamily: "Zona céntrica y segura para familias",
+    areaNature: "Zona cerca de parques o rutas naturales",
+    areaShopping: "Distrito de compras",
+    areaBusiness: "Distrito de negocios o coworking",
+    areaSolo: "Zona céntrica caminable y segura",
+    areaPhotography: "Distrito panorámico con miradores",
+    areaDefault: "Zona céntrica y bien conectada",
+    nearbyLineRestaurants: "Restaurantes locales en {destination}",
+    nearbyLineTransport: "Acceso a transporte público en {destination}",
+    nearbyLineAttractions: "Atracciones principales de {destination}",
+    nearbyFallbackAmenities: "cafeterías, farmacias y zonas seguras cercanas",
+    interestTipFood: "Añade una parada de comida local entre actividades para un recorrido más auténtico.",
+    interestTipCulture: "Prioriza zonas históricas, museos y distritos culturales caminables.",
+    interestTipNature: "Deja parte del día libre para el aire libre, miradores o naturaleza.",
+    interestTipShopping: "Incluye un distrito de compras, boutiques o un mercado por la tarde.",
+    interestTipNightlife: "Reserva energía por la noche y elige hospedaje cerca de la vida nocturna o transporte seguro.",
+    interestTipRomance: "Elige lugares pintorescos, ritmo pausado y cenas con buen ambiente.",
+    interestTipDefault: "Usa los intereses para equilibrar lugares icónicos y experiencias personales.",
+    amenityFragTransit: "permanecer cerca de metro, autobús o tren",
+    amenityFragRestaurants: "elegir zonas con comida a poca distancia",
+    amenityFragPharmacy: "verificar farmacias cerca de la zona hotelera",
+    amenityFragSafe: "priorizar barrios seguros e iluminados",
+    amenityFragParking: "confirmar estacionamiento antes de reservar hospedaje",
+    amenityFragPet: "verificar políticas de mascotas antes de reservar",
+    amenityTipNone: "No hay comodidades obligatorias; el plan mantiene la ubicación flexible.",
+    amenityTipFull: "Según tus comodidades: {details}.",
+    fallbackPlaceNameCentral: "zona céntrica de {destination}",
+    fallbackPlaceNameAttraction: "atracción recomendada en {destination}",
+    fallbackPlaceNameEvening: "zona nocturna en {destination}",
+    mainFocusLine: "{activity} en {destination}",
+    plan_default_morning: "Empieza la mañana en {p1} para conocer la zona.",
+    plan_default_afternoon: "Continúa con {p2} como actividad principal del día.",
+    plan_default_evening: "Termina cerca de {p3} con un plan de noche más relajado.",
+    plan_culture_morning: "Comienza con una visita cultural alrededor de {p1}.",
+    plan_culture_afternoon: "Usa la tarde para {p2}, enfocándote en historia, museos o arquitectura.",
+    plan_culture_evening: "Cierra cerca de {p3} con un paseo relajado por el centro o una zona histórica.",
+    plan_food_morning: "Empieza con desayuno o café cerca de {p1}.",
+    plan_food_afternoon: "Explora {p2} y añade una parada gastronómica cercana.",
+    plan_food_evening: "Termina cerca de {p3} con cena en una zona animada de restaurantes.",
+    plan_relax_morning: "Empieza despacio cerca de {p1}, sin saturar el día.",
+    plan_relax_afternoon: "Visita {p2} con calma y deja tiempo para descansar.",
+    plan_relax_evening: "Cierra cerca de {p3} con cena tranquila, café o bienestar.",
+    plan_adventure_morning: "Sal temprano cerca de {p1} para aprovechar la luz del día.",
+    plan_adventure_afternoon: "Usa {p2} como lo más activo o al aire libre del día.",
+    plan_adventure_evening: "Termina cerca de {p3} y mantén la noche flexible para recuperarte.",
+    plan_shopping_morning: "Empieza cerca de {p1} y revisa boutiques o mercados.",
+    plan_shopping_afternoon: "Dedica la tarde a {p2} como parada principal de compras.",
+    plan_shopping_evening: "Cierra cerca de {p3}, idealmente con comida y transporte cerca.",
+    plan_evening_beach: "Termina el día cerca de {p3}, dejando tiempo para playa o atardecer si aplica.",
+    plan_suffix_parking: " Confirma estacionamiento antes de moverte entre paradas.",
+    plan_suffix_transit: " Prefiere rutas cerca del transporte público.",
+    plan_suffix_pet: " Verifica acceso pet-friendly antes de llegar.",
+    itineraryCulture0: "Centro histórico",
+    itineraryCulture1: "Visita a museo",
+    itineraryCulture2: "Paseo de arquitectura local",
+    itineraryFood0: "Desayuno local",
+    itineraryFood1: "Tour por mercado de comida",
+    itineraryFood2: "Cena en restaurante recomendado",
+    itineraryAdventure0: "Actividad al aire libre",
+    itineraryAdventure1: "Mirador panorámico",
+    itineraryAdventure2: "Experiencia activa por la tarde",
+    itineraryRelax0: "Mañana lenta",
+    itineraryRelax1: "Spa o café tranquilo",
+    itineraryRelax2: "Paseo al atardecer",
+    itineraryRomantic0: "Brunch especial",
+    itineraryRomantic1: "Atracción para parejas",
+    itineraryRomantic2: "Cena romántica",
+    itineraryLuxury0: "Desayuno de hotel de lujo",
+    itineraryLuxury1: "Experiencia privada en la ciudad",
+    itineraryLuxury2: "Cena gourmet",
+    itineraryNightlife0: "Brunch tardío",
+    itineraryNightlife1: "Paseo por distrito moderno",
+    itineraryNightlife2: "Salida nocturna",
+    itineraryFamily0: "Atracción familiar",
+    itineraryFamily1: "Almuerzo relajado",
+    itineraryFamily2: "Paseo nocturno fácil",
+    itineraryNature0: "Caminata en naturaleza",
+    itineraryNature1: "Mirador panorámico",
+    itineraryNature2: "Plan al atardecer al aire libre",
+    itineraryShopping0: "Distrito de compras",
+    itineraryShopping1: "Boutiques locales",
+    itineraryShopping2: "Centro comercial o mercado",
+    itineraryBusiness0: "Desayuno eficiente",
+    itineraryBusiness1: "Zona coworking",
+    itineraryBusiness2: "Actividad breve por la noche",
+    itinerarySolo0: "Barrio caminable",
+    itinerarySolo1: "Museo o café",
+    itinerarySolo2: "Plan nocturno seguro",
+    itineraryPhotography0: "Lugar icónico para fotos",
+    itineraryPhotography1: "Paseo arquitectónico",
+    itineraryPhotography2: "Hora dorada en mirador",
+    destInterestFallback: "tus intereses seleccionados",
+    destAmenityFallback: "tus comodidades preferidas",
+    destWikiFallback: "{city} es el destino elegido para este itinerario de TripMind AI.",
+    destNarrativeTail:
+      "Para este viaje, TripMind AI usa tu estilo {style}, {interestText} y {amenityText} para trazar una ruta más personal que una lista genérica. El itinerario a continuación combina contexto del destino, datos de lugares cercanos, opciones de hospedaje, nivel de presupuesto y ritmo diario para que cada día tenga un enfoque claro con espacio para flexibilidad, comida, descanso y descubrimientos espontáneos."
   },
   fr: {},
   it: {},
@@ -340,7 +770,48 @@ translations.fr = {
   currencyMessage: "Devise définie sur",
   regenerateMessage: "Générez à nouveau l'itinéraire pour mettre à jour les estimations.",
   remove: "Supprimer",
-  addCity: "Ajouter une ville"
+  addCity: "Ajouter une ville",
+  tripModeDescSingle: "Planifiez une destination en détail.",
+  tripModeDescSameCountry: "Ajoutez plus de villes du même pays.",
+  tripModeDescMultiCountry: "Combinez des étapes dans différents pays.",
+  navFeatures: "Fonctionnalités",
+  navPlanner: "Planificateur",
+  navResults: "Résultats",
+  navAbout: "À propos",
+  navLanguage: "Langue",
+  navCurrency: "Devise",
+  heroTagline: "Planification de voyage assistée",
+  heroTitle: "Planifiez des voyages plus intelligents selon votre budget, votre destination et vos préférences.",
+  heroDescription:
+    "TripMind AI aide à créer des itinéraires personnalisés avec analyse de budget, commodités à proximité, style de voyage et recommandations contextuelles.",
+  heroCtaPrimary: "Commencer",
+  heroCtaSecondary: "Découvrir les fonctions",
+  heroCardTitle: "Exemple de plan",
+  heroCardDestinationLabel: "Destination :",
+  heroCardDestinationExample: "Mexico",
+  heroCardBudgetLabel: "Budget :",
+  heroCardStyleLabel: "Style :",
+  heroCardStyleExample: "Culture + gastronomie",
+  heroCardResultLabel: "Résultat :",
+  heroCardResultExample: "Itinéraire optimisé sur 3 jours",
+  featuresHeading: "Ce que fait l'application",
+  featureBudgetTitle: "Intelligence budget",
+  featureBudgetBody:
+    "L'application adapte les suggestions à une fourchette de budget et propose des options économiques, équilibrées et haut de gamme.",
+  featureItineraryTitle: "Itinéraires personnalisés",
+  featureItineraryBody:
+    "Des plans jour par jour qui combinent préférences, durée, style de voyage et centres d'intérêt.",
+  featureLocationTitle: "Contexte géographique",
+  featureLocationBody:
+    "Restaurants, transport, pharmacies, attractions et zones considérées comme sûres enrichissent chaque aperçu.",
+  aboutHeading: "Pourquoi ce projet compte",
+  aboutIntro:
+    "Il combine ingénierie front-end, conception centrée utilisateur, heuristiques budgétaires et données de destination, pour un usage académique ou portfolio.",
+  aboutBuiltTitle: "Conçu pour de vrais utilisateurs",
+  aboutBuiltBody: "L'interface privilégie la clarté, des choix rapides et des parcours de planification réalistes.",
+  aboutGrowthTitle: "Prêt à évoluer",
+  aboutGrowthBody: "La base peut s'étendre vers des voyages enregistrés, plus de sources de données et des API de transport.",
+  footerCredit: "Par José · Projet TripMind AI"
 };
 
 translations.it = {
@@ -442,7 +913,49 @@ translations.it = {
   currencyMessage: "Valuta impostata su",
   regenerateMessage: "Genera di nuovo l'itinerario per aggiornare le stime.",
   remove: "Rimuovi",
-  addCity: "Aggiungi città"
+  addCity: "Aggiungi città",
+  tripModeDescSingle: "Pianifica una destinazione in dettaglio.",
+  tripModeDescSameCountry: "Aggiungi più città dello stesso paese.",
+  tripModeDescMultiCountry: "Combina tappe in paesi diversi.",
+  navFeatures: "Funzionalità",
+  navPlanner: "Pianificatore",
+  navResults: "Risultati",
+  navAbout: "Informazioni",
+  navLanguage: "Lingua",
+  navCurrency: "Valuta",
+  heroTagline: "Pianificazione viaggi assistita",
+  heroTitle: "Pianifica viaggi in modo più intelligente in base a budget, destinazione e preferenze.",
+  heroDescription:
+    "TripMind AI aiuta a creare itinerari personalizzati con analisi del budget, servizi vicini, stile di viaggio e suggerimenti contestuali.",
+  heroCtaPrimary: "Inizia a pianificare",
+  heroCtaSecondary: "Scopri le funzioni",
+  heroCardTitle: "Esempio di piano",
+  heroCardDestinationLabel: "Destinazione:",
+  heroCardDestinationExample: "Città del Messico",
+  heroCardBudgetLabel: "Budget:",
+  heroCardStyleLabel: "Stile:",
+  heroCardStyleExample: "Cultura + cibo",
+  heroCardResultLabel: "Risultato:",
+  heroCardResultExample: "Itinerario ottimizzato di 3 giorni",
+  featuresHeading: "Cosa fa l'app",
+  featureBudgetTitle: "Budget intelligente",
+  featureBudgetBody:
+    "L'app adatta i suggerimenti a una fascia di budget e propone opzioni economiche, bilanciate e premium.",
+  featureItineraryTitle: "Itinerari personalizzati",
+  featureItineraryBody:
+    "Piani giorno per giorno che combinano preferenze, durata, stile di viaggio e interessi.",
+  featureLocationTitle: "Consapevolezza del luogo",
+  featureLocationBody:
+    "Ristoranti, trasporti, farmacie, attrazioni e zone più sicure informano ogni anteprima.",
+  aboutHeading: "Perché questo progetto conta",
+  aboutIntro:
+    "Combina front-end, design centrato sull'utente, euristiche di budget e dati sulla destinazione, per un uso accademico o portfolio.",
+  aboutBuiltTitle: "Pensato per utenti reali",
+  aboutBuiltBody: "L'interfaccia privilegia chiarezza, decisioni rapide e flussi di pianificazione realistici.",
+  aboutGrowthTitle: "Progettato per crescere",
+  aboutGrowthBody:
+    "La base può estendersi a viaggi salvati, più fonti dati, routing multi-città e API di trasporto dal vivo.",
+  footerCredit: "Di José · Progetto TripMind AI"
 };
 
 translations.ja = {
@@ -544,7 +1057,49 @@ translations.ja = {
   currencyMessage: "通貨を設定しました:",
   regenerateMessage: "見積もりを更新するには旅程を再生成してください。",
   remove: "削除",
-  addCity: "都市を追加"
+  addCity: "都市を追加",
+  tripModeDescSingle: "1つの目的地を詳しく計画します。",
+  tripModeDescSameCountry: "同じ国の都市を追加します。",
+  tripModeDescMultiCountry: "異なる国のストップを組み合わせます。",
+  navFeatures: "機能",
+  navPlanner: "プランナー",
+  navResults: "結果",
+  navAbout: "概要",
+  navLanguage: "言語",
+  navCurrency: "通貨",
+  heroTagline: "旅行プラン支援",
+  heroTitle: "予算・行き先・好みに合わせて、より賢く旅行を計画。",
+  heroDescription:
+    "TripMind AI は予算感覚、周辺の利便施設、旅行スタイル、文脈に沿った提案でパーソナライズされた旅程のたたき台を作ります。",
+  heroCtaPrimary: "計画を始める",
+  heroCtaSecondary: "機能を見る",
+  heroCardTitle: "プラン例",
+  heroCardDestinationLabel: "目的地:",
+  heroCardDestinationExample: "メキシコシティ",
+  heroCardBudgetLabel: "予算:",
+  heroCardStyleLabel: "スタイル:",
+  heroCardStyleExample: "文化 + グルメ",
+  heroCardResultLabel: "結果:",
+  heroCardResultExample: "3日間の最適化旅程",
+  featuresHeading: "できること",
+  featureBudgetTitle: "予算に応じた提案",
+  featureBudgetBody:
+    "予算帯に合わせて提案を変え、お手頃・バランス・上質な雰囲気の選択肢を示します。",
+  featureItineraryTitle: "パーソナライズされた旅程",
+  featureItineraryBody:
+    "好み、滞在期間、旅行スタイル、興味を組み合わせた日帯ごとのプランです。",
+  featureLocationTitle: "ロケーションを意識",
+  featureLocationBody:
+    "周辺の飲食、交通、薬局、観光スポット、比較的安全なエリアの情報がプレビューに反映されます。",
+  aboutHeading: "このプロジェクトの意義",
+  aboutIntro:
+    "フロントエンド、ユーザー中心のレイアウト、予算ヒューリスティック、目的地データを組み合わせた学習・ポートフォリオ向けのデモです。",
+  aboutBuiltTitle: "実ユーザーを想定",
+  aboutBuiltBody: "明確さ、素早い意思決定、現実的なプランニングフローに重点を置いています。",
+  aboutGrowthTitle: "拡張しやすい設計",
+  aboutGrowthBody:
+    "保存された旅行、より豊富なデータソース、マルチ都市ルート、リアルタイム交通APIへの拡張が可能です。",
+  footerCredit: "José 作 · TripMind AI プロジェクト"
 };
 
 function getCurrentLanguage() {
@@ -560,6 +1115,31 @@ function t(key) {
   return translations[language]?.[key] || translations.en[key] || key;
 }
 
+function formatT(key, vars) {
+  let s = t(key);
+  if (!vars) return s;
+  Object.keys(vars).forEach(function (k) {
+    s = s.split("{" + k + "}").join(String(vars[k]));
+  });
+  return s;
+}
+
+function applyFullPageTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach(function (el) {
+    const key = el.getAttribute("data-i18n");
+    if (key) el.textContent = t(key);
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (key && "placeholder" in el) el.placeholder = t(key);
+  });
+
+  if (typeof document !== "undefined" && document.documentElement) {
+    document.documentElement.lang = getCurrentLanguage();
+  }
+}
+
 function formatMoneyRange(minUsd, maxUsd) {
   const currency = currencyRates[getCurrentCurrency()] || currencyRates.USD;
   const min = Math.round(minUsd * currency.rate);
@@ -568,82 +1148,7 @@ function formatMoneyRange(minUsd, maxUsd) {
 }
 
 function applyBasicLanguageLabels() {
-  const modeCards = document.querySelectorAll(".trip-mode-card");
-  if (modeCards[0]) modeCards[0].querySelector("span").textContent = t("oneCity");
-  if (modeCards[1]) modeCards[1].querySelector("span").textContent = t("sameCountry");
-  if (modeCards[2]) modeCards[2].querySelector("span").textContent = t("multiCountry");
-
-  // Add mode descriptions block
-  const modeDescriptions = [
-    "Plan one destination in detail.",
-    "Add more cities from the same country.",
-    "Combine stops from different countries."
-  ];
-
-  const translatedModeDescriptions = {
-    en: modeDescriptions,
-    es: [
-      "Planea un destino con detalle.",
-      "Agrega más ciudades del mismo país.",
-      "Combina paradas de diferentes países."
-    ],
-    fr: [
-      "Planifiez une destination en détail.",
-      "Ajoutez plus de villes du même pays.",
-      "Combinez des étapes dans différents pays."
-    ],
-    it: [
-      "Pianifica una destinazione in dettaglio.",
-      "Aggiungi più città dello stesso paese.",
-      "Combina tappe in paesi diversi."
-    ],
-    ja: [
-      "1つの目的地を詳しく計画します。",
-      "同じ国の都市を追加します。",
-      "異なる国のストップを組み合わせます。"
-    ]
-  };
-
-  const descriptionSet = translatedModeDescriptions[getCurrentLanguage()] || translatedModeDescriptions.en;
-  modeCards.forEach(function (card, index) {
-    const small = card.querySelector("small");
-    if (small && descriptionSet[index]) small.textContent = descriptionSet[index];
-  });
-
-  const heroKicker = document.querySelector(".hero .kicker");
-  const heroTitle = document.querySelector(".hero h1");
-  const heroIntro = document.querySelector(".hero > p");
-  const formButton = tripForm?.querySelector('button[type="submit"]');
-
-  if (heroKicker) heroKicker.textContent = t("firstPrototype");
-  if (heroTitle) heroTitle.textContent = t("createProfile");
-  if (heroIntro) heroIntro.textContent = t("profileIntro");
-  if (formButton) formButton.textContent = t("generateButton");
-
-  const labels = {
-    country: t("country"),
-    destination: t("city"),
-    startDate: t("departureDate"),
-    endDate: t("returnDateLabel"),
-    budget: t("budget"),
-    style: t("travelStyleLabel")
-  };
-
-  Object.entries(labels).forEach(function ([id, text]) {
-    const label = document.querySelector(`label[for="${id}"]`);
-    if (label) label.textContent = text;
-  });
-
-  const tripModeLabel = document.querySelector(".trip-mode-group > label");
-  const interestsTitle = document.querySelector("#interests")?.previousElementSibling;
-  const amenitiesTitle = document.querySelector("#amenities")?.previousElementSibling;
-  const budgetInput = document.querySelector("#budget");
-
-  if (tripModeLabel) tripModeLabel.textContent = t("tripMode");
-  if (interestsTitle) interestsTitle.textContent = t("interestsLabel");
-  if (amenitiesTitle) amenitiesTitle.textContent = t("amenitiesLabel");
-  if (budgetInput) budgetInput.placeholder = t("budgetPlaceholder");
-
+  applyFullPageTranslations();
   updateSelectPlaceholders();
   updateMultiCityVisibility();
 }
@@ -797,13 +1302,14 @@ function isWeakWikipediaDescription(description, city) {
 }
 
 function buildDestinationDescription(city, wikipediaDescription, style, interests, amenities) {
-  const interestText = formatPreferenceList(interests, "your selected interests");
-  const amenityText = formatPreferenceList(amenities, "your preferred amenities");
+  const interestText = formatPreferenceList(interests, t("destInterestFallback"));
+  const amenityText = formatPreferenceList(amenities, t("destAmenityFallback"));
   const baseDescription = wikipediaDescription && !isWeakWikipediaDescription(wikipediaDescription, city)
     ? wikipediaDescription
-    : `${city} is the selected destination for this TripMind AI itinerary.`;
+    : formatT("destWikiFallback", { city });
 
-  return `${baseDescription} For this trip, TripMind AI uses your ${style} travel style, ${interestText}, and ${amenityText} to shape a route that feels more personal than a generic travel list. The itinerary below combines destination context, nearby place data, stay options, budget level, and daily pacing so each day has a clear focus while still leaving room for flexibility, food, rest, and spontaneous discoveries.`;
+  const tail = formatT("destNarrativeTail", { style, interestText, amenityText });
+  return `${baseDescription} ${tail}`;
 }
 
 const heroImages = [
@@ -1042,20 +1548,20 @@ function getSelectedTripCities() {
   return cities;
 }
 
-const itineraryTemplates = {
-  culture: ["Historic center", "Museum visit", "Local architecture walk"],
-  food: ["Local breakfast", "Food market tour", "Dinner at a recommended restaurant"],
-  adventure: ["Outdoor activity", "Scenic viewpoint", "Active afternoon experience"],
-  relax: ["Slow morning", "Spa or quiet cafe", "Sunset walk"],
-  romantic: ["Beautiful brunch spot", "Couple-friendly attraction", "Romantic dinner"],
-  luxury: ["Luxury hotel breakfast", "Private city experience", "Fine dining dinner"],
-  nightlife: ["Late brunch", "Trendy district walk", "Nightlife experience"],
-  family: ["Family attraction", "Relaxed lunch spot", "Easy evening walk"],
-  nature: ["Nature walk", "Scenic viewpoint", "Outdoor sunset plan"],
-  shopping: ["Shopping district", "Local boutiques", "Mall or market visit"],
-  business: ["Efficient breakfast", "Coworking-friendly area", "Short evening activity"],
-  solo: ["Walkable neighborhood", "Museum or cafe", "Safe evening plan"],
-  photography: ["Iconic photo spot", "Architecture walk", "Golden hour viewpoint"]
+const itineraryTemplateKeys = {
+  culture: ["itineraryCulture0", "itineraryCulture1", "itineraryCulture2"],
+  food: ["itineraryFood0", "itineraryFood1", "itineraryFood2"],
+  adventure: ["itineraryAdventure0", "itineraryAdventure1", "itineraryAdventure2"],
+  relax: ["itineraryRelax0", "itineraryRelax1", "itineraryRelax2"],
+  romantic: ["itineraryRomantic0", "itineraryRomantic1", "itineraryRomantic2"],
+  luxury: ["itineraryLuxury0", "itineraryLuxury1", "itineraryLuxury2"],
+  nightlife: ["itineraryNightlife0", "itineraryNightlife1", "itineraryNightlife2"],
+  family: ["itineraryFamily0", "itineraryFamily1", "itineraryFamily2"],
+  nature: ["itineraryNature0", "itineraryNature1", "itineraryNature2"],
+  shopping: ["itineraryShopping0", "itineraryShopping1", "itineraryShopping2"],
+  business: ["itineraryBusiness0", "itineraryBusiness1", "itineraryBusiness2"],
+  solo: ["itinerarySolo0", "itinerarySolo1", "itinerarySolo2"],
+  photography: ["itineraryPhotography0", "itineraryPhotography1", "itineraryPhotography2"]
 };
 
 const placeTypeByStyle = {
@@ -1266,31 +1772,31 @@ function getDailyBudgetEstimate(budgetTierKey) {
 }
 
 function getRecommendedArea(style) {
-  const areas = {
-    culture: "Historic center or museum district",
-    food: "Food market district or restaurant zone",
-    adventure: "Area close to outdoor activities",
-    relax: "Quiet neighborhood near parks or wellness spots",
-    romantic: "Scenic or boutique neighborhood",
-    luxury: "Premium hotel zone",
-    nightlife: "Nightlife district",
-    family: "Safe central family-friendly area",
-    nature: "Area close to parks or nature routes",
-    shopping: "Shopping district",
-    business: "Business district or coworking area",
-    solo: "Walkable and safe central area",
-    photography: "Scenic district with viewpoints"
+  const keys = {
+    culture: "areaCulture",
+    food: "areaFood",
+    adventure: "areaAdventure",
+    relax: "areaRelax",
+    romantic: "areaRomantic",
+    luxury: "areaLuxury",
+    nightlife: "areaNightlife",
+    family: "areaFamily",
+    nature: "areaNature",
+    shopping: "areaShopping",
+    business: "areaBusiness",
+    solo: "areaSolo",
+    photography: "areaPhotography"
   };
 
-  return areas[style] || "Central and well-connected area";
+  return t(keys[style] || "areaDefault");
 }
 
 function getNearbyPlaces(destination, style, amenities) {
   return [
-    `${destination} local restaurants`,
-    `${destination} public transport access`,
-    `${destination} main attractions`,
-    amenities || "nearby cafés, pharmacies, and safe areas",
+    formatT("nearbyLineRestaurants", { destination }),
+    formatT("nearbyLineTransport", { destination }),
+    formatT("nearbyLineAttractions", { destination }),
+    amenities || t("nearbyFallbackAmenities"),
     getRecommendedArea(style)
   ];
 }
@@ -1313,133 +1819,135 @@ function getInterestBasedTip(interests, style) {
   const selected = interests.toLowerCase();
 
   if (selected.includes("local food") || selected.includes("street food")) {
-    return "Add a local food stop between main activities to make the route feel more authentic.";
+    return t("interestTipFood");
   }
 
   if (selected.includes("museums") || selected.includes("history") || style === "culture") {
-    return "Prioritize historic areas, museums, and walkable cultural districts.";
+    return t("interestTipCulture");
   }
 
   if (selected.includes("beaches") || selected.includes("nature") || selected.includes("hiking")) {
-    return "Keep part of the day open for outdoor time, viewpoints, or nature-based activities.";
+    return t("interestTipNature");
   }
 
   if (selected.includes("shopping") || style === "shopping") {
-    return "Include a shopping district, local boutiques, or a market during the afternoon.";
+    return t("interestTipShopping");
   }
 
   if (selected.includes("nightlife") || style === "nightlife") {
-    return "Save energy for the evening and choose a stay near nightlife or safe transportation.";
+    return t("interestTipNightlife");
   }
 
   if (selected.includes("romance") || style === "romantic") {
-    return "Choose scenic places, slower pacing, and dinner spots with a special atmosphere.";
+    return t("interestTipRomance");
   }
 
-  return "Use the selected interests to balance iconic spots with personal experiences.";
+  return t("interestTipDefault");
 }
-
 
 function getAmenityBasedTip(amenities) {
   const selected = amenities.toLowerCase();
   const tips = [];
 
   if (selected.includes("public transport")) {
-    tips.push("stay close to metro, bus, or train access");
+    tips.push(t("amenityFragTransit"));
   }
 
   if (selected.includes("restaurants nearby")) {
-    tips.push("choose areas with food options within walking distance");
+    tips.push(t("amenityFragRestaurants"));
   }
 
   if (selected.includes("pharmacies nearby")) {
-    tips.push("check for pharmacies near the hotel zone");
+    tips.push(t("amenityFragPharmacy"));
   }
 
   if (selected.includes("safe areas")) {
-    tips.push("prioritize safe and well-lit neighborhoods");
+    tips.push(t("amenityFragSafe"));
   }
 
   if (selected.includes("parking")) {
-    tips.push("confirm parking before booking lodging");
+    tips.push(t("amenityFragParking"));
   }
 
   if (selected.includes("pet friendly")) {
-    tips.push("verify pet policies before reserving");
+    tips.push(t("amenityFragPet"));
   }
 
   if (tips.length === 0) {
-    return "No required amenity selected, so the plan keeps the location flexible.";
+    return t("amenityTipNone");
   }
 
-  return `Based on your amenities, ${tips.join(", ")}.`;
+  return formatT("amenityTipFull", { details: tips.join(", ") });
 }
 
 function buildSmartDailyPlan(dayNumber, destination, style, interests, amenities, realPlaces = []) {
   const selectedInterests = interests.toLowerCase();
   const selectedAmenities = amenities.toLowerCase();
   const hasRealPlaces = realPlaces.length > 0;
+  const dest = { destination };
 
-  const firstPlace = hasRealPlaces
+  const p1 = hasRealPlaces
     ? realPlaces[(dayNumber - 1) % realPlaces.length].name
-    : `${destination} central area`;
+    : formatT("fallbackPlaceNameCentral", dest);
 
-  const secondPlace = hasRealPlaces
+  const p2 = hasRealPlaces
     ? realPlaces[dayNumber % realPlaces.length].name
-    : `${destination} recommended attraction`;
+    : formatT("fallbackPlaceNameAttraction", dest);
 
-  const thirdPlace = hasRealPlaces
+  const p3 = hasRealPlaces
     ? realPlaces[(dayNumber + 1) % realPlaces.length].name
-    : `${destination} evening area`;
+    : formatT("fallbackPlaceNameEvening", dest);
 
-  let morning = `Start the morning at ${firstPlace} to get familiar with the area.`;
-  let afternoon = `Continue with ${secondPlace} as the main activity of the day.`;
-  let evening = `Finish near ${thirdPlace} with a slower evening plan.`;
+  const P = { p1, p2, p3 };
+
+  let morning = formatT("plan_default_morning", P);
+  let afternoon = formatT("plan_default_afternoon", P);
+  let evening = formatT("plan_default_evening", P);
 
   if (style === "culture" || selectedInterests.includes("history") || selectedInterests.includes("museums")) {
-    morning = `Start with a cultural visit around ${firstPlace}.`;
-    afternoon = `Use the afternoon for ${secondPlace}, focusing on history, museums, or architecture.`;
-    evening = `End near ${thirdPlace} with a relaxed walk through a historic or central area.`;
+    morning = formatT("plan_culture_morning", P);
+    afternoon = formatT("plan_culture_afternoon", P);
+    evening = formatT("plan_culture_evening", P);
   }
 
   if (style === "food" || selectedInterests.includes("local food") || selectedInterests.includes("street food")) {
-    morning = `Start with breakfast or coffee near ${firstPlace}.`;
-    afternoon = `Explore ${secondPlace} and add a local food stop nearby.`;
-    evening = `Finish near ${thirdPlace} with dinner in a lively restaurant area.`;
+    morning = formatT("plan_food_morning", P);
+    afternoon = formatT("plan_food_afternoon", P);
+    evening = formatT("plan_food_evening", P);
   }
 
   if (style === "relax" || selectedInterests.includes("spa")) {
-    morning = `Begin slowly near ${firstPlace}, avoiding an overloaded schedule.`;
-    afternoon = `Visit ${secondPlace} at a calm pace and leave room for rest.`;
-    evening = `End near ${thirdPlace} with a quiet dinner, cafe, or wellness activity.`;
+    morning = formatT("plan_relax_morning", P);
+    afternoon = formatT("plan_relax_afternoon", P);
+    evening = formatT("plan_relax_evening", P);
   }
 
   if (style === "adventure" || selectedInterests.includes("adrenaline") || selectedInterests.includes("hiking")) {
-    morning = `Start early near ${firstPlace} to take advantage of daylight.`;
-    afternoon = `Use ${secondPlace} as the active or outdoor highlight of the day.`;
-    evening = `Finish near ${thirdPlace} and keep the evening flexible for recovery.`;
+    morning = formatT("plan_adventure_morning", P);
+    afternoon = formatT("plan_adventure_afternoon", P);
+    evening = formatT("plan_adventure_evening", P);
   }
 
   if (style === "shopping" || selectedInterests.includes("shopping") || selectedInterests.includes("markets")) {
-    morning = `Start near ${firstPlace} and check nearby boutiques or markets.`;
-    afternoon = `Dedicate the afternoon to ${secondPlace} as the main shopping or browsing stop.`;
-    evening = `Finish near ${thirdPlace}, ideally close to food options and transportation.`;
+    morning = formatT("plan_shopping_morning", P);
+    afternoon = formatT("plan_shopping_afternoon", P);
+    evening = formatT("plan_shopping_evening", P);
   }
 
   if (selectedInterests.includes("beaches")) {
-    evening = `End the day near ${thirdPlace}, leaving time for a beach walk or sunset view if available.`;
+    evening = formatT("plan_evening_beach", P);
   }
 
   if (selectedAmenities.includes("parking")) {
-    afternoon += " Confirm parking availability before moving between stops.";
+    afternoon += t("plan_suffix_parking");
   }
 
   if (selectedAmenities.includes("public transport")) {
-    evening += " Prefer routes that stay close to public transportation.";
+    evening += t("plan_suffix_transit");
   }
 
   if (selectedAmenities.includes("pet friendly")) {
-    morning += " Check pet-friendly access before arriving.";
+    morning += t("plan_suffix_pet");
   }
 
   return { morning, afternoon, evening };
@@ -1447,8 +1955,8 @@ function buildSmartDailyPlan(dayNumber, destination, style, interests, amenities
 
 
 function generateDayPlan(dayNumber, destination, style, interests, amenities, budgetTierKey, realPlaces = [], realHotels = []) {
-  const activities = itineraryTemplates[style] || itineraryTemplates.culture;
-  const mainActivity = activities[(dayNumber - 1) % activities.length];
+  const tplKeys = itineraryTemplateKeys[style] || itineraryTemplateKeys.culture;
+  const mainActivity = t(tplKeys[(dayNumber - 1) % tplKeys.length]);
   const stay = getStayRecommendation(budgetTierKey);
   const dailyBudget = getDailyBudgetEstimate(budgetTierKey);
   const recommendedArea = getRecommendedArea(style);
@@ -1493,7 +2001,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
     <article class="day-card">
       <h3>${t("day")} ${dayNumber} · ${destination}</h3>
 
-      <p><strong>${t("mainFocus")}:</strong> ${mainActivity} in ${destination}</p>
+      <p><strong>${t("mainFocus")}:</strong> ${formatT("mainFocusLine", { activity: mainActivity, destination })}</p>
 
       <div class="mini-section">
         <h4>🏨 ${t("realStayOptions")}</h4>
