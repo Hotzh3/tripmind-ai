@@ -16,6 +16,8 @@ const endDateInput = document.querySelector("#endDate");
 const multiCityPanelTitle = document.querySelector("#multiCityPanelTitle");
 const multiCityPanelText = document.querySelector("#multiCityPanelText");
 
+const API_BASE_URL = "https://tripmind-ai-backend.onrender.com";
+
 
 let additionalCityCount = 0;
 
@@ -699,19 +701,21 @@ function showFormMessage(message, type = "error") {
   }, 4500);
 }
 
+function tryShowDatePicker(input) {
+  if (!input || typeof input.showPicker !== "function") return;
+
+  try {
+    input.showPicker();
+  } catch (err) {
+    // showPicker requires a transient user activation in some browsers; ignore silently
+  }
+}
+
 function setupDatePicker(input) {
   if (!input) return;
 
   input.addEventListener("click", function () {
-    if (typeof input.showPicker === "function") {
-      input.showPicker();
-    }
-  });
-
-  input.addEventListener("focus", function () {
-    if (typeof input.showPicker === "function") {
-      input.showPicker();
-    }
+    tryShowDatePicker(input);
   });
 }
 
@@ -1214,41 +1218,48 @@ function getBudgetTier(budget) {
   const normalizedBudget = budget.toLowerCase().trim();
 
   if (!normalizedBudget || normalizedBudget.includes("flexible")) {
-    return t("flexible");
+    return "flexible";
   }
 
   const numberMatch = normalizedBudget.match(/\d+/);
 
-  if (!numberMatch) return t("flexible");
+  if (!numberMatch) return "flexible";
 
   const amount = Number(numberMatch[0]);
 
-  if (amount < 300) return t("lowCost");
-  if (amount <= 900) return t("balanced");
-  return t("premium");
+  if (amount < 300) return "low";
+  if (amount <= 900) return "balanced";
+  return "premium";
 }
 
-function getDailyEstimate(budgetTier) {
-  if (budgetTier === t("lowCost")) return t("lowBudgetTip");
-  if (budgetTier === t("premium")) return t("premiumBudgetTip");
+function getBudgetTierLabel(tierKey) {
+  if (tierKey === "low") return t("lowCost");
+  if (tierKey === "premium") return t("premium");
+  if (tierKey === "balanced") return t("balanced");
+  return t("flexible");
+}
+
+function getDailyEstimate(budgetTierKey) {
+  if (budgetTierKey === "low") return t("lowBudgetTip");
+  if (budgetTierKey === "premium") return t("premiumBudgetTip");
   return t("balancedBudgetTip");
 }
 
-function getStayRecommendation(budgetTier) {
-  if (budgetTier === t("lowCost")) {
+function getStayRecommendation(budgetTierKey) {
+  if (budgetTierKey === "low") {
     return { type: t("budgetHotel") };
   }
 
-  if (budgetTier === t("premium")) {
+  if (budgetTierKey === "premium") {
     return { type: t("premiumHotel") };
   }
 
   return { type: t("balancedHotel") };
 }
 
-function getDailyBudgetEstimate(budgetTier) {
-  if (budgetTier === t("lowCost")) return formatMoneyRange(40, 80);
-  if (budgetTier === t("premium")) return formatMoneyRange(180, 350);
+function getDailyBudgetEstimate(budgetTierKey) {
+  if (budgetTierKey === "low") return formatMoneyRange(40, 80);
+  if (budgetTierKey === "premium") return formatMoneyRange(180, 350);
   return formatMoneyRange(90, 170);
 }
 
@@ -1433,11 +1444,11 @@ function buildSmartDailyPlan(dayNumber, destination, style, interests, amenities
 }
 
 
-function generateDayPlan(dayNumber, destination, style, interests, amenities, budgetTier, realPlaces = [], realHotels = []) {
+function generateDayPlan(dayNumber, destination, style, interests, amenities, budgetTierKey, realPlaces = [], realHotels = []) {
   const activities = itineraryTemplates[style] || itineraryTemplates.culture;
   const mainActivity = activities[(dayNumber - 1) % activities.length];
-  const stay = getStayRecommendation(budgetTier);
-  const dailyBudget = getDailyBudgetEstimate(budgetTier);
+  const stay = getStayRecommendation(budgetTierKey);
+  const dailyBudget = getDailyBudgetEstimate(budgetTierKey);
   const recommendedArea = getRecommendedArea(style);
   const nearbyPlaces = getNearbyPlaces(destination, style, amenities);
   const interestSummary = formatPreferenceList(interests, t("noSpecificInterests"));
@@ -1521,7 +1532,7 @@ function generateDayPlan(dayNumber, destination, style, interests, amenities, bu
       <div class="mini-section">
         <h4>💸 ${t("budgetEstimate")}</h4>
         <p><strong>${t("estimatedDailySpend")}:</strong> ${dailyBudget}</p>
-        <p>${getDailyEstimate(budgetTier)}</p>
+        <p>${getDailyEstimate(budgetTierKey)}</p>
       </div>
     </article>
   `;
@@ -1633,7 +1644,7 @@ tripForm.addEventListener("submit", async function (event) {
     await wait(1400 - loadingElapsedTime);
   }
 
-  const budgetTier = getBudgetTier(budget);
+  const budgetTierKey = getBudgetTier(budget);
   const seasonInfo = getSeasonAnalysis(startDate);
 
   tripSummary.innerHTML = `
@@ -1649,7 +1660,7 @@ tripForm.addEventListener("submit", async function (event) {
 
     <article class="summary-card">
       <span>${t("budgetTier")}</span>
-      <strong>${budgetTier}</strong>
+      <strong>${getBudgetTierLabel(budgetTierKey)}</strong>
     </article>
 
     <article class="summary-card">
@@ -1694,7 +1705,7 @@ tripForm.addEventListener("submit", async function (event) {
       style,
       interests,
       amenities,
-      budgetTier,
+      budgetTierKey,
       cityData.realPlaces,
       cityData.realHotels
     );
@@ -1736,7 +1747,7 @@ function setupItineraryActions(destination) {
   const planAnotherButton = document.querySelector("#planAnotherTripBtn");
 
   if (copyButton) {
-    copyButton.addEventListener("click", async function () {
+    copyButton.onclick = async function () {
       const itineraryText = [
         tripSummary.innerText,
         previewSection.innerText,
@@ -1776,11 +1787,11 @@ function setupItineraryActions(destination) {
           copyButton.textContent = t("copyItinerary");
         }, 1800);
       }
-    });
+    };
   }
 
   if (downloadButton) {
-    downloadButton.addEventListener("click", function () {
+    downloadButton.onclick = function () {
       const pdfWindow = window.open("", "_blank");
 
       if (!pdfWindow) {
@@ -1875,11 +1886,11 @@ function setupItineraryActions(destination) {
       `);
 
       pdfWindow.document.close();
-    });
+    };
   }
 
   if (planAnotherButton) {
-    planAnotherButton.addEventListener("click", function () {
+    planAnotherButton.onclick = function () {
       resultsSection.classList.add("hidden");
       tripSummary.innerHTML = "";
       previewSection.innerHTML = "";
@@ -1899,7 +1910,7 @@ function setupItineraryActions(destination) {
       updateMultiCityVisibility();
       showFormMessage(t("resetMessage"), "success");
       tripForm.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
+    };
   }
 }
 
@@ -1908,7 +1919,7 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
   try {
     const wikipediaQuery = getWikipediaQuery(city, countryValue);
     const response = await fetch(
-      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(wikipediaQuery)}`
+      `${API_BASE_URL}/api/wikipedia?city=${encodeURIComponent(wikipediaQuery)}`
     );
 
     if (!response.ok) {
@@ -1917,10 +1928,10 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
 
     const data = await response.json();
     const fallbackImage = cityBackgrounds[city] || heroImages[0];
-    const image = data.originalimage?.source || data.thumbnail?.source || fallbackImage;
+    const image = data.image || fallbackImage;
     const description = buildDestinationDescription(
       city,
-      data.extract || "",
+      data.description || "",
       style,
       interests,
       amenities
@@ -1931,8 +1942,8 @@ async function fetchWikipediaData(city, countryValue, style = "balanced", intere
       <h3>🌎 ${t("destinationOverview")}: ${city}</h3>
       <img src="${image}" class="wiki-image" alt="${city}">
       <p>${description}</p>
-      ${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page
-        ? `<a href="${data.content_urls?.desktop?.page || data.content_urls?.mobile?.page}" target="_blank">${t("readMore")}</a>`
+      ${data.url
+        ? `<a href="${data.url}" target="_blank">${t("readMore")}</a>`
         : ""} 
 
       </article>
@@ -1986,7 +1997,26 @@ async function fetchPlacesData(city, type = "tourism") {
     ]
   };
 
-  return fallbackByType[type] || fallbackByType.tourism;
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/places?city=${encodeURIComponent(city)}&type=${encodeURIComponent(type)}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Places request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (Array.isArray(data.places) && data.places.length > 0) {
+      return data.places;
+    }
+
+    return fallbackByType[type] || fallbackByType.tourism;
+  } catch (error) {
+    console.error("Places fetch failed:", error);
+    return fallbackByType[type] || fallbackByType.tourism;
+  }
 }
 if (languageSelect) {
   languageSelect.addEventListener("change", function () {

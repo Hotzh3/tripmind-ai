@@ -687,7 +687,7 @@ footer {
 }
 
 @media (max-width: 760px) {
-  .itinerary-actions-car.btnd {
+  .itinerary-actions-card {
     flex-direction: column;
     align-items: stretch;
   }
