@@ -296,6 +296,15 @@ app.get("/api/places", apiLimiter, async function (req, res) {
   }
 });
 
-app.listen(PORT, function () {
-  console.log(`TripMind AI backend running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, function () {
+    console.log(`TripMind AI backend running on port ${PORT}`);
+  });
+}
+
+module.exports = {
+  app,
+  fetchWithTimeout,
+  getFallbackPlaces,
+  isOriginAllowed
+};
